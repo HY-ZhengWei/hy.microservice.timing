@@ -12,7 +12,7 @@
     </appenders>
 
     <loggers>
-        <logger name="org.hy.common" level="debug" additivity="false">
+        <logger name="org.hy.common" level="info" additivity="false">
             <AppenderRef ref="CONSOLE" />
         </logger>
         

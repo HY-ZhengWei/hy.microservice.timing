@@ -16,12 +16,12 @@
         <!-- 灾备机制的服务列表 -->
         <clusters id="DisasterRecoverys">
             <cluster>
-                <host>10.1.50.89</host>
+                <host>192.168.31.201</host>
                 <port>9021</port>
             </cluster>
             
             <cluster>
-                <host>10.1.90.89</host>
+                <host>192.168.31.3</host>
                 <port>9021</port>
             </cluster>
         </clusters>

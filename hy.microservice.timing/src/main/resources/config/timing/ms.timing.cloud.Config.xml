@@ -3,7 +3,7 @@
 <config>
 
     <import name="xconfig"         class="java.util.ArrayList" />
-    <import name="clusters"        class="org.hy.common.app.Param" />
+    <import name="clusters"        class="java.util.ArrayList" />
     <import name="cluster"         class="org.hy.common.net.netty.rpc.ClientRPC" />
     <import name="server"          class="org.hy.common.net.netty.rpc.ServerRPC" />
     
@@ -14,7 +14,7 @@
     <xconfig>
         
         <!-- 灾备机制的服务列表 -->
-        <cluster id="DisasterRecoverys">
+        <clusters id="DisasterRecoverys">
             <cluster>
                 <host>10.1.50.89</host>
                 <port>9021</port>
@@ -24,11 +24,11 @@
                 <host>10.1.90.89</host>
                 <port>9021</port>
             </cluster>
-        </cluster>
+        </clusters>
         
         
         
-        <server id="MS_Message_Server">
+        <server id="MS_Timing_Server">
             <port>9021</port>
             <call name="start" />
         </server>

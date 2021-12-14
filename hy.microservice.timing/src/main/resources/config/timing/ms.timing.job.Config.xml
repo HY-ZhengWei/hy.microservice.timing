@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="jobs"            class="org.hy.common.thread.Jobs" />
+    <import name="job"             class="org.hy.common.thread.Job" />
+
+
+
+    <!-- 任务配置信息 -->
+    <xconfig>
+
+        <jobs id="MS_Timing_JOBS" this="MS_Timing_JOBS">
+
+            <!-- 灾备机制的服务列表 -->
+            <disasterRecoverys ref="DisasterRecoverys" />
+
+            <call name="shutdown" />  <!-- 停止所有定时任务。预防多次重复加载时的异常 -->
+            <call name="delJobs" />   <!-- 删除所有定时任务。预防多次重复加载时的异常 -->
+            
+        </jobs>
+
+
+        <!-- 开启定时任务 -->
+        <jobs id="MS_Timing_JOBS" this="MS_Timing_JOBS">
+            <call name="startup" />
+        </jobs>
+
+    </xconfig>
+
+</config>

@@ -10,6 +10,19 @@
 
     <!-- 任务配置信息 -->
     <xconfig>
+    
+        <job id="JOB_Test测试任务">
+            <code>JOB_Test测试任务</code>
+            <name>测试任务的名称</name>
+            <comment>测试任务的说明</comment>
+            <intervalType ref="this.$IntervalType_Minute"/>
+            <intervalLen>10</intervalLen>
+            <startTime>2000-01-01 00:00:00</startTime>
+            <xid>PrecalciningWeb</xid>
+            <methodName>rePrecalciningErrors</methodName>
+            <cloudServer ref="CServer_测试云服务" />
+        </job>
+        
 
         <jobs id="MS_Timing_JOBS" this="MS_Timing_JOBS">
 
@@ -18,6 +31,8 @@
 
             <call name="shutdown" />  <!-- 停止所有定时任务。预防多次重复加载时的异常 -->
             <call name="delJobs" />   <!-- 删除所有定时任务。预防多次重复加载时的异常 -->
+            
+            <addJob ref="JOB_Test测试任务" />
             
         </jobs>
 

@@ -40,6 +40,47 @@
                 <comment>是否验证用户登录的票据</comment>
             </item>
             
+            
+            <item id="MS_Timing_TPool_MaxThread">
+                <name>MS_Timing_TPool_MaxThread</name>
+                <value>100</value>
+                <comment>最大线程数</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_TPool_MinThread">
+                <name>MS_Timing_TPool_MinThread</name>
+                <value>1</value>
+                <comment>最小线程数</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_TPool_MinIdleThread">
+                <name>MS_Timing_TPool_MinIdleThread</name>
+                <value>1</value>
+                <comment>最小空闲数</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_TPool_IntervalTime">
+                <name>MS_Timing_TPool_IntervalTime</name>
+                <value>10</value>
+                <comment>间隔时间</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_TPool_IdleTimeKill">
+                <name>MS_Timing_TPool_IdleTimeKill</name>
+                <value>600</value>
+                <comment>空闲自毁时长</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_TPool_WaitResource">
+                <name>MS_Timing_TPool_WaitResource</name>
+                <value>23</value>
+                <comment>等待线程资源的时长(单位：毫秒)</comment>
+            </item>
         </xparam>
         
     </xconfig>

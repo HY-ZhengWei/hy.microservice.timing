@@ -33,6 +33,14 @@
             <call name="start" />
         </server>
         
+        
+        
+        <cluster id="CServer_测试云服务">
+            <host>10.1.90.28</host>
+            <post>9021</post>
+            <timeout>10000</timeout>
+        </cluster>
+        
     </xconfig>
     
 </config>

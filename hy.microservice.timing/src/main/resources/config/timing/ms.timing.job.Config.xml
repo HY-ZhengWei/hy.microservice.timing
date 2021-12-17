@@ -18,8 +18,8 @@
             <intervalType ref="this.$IntervalType_Minute"/>
             <intervalLen>10</intervalLen>
             <startTime>2000-01-01 00:00:00</startTime>
-            <xid>PrecalciningWeb</xid>
-            <methodName>rePrecalciningErrors</methodName>
+            <xid>任务对象的ID</xid>
+            <methodName>任务对象的方法</methodName>
             <cloudServer ref="CServer_测试云服务" />
         </job>
         

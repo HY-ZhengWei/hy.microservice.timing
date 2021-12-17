@@ -14,15 +14,16 @@
     <xconfig>
         
         <!-- 灾备机制的服务列表 -->
+        <!-- 灾备：至少要配置2台服务，否则不生效 -->
         <clusters id="DisasterRecoverys">
             <cluster>
-                <host>192.168.31.201</host>
+                <host>42.63.227.65</host>
                 <port>9021</port>
             </cluster>
             
             <cluster>
-                <host>192.168.31.3</host>
-                <port>9021</port>
+                <host>10.1.90.29</host>
+                <port>3021</port>
             </cluster>
         </clusters>
         
@@ -36,8 +37,8 @@
         
         
         <cluster id="CServer_测试云服务">
-            <host>10.1.90.28</host>
-            <post>9021</post>
+            <host>42.63.227.65</host>
+            <port>9021</port>
             <timeout>10000</timeout>
         </cluster>
         

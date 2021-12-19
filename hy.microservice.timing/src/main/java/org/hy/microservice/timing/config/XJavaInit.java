@@ -100,14 +100,7 @@ public class XJavaInit extends AppInitConfig
     private void init_ClusterServers()
     {
         List<ClientCluster> v_DisasterRecoverys = (List<ClientCluster>)XJava.getObject("DisasterRecoverys");
-        StringBuilder       v_Buffer            = new StringBuilder();
-        for (ClientCluster v_Client : v_DisasterRecoverys)
-        {
-            v_Buffer.append(v_Client.getHost()).append(":").append(v_Client.getPort()).append(",");
-        }
-        
-        Param v_ClusterServers = new Param().setName("ClusterServers").setValue(v_Buffer.toString()).setComment("全部集群服务器列表(用逗号分隔)");
-        XJava.putObject(v_ClusterServers.getName() ,v_ClusterServers);
+        XJava.putObject("ClusterServers" ,v_DisasterRecoverys);
     }
     
     

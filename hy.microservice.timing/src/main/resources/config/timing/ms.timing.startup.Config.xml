@@ -16,6 +16,10 @@
             <item>
                 <value>config/timing/ms.timing.cloud.Config.xml</value>
             </item>
+            
+            <item>
+                <value>config/timing/ms.timing.job.client.xml</value>
+            </item>
 
         </startupConfig>
         

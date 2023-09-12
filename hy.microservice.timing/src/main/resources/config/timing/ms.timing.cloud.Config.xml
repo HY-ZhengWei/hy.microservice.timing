@@ -17,15 +17,15 @@
         <!-- 灾备：至少要配置2台服务，否则不生效 -->
         <clusters id="MS_Timing_DisasterRecoverys">
             <cluster>
-                <host>42.63.227.65</host>
+                <host>127.0.0.1</host>
                 <port>9021</port>
                 <timeout>5000</timeout>
             </cluster>
             
             <cluster>
-                <host>10.1.90.29</host>
-                <port>3021</port>
-                <timeout>5000</timeout> 
+                <host>127.0.0.1</host>
+                <port>9021</port>
+                <timeout>5000</timeout>
             </cluster>
         </clusters>
         

@@ -33,7 +33,7 @@ public class TimingInit
     public void execute()
     {
         // 注册：定时任务服务的灾备机制的心跳任务
-        Jobs v_Jobs = (Jobs)XJava.getObject("MS_Timing_JOBS");
+        Jobs v_Jobs = (Jobs)XJava.getObject("JOBS_MS_Common");
         XJava.putObject(Jobs.$JOB_DisasterRecoverys_Check ,v_Jobs.createDisasterRecoveryJob());
         
         this.init_ClusterServers();
@@ -51,7 +51,7 @@ public class TimingInit
     @SuppressWarnings("unchecked")
     private void init_ClusterServers()
     {
-        List<ClientCluster> v_DisasterRecoverys = (List<ClientCluster>)XJava.getObject("DisasterRecoverys");
+        List<ClientCluster> v_DisasterRecoverys = (List<ClientCluster>)XJava.getObject("MS_Timing_DisasterRecoverys");
         XJava.putObject("ClusterServers" ,v_DisasterRecoverys);
     }
     

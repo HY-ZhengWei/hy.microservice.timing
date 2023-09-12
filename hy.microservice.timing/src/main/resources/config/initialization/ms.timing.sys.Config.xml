@@ -31,7 +31,7 @@
 	    
             <item id="MS_Timing_Analyses_Password"  this="MS_Common_Analyses_Password">
                 <name>MS_Timing_Analyses_Password</name>
-                <value encrypt="org.hy.common.StringHelp">mstiming@3edc#EDC</value>
+                <value encrypt="org.hy.common.StringHelp">timing@3edc#EDC</value>
                 <comment>分析中心的访问密码</comment>
                 <onlyRead>true</onlyRead>
             </item>

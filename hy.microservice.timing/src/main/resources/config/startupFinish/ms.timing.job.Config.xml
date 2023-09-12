@@ -14,7 +14,7 @@
         <job id="JOB_MS_Timing_Init">
             <code>JOB_MS_Timing_Init</code>
             <name>服务启动时的初始化任务</name>
-            <comment>仅启动时执行一次</comment>
+            <comment>服务启动时的初始化任务，仅启动时执行一次</comment>
             <intervalType ref="this.$IntervalType_Manual"/>
             <xid>TimingInit</xid>
             <methodName>execute</methodName>
@@ -35,7 +35,7 @@
         </job>
         
 
-        <jobs id="MS_Timing_JOBS" this="JOBS_MS_Common">
+        <jobs id="JOBS_MS_Common" this="JOBS_MS_Common">
 
             <!-- 灾备机制的服务列表 -->
             <disasterRecoverys ref="MS_Timing_DisasterRecoverys" />

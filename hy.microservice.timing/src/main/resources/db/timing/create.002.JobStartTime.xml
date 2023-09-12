@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务开始时间的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_JobStartTime">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TJobStartTime
+                (
+                 jobID                      VARCHAR(64)   NOT NULL        COMMENT '任务ID'
+                ,startTime                  DATETIME      NOT NULL        COMMENT '开始时间'
+                ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
+                ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TJobStartTime ADD CONSTRAINT PK_JobStartTime PRIMARY KEY (jobID ,startTime);/
+                ALTER TABLE TJobStartTime ADD CONSTRAINT FK_JobStartTime FOREIGN KEY (jobID) REFERENCES TJobConfig (id);/
+                
+                Alter TABLE TJobStartTime COMMENT                         = '任务开始时间组';/
+                ]]>
+            </content>
+            
+            <comment>任务开始时间组</comment>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TJobStartTime</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

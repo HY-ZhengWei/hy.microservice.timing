@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务开始时间组的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_JobStartTime_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TJobStartTime
+                       (
+                        jobID
+                       ,startTime
+                       ,createUserID
+                       ,createTime
+                       )
+                VALUES (
+                        ':jobID'
+                       ,':startTime'
+                       ,':createUserID'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobStartTime_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                DELETE FROM TJobStartTime
+                 WHERE jobID = ':jobID'
+                ]]>
+            </content>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务配置信息的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_JobConfig">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TJobConfig
+                (
+                 id                         VARCHAR(64)   NOT NULL        COMMENT '主键'
+                ,code                       VARCHAR(200)  NOT NULL        COMMENT '任务编号'
+                ,name                       VARCHAR(500)                  COMMENT '任务名称'
+                ,intervalType               INT           NOT NULL        COMMENT '间隔类型'
+                ,intervalLen                INT           NOT NULL        COMMENT '间隔长度'
+                ,xid                        VARCHAR(200)  NOT NULL        COMMENT '被执行任务对象的XJava标识'
+                ,methodName                 VARCHAR(200)  NOT NULL        COMMENT '被执行任务对象的方法名'
+                ,cloudServer                VARCHAR(200)                  COMMENT '云计算服务器的地址端口。格式为：IP:Port'
+                ,`condition`                VARCHAR(500)                  COMMENT '允许执行的条件'
+                ,tryMaxCount                INT                           COMMENT '执行未成功时，尝试执行的最大次数'
+                ,tryIntervalLen             INT                           COMMENT '执行未成功时，每次尝试间隔时长（秒）'
+                ,comment                    VARCHAR(4000)                 COMMENT '注释。可用于日志的输出等帮助性的信息'
+                ,isDel                      INT           NOT NULL        COMMENT '删除标记。1删除；0未删除'
+                ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
+                ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
+                ,updateTime                 DATETIME      NOT NULL        COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TJobConfig ADD CONSTRAINT PK_JobConfig PRIMARY KEY (id);/
+                
+                Alter TABLE TJobConfig COMMENT                           = '任务配置';/
+                ]]>
+            </content>
+            
+            <comment>任务配置</comment>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TJobConfig</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

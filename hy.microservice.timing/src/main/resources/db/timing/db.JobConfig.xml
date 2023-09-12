@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务配置信息的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_JobConfig_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TJobConfig
+                       (
+                        id            
+                       ,code          
+                       ,name          
+                       ,intervalType  
+                       ,intervalLen   
+                       ,xid           
+                       ,methodName    
+                       ,cloudServer   
+                       ,`condition`   
+                       ,tryMaxCount   
+                       ,tryIntervalLen
+                       ,comment       
+                       ,isDel         
+                       ,createUserID  
+                       ,createTime    
+                       ,updateTime    
+                       )
+                VALUES (
+                        ':Job.id'
+                       ,':Job.code'
+                       ,':Job.name'
+                       ,':Job.intervalType'
+                       ,':Job.intervalLen'
+                       ,':Job.xid'
+                       ,':Job.methodName'
+                       ,':Job.cloudServer'
+                       ,':Job.condition'   
+                       ,':Job.tryMaxCount'
+                       ,':Job.tryIntervalLen'
+                       ,':Job.comment'
+                       ,':Job.isDel'
+                       ,':Job.createUserID'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobConfig_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  TJobConfig
+                   SET  updateTime     = NOW()
+                    <[ ,code           = ':Job.code'             ]>
+                    <[ ,name           = ':Job.name'             ]>
+                    <[ ,intervalType   = ':Job.intervalType'     ]>
+                    <[ ,intervalLen    = ':Job.intervalLen'      ]>
+                    <[ ,xid            = ':Job.xid'              ]>
+                    <[ ,methodName     = ':Job.methodName'       ]>
+                    <[ ,cloudServer    = ':Job.cloudServer'      ]>
+                    <[ ,`condition`    = ':Job.condition'        ]>
+                    <[ ,tryMaxCount    = ':Job.tryMaxCount'      ]>
+                    <[ ,tryIntervalLen = ':Job.tryIntervalLen'   ]>
+                    <[ ,comment        = ':Job.comment'          ]>
+                    <[ ,isDel          = ':Job.isDel'            ]>
+                 WHERE  id             = ':Job.id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobConfig_IsExists"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  COUNT(1)  AS JobConfig_IsExists
+                  FROM  TJobConfig
+                 WHERE  id = ':Job.id'
+                ]]>
+            </content>
+            
+            <result>
+                <row>java.util.HashMap</row>
+                <cfill>put(colName ,colValue)</cfill>
+                <cstyle>UPPER</cstyle>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobConfig_Query"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.code          
+                       ,A.name          
+                       ,A.intervalType  
+                       ,A.intervalLen  
+                       ,B.startTime       AS startTimes
+                       ,A.xid           
+                       ,A.methodName    
+                       ,A.cloudServer   
+                       ,A.`condition`   
+                       ,A.tryMaxCount   
+                       ,A.tryIntervalLen
+                       ,A.comment       
+                       ,A.isDel         
+                       ,A.createUserID  
+                       ,A.createTime    
+                       ,A.updateTime 
+                  FROM  TJobConfig     A
+                       ,TJobStartTime  B
+                 WHERE  A.isDel = 0
+                   AND  A.id    = B.jobID
+              <[   AND  A.id    = ':id'    ]>
+                 ORDER  BY A.id
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.timing.job.JobConfig</row>
+                <cfill>setter(colValue)</cfill>
+                <relationKeys>id</relationKeys>
+            </result>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

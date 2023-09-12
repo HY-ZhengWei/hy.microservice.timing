@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务配置的相关SQL组 -->
+    <sqls>
+    
+        <sqlGroup id="GXSQL_Timing_JobConfig_Save">
+            <comment>保存任务配置，确保数据的一致性</comment>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_JobConfig_IsExists" />
+                <type ref="this.$Type_Query" />
+            </sqlNode>
+                    
+            <sqlNode>
+                <sql  ref="XSQL_Timing_JobConfig_Insert" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:JobConfig_IsExists <= 0]]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_JobConfig_Update" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:JobConfig_IsExists >= 1]]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_JobStartTime_Delete" />
+                <type ref="this.$Type_ExecuteUpdate" />
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_JobStartTime_Insert" />
+                <type ref="this.$Type_CollectionToExecuteUpdate" />
+                <collectionID>JobStartTimes</collectionID>
+            </sqlNode>
+        </sqlGroup>
+        
+    </sqls>
+    
+</config>

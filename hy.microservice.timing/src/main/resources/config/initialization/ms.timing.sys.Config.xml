@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="xparam"          class="java.util.Hashtable" />
+    <import name="item"            class="org.hy.common.app.Param" />
+    
+    
+    
+    <!-- 系统配置参数信息 -->
+    <xconfig>
+
+        <xparam id="SYSParam_MS_Timing" key="name">
+        
+            <item id="MS_Timing_ProjectName" this="MS_Common_ProjectName">
+                <name>MS_MWindows_ProjectName</name>
+                <value>hy.microservice.timing</value>
+                <comment>项目名称，开发测试时使用</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_MWindows_ServiceName" this="MS_Common_ServiceName">
+                <name>MS_Timing_ServiceName</name>
+                <value>msTiming</value>
+                <comment>服务名称，产品运维时使用</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+	    
+	    
+            <item id="MS_Timing_Analyses_Password"  this="MS_Common_Analyses_Password">
+                <name>MS_Timing_Analyses_Password</name>
+                <value encrypt="org.hy.common.StringHelp">mstiming@3edc#EDC</value>
+                <comment>分析中心的访问密码</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <!-- 停用父项目的数据库初始化 -->
+            <item id="IsInitDSG_MS_Common" this="IsInitDSG_MS_Common">
+                <name>IsInitDSG_MS_Common</name>
+                <value>停用</value>
+                <comment>是否初始化数据库连接池组。如果不在内部初始化，请在外部预先初始化好</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <!-- 启用本项目的数据库初始化 -->
+            <item id="IsInitDSG_MS_Timing">
+                <name>IsInitDSG_MS_Timing</name>
+                <value>启用</value>
+                <comment>是否初始化数据库连接池组。如果不在内部初始化，请在外部预先初始化好</comment>
+            </item>
+            
+            
+            <item id="IsCreateDB_MS_Timing" this="IsCreateDB_MS_Common">
+                <name>IsCreateDB_MS_Timing</name>
+                <value>启用</value>
+                <comment>是否自动创建数据库对象</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_Timing_IsCheckToken" this="MS_Common_IsCheckToken">
+                <name>MS_Timing_IsCheckToken</name>
+                <value>false</value>
+                <comment>是否验证用户登录的票据</comment>
+		<onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_Timing_Freemarker_TemplateLoaderPath" this="MS_Common_Freemarker_TemplateLoaderPath">
+                <name>MS_Timing_Freemarker_TemplateLoaderPath</name>
+                <value>/pages/timing</value>
+                <comment>Freemarker模板页面的顶级路径（*.ftl的路径）</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+        </xparam>
+        
+    </xconfig>
+    
+</config>

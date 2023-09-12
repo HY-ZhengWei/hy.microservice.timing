@@ -5,23 +5,24 @@
     
     <groupId>org</groupId>
     <artifactId>hy.microservice.timing</artifactId>
-    <version>1.0.0</version>
-    <packaging>war</packaging>                        <!-- Tomcat 启动Spring Boot Add ZhengWei(HY) 2019-01-13 -->
+    <version>1.0.1</version>
+    <packaging>war</packaging>
+    
+    <name>cn.openapis.hy.microservice.timing</name>
+    <url>https://github.com/HY-ZhengWei/hy.microservice.timing</url>
+    <description>cn.openapis.hy.microservice.timing</description>
     
     <developers>
-      <developer>
-          <id>hy</id>
-          <name>Wei Zheng</name>
-          <email>HY.ZhengWei@qq.com</email>
-          <url>https://github.com/hy-zhengwei</url>
-      </developer>
+        <developer>
+            <name>Zheng Wei</name>
+            <email>HY.ZhengWei@qq.com</email>
+            <url>https://github.com/HY-ZhengWei</url>
+        </developer>
     </developers>
     
-    <name>hy.microservice.timing</name>
-    <url>https://github.com/HY-ZhengWei/hy.microservice.timing</url>
-    <!-- https://gitee.com/HY-ZhengWei/hy.microservice.timing -->
-    
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
@@ -33,7 +34,6 @@
     </parent>
 
     <dependencies>
-    
         <!-- Tomcat 启动Spring Boot Add ZhengWei(HY) 2019-01-13 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.17</version>
         </dependency>
         
         <dependency>
@@ -114,43 +114,49 @@
             <version>8.0.22</version>
         </dependency>
         
-        <!-- https://github.com/HY-ZhengWei/hy.common.base -->
-        <!-- https://gitee.com/HY-ZhengWei/hy.common.base -->
+        <!-- 添加freemarker的maven依赖 -->
         <dependency>
-            <groupId>org</groupId>
-            <artifactId>hy.common.base</artifactId>
-            <version>1.0.158</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
         
-        <!-- https://github.com/HY-ZhengWei/hy.common.net -->
-        <!-- https://gitee.com/HY-ZhengWei/hy.common.net -->
         <dependency>
-            <groupId>org</groupId>
-            <artifactId>hy.common.net</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>2.9</version>
         </dependency>
         
-        <!-- https://github.com/HY-ZhengWei/hy.common.license -->
-        <!-- https://gitee.com/HY-ZhengWei/hy.common.license -->
         <dependency>
-            <groupId>org</groupId>
-            <artifactId>hy.common.license</artifactId>
-            <version>1.1.2</version>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.21.1</version>
         </dependency>
         
-        <!-- https://github.com/HY-ZhengWei/hy.common.xjava -->
-        <!-- https://gitee.com/HY-ZhengWei/hy.common.xjava -->
         <dependency>
-            <groupId>org</groupId>
-            <artifactId>hy.common.xjava</artifactId>
-            <version>4.1.3</version>
+            <groupId>cn.openapis</groupId>
+            <artifactId>hy.common</artifactId>
+            <version>2.0.9</version>
+            <type>pom</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>cn.openapis</groupId>
+            <artifactId>hy.microservice</artifactId>
+            <version>1.3.9</version>
+            <type>war</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>cn.openapis</groupId>
+            <artifactId>hy.microservice</artifactId>
+            <version>1.3.9</version>
+            <type>jar</type>
+            <classifier>api</classifier>
         </dependency>
         
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
         </dependency>
       
     </dependencies>

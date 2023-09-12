@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="job"             class="org.hy.common.thread.Job" />
+    <import name="jobs"            class="org.hy.common.thread.Jobs" />
+    
+    
+    
+    <!-- 任务配置信息 -->
+    <xconfig>
+    
+        <job id="JOB_MS_Timing_Init">
+            <code>JOB_MS_Timing_Init</code>
+            <name>服务启动时的初始化任务</name>
+            <comment>仅启动时执行一次</comment>
+            <intervalType ref="this.$IntervalType_Manual"/>
+            <xid>TimingInit</xid>
+            <methodName>execute</methodName>
+            <initExecute>true</initExecute>
+        </job>
+        
+        
+        <job id="JOB_MS_Timing_Test测试任务">
+            <code>JOB_Test测试任务</code>
+            <name>测试任务的名称</name>
+            <comment>测试任务的说明</comment>
+            <intervalType ref="this.$IntervalType_Minute"/>
+            <intervalLen>10</intervalLen>
+            <startTime>2000-01-01 00:00:00</startTime>
+            <xid>任务对象的ID</xid>
+            <methodName>任务对象的方法</methodName>
+            <cloudServer ref="CServer_测试云服务" />
+        </job>
+        
+
+        <jobs id="MS_Timing_JOBS" this="JOBS_MS_Common">
+
+            <!-- 灾备机制的服务列表 -->
+            <disasterRecoverys ref="MS_Timing_DisasterRecoverys" />
+
+            <call name="shutdown" />  <!-- 停止所有定时任务。预防多次重复加载时的异常 -->
+            <call name="delJobs" />   <!-- 删除所有定时任务。预防多次重复加载时的异常 -->
+            
+            <addJob ref="JOB_MS_Timing_Test测试任务" />
+            
+            <!-- call name="startup" /  在公共Web项目中启动 -->
+        </jobs>
+        
+    </xconfig>
+    
+</config>

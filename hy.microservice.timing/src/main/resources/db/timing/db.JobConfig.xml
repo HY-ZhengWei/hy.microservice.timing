@@ -151,6 +151,30 @@
             
         </sql>
         
+        
+        
+        <sql id="XSQL_Timing_CloudServer_Query"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  DISTINCT A.cloudServer  AS value
+                  FROM  TJobConfig  A
+                 WHERE  A.isDel = 0
+                   AND  A.cloudServer IS NOT NULL 
+                   AND  A.cloudServer != ''
+                 ORDER  BY A.cloudServer 
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.common.app.Param</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
     </sqls>
     
 </config>

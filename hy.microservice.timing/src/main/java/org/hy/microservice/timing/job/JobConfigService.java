@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hy.common.Help;
 import org.hy.common.StringHelp;
+import org.hy.common.app.Param;
 import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
 import org.hy.common.xml.XJava;
@@ -31,6 +32,21 @@ public class JobConfigService implements IJobConfigService ,Serializable
     @Xjava
     private IJobConfigDAO jobConfigDAO;
     
+    
+    
+    /**
+     * 查询云主机的通讯IP和端口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     * 
+     * @return
+     */
+    public List<Param> queryCloudServers()
+    {
+        return this.jobConfigDAO.queryCloudServers();
+    }
     
     
     /**

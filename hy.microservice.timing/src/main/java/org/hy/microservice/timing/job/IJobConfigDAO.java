@@ -2,6 +2,7 @@ package org.hy.microservice.timing.job;
 
 import java.util.List;
 
+import org.hy.common.app.Param;
 import org.hy.common.xml.annotation.XType;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.annotation.Xparam;
@@ -21,6 +22,20 @@ import org.hy.common.xml.annotation.Xsql;
 @Xjava(id="JobConfigDAO" ,value=XType.XSQL)
 public interface IJobConfigDAO
 {
+    
+    /**
+     * 查询云主机的通讯IP和端口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     * 
+     * @return
+     */
+    @Xsql("XSQL_Timing_CloudServer_Query")
+    public List<Param> queryCloudServers();
+    
+    
     
     /**
      * 查询任务配置信息列表

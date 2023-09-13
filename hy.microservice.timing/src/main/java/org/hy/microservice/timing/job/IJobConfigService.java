@@ -2,6 +2,8 @@ package org.hy.microservice.timing.job;
 
 import java.util.List;
 
+import org.hy.common.app.Param;
+
 
 
 
@@ -15,6 +17,19 @@ import java.util.List;
  */
 public interface IJobConfigService
 {
+    
+    /**
+     * 查询云主机的通讯IP和端口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     * 
+     * @return
+     */
+    public List<Param> queryCloudServers();
+    
+    
     
     /**
      * 查询任务配置信息

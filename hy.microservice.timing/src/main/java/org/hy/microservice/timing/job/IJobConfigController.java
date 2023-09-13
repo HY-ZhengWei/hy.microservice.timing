@@ -104,7 +104,7 @@ public class IJobConfigController extends BaseController
                     return v_RetResp.setCode("-11").setMessage("间隔类型为空");
                 }
                 
-                if ( Help.isNull(i_JobConfig.getIntervalLen()) )
+                if ( i_JobConfig.getIntervalLen() <= 0 )
                 {
                     return v_RetResp.setCode("-12").setMessage("间隔长度为空");
                 }
@@ -141,11 +141,16 @@ public class IJobConfigController extends BaseController
                     }
                 }
                 
+                if ( !this.checkIntervalType(i_JobConfig.getIntervalType()) )
+                {
+                    return v_RetResp.setCode("-17").setMessage("间隔类型非法传参");
+                }
+                
                 // 防止重复
                 JobConfig v_CheckJobConfig = this.jobConfigService.queryByCode(i_JobConfig.getCode());
                 if ( v_CheckJobConfig != null )
                 {
-                    return v_RetResp.setCode("-17").setMessage("任务编码已存在");
+                    return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                 }
             }
             // 更新的验证
@@ -157,6 +162,33 @@ public class IJobConfigController extends BaseController
                     return v_RetResp.setCode("-30").setMessage("修改任务不存在");
                 }
                 
+                if ( Help.isNull(i_JobConfig.getIntervalType()) )
+                {
+                    return v_RetResp.setCode("-11").setMessage("间隔类型为空");
+                }
+                
+                if ( i_JobConfig.getIntervalLen() <= 0 )
+                {
+                    return v_RetResp.setCode("-12").setMessage("间隔长度为空");
+                }
+                
+                if ( !Help.isNull(i_JobConfig.getStartTimes()) )
+                {
+                    if ( i_JobConfig.getStartTimes().size() >= 2 )
+                    {
+                        if ( Job.$IntervalType_Minute == i_JobConfig.getIntervalType()
+                          || Job.$IntervalType_Second == i_JobConfig.getIntervalType() )
+                        {
+                            return v_RetResp.setCode("-16").setMessage("多组开始时间，不支持间隔类型为：分钟或秒");
+                        }
+                    }
+                }
+                
+                if ( !this.checkIntervalType(i_JobConfig.getIntervalType()) )
+                {
+                    return v_RetResp.setCode("-17").setMessage("间隔类型非法传参");
+                }
+                
                 if ( !Help.isNull(i_JobConfig.getCode()) )
                 {
                     if ( !v_OldJobConfig.getCode().equals(i_JobConfig.getCode()) )
@@ -165,7 +197,7 @@ public class IJobConfigController extends BaseController
                         JobConfig v_CheckJobConfig = this.jobConfigService.queryByCode(i_JobConfig.getCode());
                         if ( v_CheckJobConfig != null )
                         {
-                            return v_RetResp.setCode("-17").setMessage("任务编码已存在");
+                            return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                         }
                         
                         i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
@@ -348,6 +380,33 @@ public class IJobConfigController extends BaseController
         {
             $Logger.info("cloudServer End: " + i_Token + ":" + i_JobConfig.toString());
         }
+    }
+    
+    
+    
+    /**
+     * 检查间隔类型是否为有效值
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     *
+     * @param i_IntervalType  间隔类型
+     * @return
+     */
+    private boolean checkIntervalType(int i_IntervalType)
+    {
+        String v_IntervalType = i_IntervalType + "";
+                
+        for (Param v_Item : this.jobIntervalTypes)
+        {
+            if ( v_IntervalType.equals(v_Item.getValue()) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
 }

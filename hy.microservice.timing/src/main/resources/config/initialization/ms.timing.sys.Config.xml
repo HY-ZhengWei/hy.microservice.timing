@@ -66,7 +66,7 @@
                 <name>MS_Timing_IsCheckToken</name>
                 <value>false</value>
                 <comment>是否验证用户登录的票据</comment>
-		<onlyRead>true</onlyRead>
+                <onlyRead>true</onlyRead>
             </item>
             
             

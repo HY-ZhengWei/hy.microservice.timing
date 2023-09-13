@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="xparam"          class="java.util.ArrayList" />
+    <import name="item"            class="org.hy.common.app.Param" />
+    
+    
+    
+    <!-- 定时任务的间隔类型 -->
+    <xconfig>
+
+        <xparam id="MS_Timing_JobIntervalTypes">
+        
+            <item>
+                <name>秒</name>
+                <value>-2</value>
+            </item>
+            
+            <item>
+                <name>分钟</name>
+                <value>60</value>
+            </item>
+            
+            <item>
+                <name>小时</name>
+                <value>3600</value>
+            </item>
+            
+            <item>
+                <name>天</name>
+                <value>86400</value>
+            </item>
+            
+            <item>
+                <name>周</name>
+                <value>604800</value>
+            </item>
+            
+            <item>
+                <name>月</name>
+                <value>1</value>
+            </item>
+            
+            <item>
+                <name>年</name>
+                <value>2</value>
+            </item>
+            
+        </xparam>
+        
+    </xconfig>
+    
+</config>

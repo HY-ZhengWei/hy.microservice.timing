@@ -1,5 +1,7 @@
 package org.hy.microservice.timing.job;
 
+import java.util.List;
+
 import org.hy.common.Help;
 import org.hy.common.app.Param;
 import org.hy.common.thread.Job;
@@ -44,6 +46,10 @@ public class IJobConfigController extends BaseController
     private IJobConfigService          jobConfigService;
     
     @Autowired
+    @Qualifier("MS_Timing_JobIntervalTypes")
+    private List<Param>                jobIntervalTypes;
+    
+    @Autowired
     @Qualifier("UserService")
     private UserService                userService;
     
@@ -54,7 +60,7 @@ public class IJobConfigController extends BaseController
     
     
     /**
-     * 保存保存任务配置
+     * 保存任务配置
      * 
      * @author      ZhengWei(HY)
      * @createDate  2023-09-13
@@ -167,11 +173,6 @@ public class IJobConfigController extends BaseController
                 }
             }
             
-            if ( Help.isNull(i_JobConfig.getUserID()) && Help.isNull(i_JobConfig.getCreateUserID()) )
-            {
-                return v_RetResp.setCode("-101").setMessage("操作用户编号为空");
-            }
-            
             if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
             {
                 // 验证票据及用户登录状态
@@ -212,6 +213,73 @@ public class IJobConfigController extends BaseController
         finally
         {
             $Logger.info("saveJobConfig End: " + i_Token + ":" + i_JobConfig.toString());
+        }
+    }
+    
+    
+    
+    /**
+     * 查询间隔类型
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     *
+     * @param i_Token
+     * @param i_JobConfig
+     * @return
+     */
+    @RequestMapping(name="查询间隔类型" ,value="intervalType" ,method={RequestMethod.POST ,RequestMethod.GET} ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<Param> intervalType(@RequestParam(value="token" ,required=false) String i_Token
+                                           ,@RequestBody JobConfig i_JobConfig)
+    {
+        BaseResponse<Param> v_RetResp = new BaseResponse<Param>();
+        
+        if ( i_JobConfig == null )
+        {
+            return v_RetResp.setCode("-1").setMessage("未收到任何参数");
+        }
+        
+        try
+        {
+            $Logger.info("intervalType Start: " + i_Token + ":" + i_JobConfig.toString());
+            
+            if ( Help.isNull(i_JobConfig.getUserID()) )
+            {
+                return v_RetResp.setCode("-2").setMessage("用户编号为空");
+            }
+            
+            if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+            {
+                // 验证票据及用户登录状态
+                if ( Help.isNull(i_Token) )
+                {
+                    return v_RetResp.setCode("-901").setMessage("非法访问");
+                }
+                
+                UserSSO v_User = this.userService.getUser(i_Token);
+                if ( v_User == null )
+                {
+                    return v_RetResp.setCode("-901").setMessage("非法访问");
+                }
+                
+                if ( !v_User.getUserId().equals(i_JobConfig.getUserID()) )
+                {
+                    return v_RetResp.setCode("-902").setMessage("操作用户与登录用户不一致");
+                }
+            }
+
+            return v_RetResp.setData(this.jobIntervalTypes);
+        }
+        catch (Exception exce)
+        {
+            $Logger.error(exce);
+            return v_RetResp.setCode("-999").setMessage("系统异常，请联系管理员");
+        }
+        finally
+        {
+            $Logger.info("intervalType End: " + i_Token + ":" + i_JobConfig.toString());
         }
     }
     

@@ -34,12 +34,14 @@
             <sqlNode>
                 <sql  ref="XSQL_Timing_JobStartTime_Delete" />
                 <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:Job.isDel == 0]]></condition>
             </sqlNode>
             
             <sqlNode>
                 <sql  ref="XSQL_Timing_JobStartTime_Insert" />
                 <type ref="this.$Type_CollectionToExecuteUpdate" />
                 <collectionID>JobStartTimes</collectionID>
+                <condition><![CDATA[:Job.isDel == 0]]></condition>
             </sqlNode>
         </sqlGroup>
         

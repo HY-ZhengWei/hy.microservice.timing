@@ -37,7 +37,7 @@ public interface IJobConfigDAO
     
     
     /**
-     * 按ID查询任务配置信息
+     * 按ID或Code查询任务配置信息
      * 
      * @author      ZhengWei(HY)
      * @createDate  2023-09-12
@@ -46,13 +46,13 @@ public interface IJobConfigDAO
      * @param i_JobConfig  任务配置信息
      * @return
      */
-    @Xsql(id="XSQL_Timing_JobConfig_Query_ByID" ,returnOne=true)
-    public JobConfig queryByXID(JobConfig i_JobConfig);
+    @Xsql(id="XSQL_Timing_JobConfig_Query" ,returnOne=true)
+    public JobConfig queryByIDCode(JobConfig i_JobConfig);
     
     
     
     /**
-     * 新增、修改任务配置信息
+     * 新增、修改、逻辑删除任务配置信息
      * 
      * @author      ZhengWei(HY)
      * @createDate  2023-09-12

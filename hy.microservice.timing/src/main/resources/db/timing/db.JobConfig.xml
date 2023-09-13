@@ -44,7 +44,7 @@
                        ,':Job.intervalLen'
                        ,':Job.xid'
                        ,':Job.methodName'
-                       ,':Job.cloudServer'
+                       ,':Job.cloudServerHost'
                        ,':Job.condition'   
                        ,':Job.tryMaxCount'
                        ,':Job.tryIntervalLen'
@@ -75,7 +75,7 @@
                     <[ ,intervalLen    = ':Job.intervalLen'      ]>
                     <[ ,xid            = ':Job.xid'              ]>
                     <[ ,methodName     = ':Job.methodName'       ]>
-                    <[ ,cloudServer    = ':Job.cloudServer'      ]>
+                    <[ ,cloudServer    = ':Job.cloudServerHost'  ]>
                     <[ ,`condition`    = ':Job.condition'        ]>
                     <[ ,tryMaxCount    = ':Job.tryMaxCount'      ]>
                     <[ ,tryIntervalLen = ':Job.tryIntervalLen'   ]>
@@ -122,10 +122,10 @@
                        ,A.name          
                        ,A.intervalType  
                        ,A.intervalLen  
-                       ,B.startTime       AS startTimes
+                       ,B.startTime       AS "jobStartTimes.startTime"
                        ,A.xid           
                        ,A.methodName    
-                       ,A.cloudServer   
+                       ,A.cloudServer     AS cloudServerHost
                        ,A.`condition`   
                        ,A.tryMaxCount   
                        ,A.tryIntervalLen
@@ -134,11 +134,11 @@
                        ,A.createUserID  
                        ,A.createTime    
                        ,A.updateTime 
-                  FROM  TJobConfig     A
-                       ,TJobStartTime  B
+                  FROM  TJobConfig          A
+                  LEFT  JOIN TJobStartTime  B ON A.id = B.jobID
                  WHERE  A.isDel = 0
-                   AND  A.id    = B.jobID
               <[   AND  A.id    = ':id'    ]>
+              <[   AND  A.code  = ':code'  ]>
                  ORDER  BY A.id
                 ]]>
             </content>

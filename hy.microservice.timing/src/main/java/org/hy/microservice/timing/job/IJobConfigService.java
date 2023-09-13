@@ -30,7 +30,7 @@ public interface IJobConfigService
     
     
     /**
-     * 按XID查询任务配置信息
+     * 按ID查询任务配置信息
      * 
      * 注意：使用查询缓存
      * 
@@ -47,7 +47,7 @@ public interface IJobConfigService
     
     
     /**
-     * 按ID查询任务配置信息
+     * 按Code查询任务配置信息
      * 
      * 注意：使用查询缓存
      * 
@@ -55,16 +55,30 @@ public interface IJobConfigService
      * @createDate  2023-09-12
      * @version     v1.0
      * 
-     * @param i_DSConfig  任务配置信息对象
+     * @param i_Code  任务配置编号
      *
      * @return
      */
-    public JobConfig queryByID(JobConfig i_DSConfig);
+    public JobConfig queryByCode(String i_Code);
     
     
     
     /**
-     * 新增任务配置信息
+     * 按ID或Code查询任务配置信息
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-12
+     * @version     v1.0
+     * 
+     * @param i_JobConfig  任务配置信息
+     * @return
+     */
+    public JobConfig queryByIDCode(JobConfig i_JobConfig);
+    
+    
+    
+    /**
+     * 新增、修改、逻辑删除任务配置信息
      * 
      * @author      ZhengWei(HY)
      * @createDate  2023-09-12

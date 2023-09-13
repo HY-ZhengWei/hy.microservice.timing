@@ -26,6 +26,9 @@ public class JobConfig extends Job
     /** 主键 */
     private String  id;
     
+    /** 旧的任务编号(即Job自身的旧XJavaID) */
+    private String  codeOld;
+    
     /** 用户编号 */
     private String  userID;
     
@@ -48,6 +51,39 @@ public class JobConfig extends Job
     
     /** 删除标记。1删除；0未删除 */
     private Integer isDel;
+    
+    /** 任务开始时间组 */
+    private List<JobStartTime> jobStartTimes;
+    
+    
+    
+    public JobConfig()
+    {
+        super();
+        this.jobStartTimes = new ArrayList<JobStartTime>();
+    }
+    
+    
+    
+    /**
+     * 从数据库中读取开始时间，转为Job对象结构的开始时间
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     *
+     */
+    public void toStartTimes()
+    {
+        this.getStartTimes().clear();
+        if ( !Help.isNull(this.jobStartTimes) )
+        {
+            for (JobStartTime v_JobStartTime : this.jobStartTimes)
+            {
+                this.getStartTimes().add(v_JobStartTime.getStartTime());
+            }
+        }
+    }
     
     
     
@@ -262,6 +298,85 @@ public class JobConfig extends Job
     public Date getUpdateTime()
     {
         return updateTime;
+    }
+
+    
+    /**
+     * 获取：旧的任务编号(即Job自身的旧XJavaID)
+     */
+    public String getCodeOld()
+    {
+        return codeOld;
+    }
+
+    
+    /**
+     * 设置：旧的任务编号(即Job自身的旧XJavaID)
+     * 
+     * @param i_CodeOld 旧的任务编号(即Job自身的旧XJavaID)
+     */
+    public void setCodeOld(String i_CodeOld)
+    {
+        this.codeOld = i_CodeOld;
+    }
+    
+    
+    /**
+     * 获取：任务开始时间组
+     */
+    public List<JobStartTime> getJobStartTimes()
+    {
+        return jobStartTimes;
+    }
+
+
+    /**
+     * 设置：任务开始时间组
+     * 
+     * @param i_JobStartTimes 任务开始时间组
+     */
+    public void setJobStartTimes(List<JobStartTime> i_JobStartTimes)
+    {
+        this.jobStartTimes = i_JobStartTimes;
+    }
+    
+    
+    /**
+     * 设置：云计算服务器的地址端口。格式为：IP:Port。
+     * 
+     * 默认端口是：1721
+     * 
+     * @param i_CloudServer
+     */
+    public void setCloudServerHost(String i_CloudServer)
+    {
+        super.setCloudServer(i_CloudServer);
+    }
+    
+    
+    /**
+     * 获取：云计算服务器的地址端口。格式为：IP:Port。
+     * 
+     * @param i_CloudServer
+     */
+    public String getCloudServerHost()
+    {
+        return super.getCloudServer();
+    }
+    
+    
+    
+    @Override
+    public int compareTo(Job i_Other)
+    {
+        if ( i_Other == null )
+        {
+            return 1;
+        }
+        else
+        {
+            return this.getCode().compareTo(i_Other.getCode());
+        }
     }
     
 }

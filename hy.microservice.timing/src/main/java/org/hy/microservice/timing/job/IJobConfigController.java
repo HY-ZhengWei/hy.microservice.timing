@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version     v1.0
  */
 @Controller
-@RequestMapping(value="jobConfig" ,name="任务配置")
+@RequestMapping(value="job" ,name="任务配置")
 public class IJobConfigController extends BaseController
 {
     
@@ -64,7 +64,7 @@ public class IJobConfigController extends BaseController
      * @param i_JobConfig
      * @return
      */
-    @RequestMapping(name="保存任务配置" ,value="saveJobConfig" ,method={RequestMethod.POST} ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="保存任务配置" ,value="saveJob" ,method={RequestMethod.POST} ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<JobConfig> saveJobConfig(@RequestParam(value="token" ,required=false) String i_Token
                                                 ,@RequestBody JobConfig i_JobConfig)

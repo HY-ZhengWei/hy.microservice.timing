@@ -3,6 +3,7 @@ package org.hy.microservice.timing.dataSource;
 import java.util.Map;
 
 import org.hy.common.db.DataSourceGroup;
+import org.hy.common.xcql.DataSourceCQL;
 
 
 
@@ -43,6 +44,20 @@ public interface IDataSourceConfigService
      * @return
      */
     public DataSourceGroup getDataSourceGroup(DataSourceConfig i_DataSourceConfig);
+    
+    
+    
+    /**
+     * 获取数据源对象：图数据库
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-06-26
+     * @version     v1.0
+     *
+     * @param i_DataSourceConfig
+     * @return
+     */
+    public DataSourceCQL getDataSourceCQL(DataSourceConfig i_DataSourceConfig);
     
     
     

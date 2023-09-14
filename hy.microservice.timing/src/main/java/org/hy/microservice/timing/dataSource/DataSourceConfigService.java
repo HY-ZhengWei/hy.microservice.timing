@@ -74,7 +74,21 @@ public class DataSourceConfigService implements IDataSourceConfigService ,Serial
         
         if ( DataSourceType.$DBType_Neo4j.equals(io_DSConfig.getDataSourceType()) )
         {
-            return "暂不支持";
+            try
+            {
+                DataSourceCQL v_DSCQL = ((DataSourceConfigToJava_DSCQL) this.dscToJavaDSCQL).newObject(io_DSConfig);
+                v_DSCQL.getConnection().close();
+            }
+            catch (Exception exce)
+            {
+                v_IsOK = exce.getMessage();
+                $Logger.warn(exce);
+                
+                if ( Help.isNull(v_IsOK) )
+                {
+                    v_IsOK = exce.toString();
+                }
+            }
         }
         else if ( DataSourceType.$Message_RocketMQ.equals(io_DSConfig.getDataSourceType()) )
         {
@@ -132,6 +146,24 @@ public class DataSourceConfigService implements IDataSourceConfigService ,Serial
     public DataSourceGroup getDataSourceGroup(DataSourceConfig i_DataSourceConfig)
     {
         return this.dscToJavaDBG.getObject(i_DataSourceConfig);
+    }
+    
+    
+    
+    /**
+     * 获取数据源对象：图数据库
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-06-26
+     * @version     v1.0
+     *
+     * @param i_DataSourceConfig
+     * @return
+     */
+    @Override
+    public DataSourceCQL getDataSourceCQL(DataSourceConfig i_DataSourceConfig)
+    {
+        return this.dscToJavaDSCQL.getObject(i_DataSourceConfig);
     }
     
     

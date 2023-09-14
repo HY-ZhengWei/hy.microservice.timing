@@ -54,7 +54,7 @@ public class IJobConfigController extends BaseController
     private UserService                userService;
     
     @Autowired
-    @Qualifier("MS_Common_IsCheckToken")
+    @Qualifier("MS_Timing_IsCheckToken")
     private Param                      isCheckToken;
     
     

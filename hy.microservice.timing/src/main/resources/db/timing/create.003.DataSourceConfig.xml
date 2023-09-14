@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据源配置的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_DataSourceConfig">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TDataSourceConfig
+                (
+                 id                         VARCHAR(64)   NOT NULL        COMMENT '主键'
+                ,xid                        VARCHAR(200)  NOT NULL        COMMENT '逻辑ID'
+                ,dataSourceType             VARCHAR(64)   NOT NULL        COMMENT '数据源类型'
+                ,driverClassName            VARCHAR(200)  NOT NULL        COMMENT '连接驱动'
+                ,hostName                   VARCHAR(100)  NOT NULL        COMMENT '数据源IP地址'
+                ,port                       INT           NOT NULL        COMMENT '数据源端口'
+                ,userName                   VARCHAR(200)  NOT NULL        COMMENT '用户名称（也可用于XNet）'
+                ,password                   VARCHAR(200)  NOT NULL        COMMENT '访问密码（也可用于XNet）'
+                ,databaseName               VARCHAR(200)  NOT NULL        COMMENT '数据库的名称 或 MQ的组名称 或 XNet的消息DataXID'
+                ,initialSize                INT                           COMMENT '初始大小'
+                ,minIdle                    INT                           COMMENT '最小空闲数量'
+                ,maxActive                  INT                           COMMENT '最大活动数量'
+                ,maxWait                    INT                           COMMENT '最大等待数量'
+                ,isDel                      INT           NOT NULL        COMMENT '删除标记。1删除；0未删除'
+                ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
+                ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
+                ,updateTime                 DATETIME      NOT NULL        COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TDataSourceConfig ADD CONSTRAINT PK_DataSourceConfig PRIMARY KEY (id);/
+                
+                Alter TABLE TDataSourceConfig COMMENT                           = '数据源配置';/
+                
+                CREATE TABLE TUpgrade20230418
+                (
+                 id                         VARCHAR(64)   NOT NULL COMMENT '主键'
+                ,createTime                 DATETIME      NOT NULL COMMENT '创建时间'
+                ,updateTime                 DATETIME               COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                ]]>
+            </content>
+            
+            <comment>数据源配置</comment>
+            <create if="启用 == IsCreateDB_MS_CDC.getValue">TDataSourceConfig</create>
+            
+        </sql>
+        
+        <!-- ALTER TABLE TDataSourceConfig ADD CONSTRAINT UN_DataSourceConfig UNIQUE KEY (xid);/ -->
+        
+    </sqls>
+    
+</config>

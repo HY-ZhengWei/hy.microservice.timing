@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据源配置的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_DataSourceConfig_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TDataSourceConfig
+                       (
+                        id
+                       ,xid
+                       ,dataSourceType
+                       ,driverClassName
+                       ,hostName
+                       ,port
+                       ,userName
+                       ,password
+                       ,databaseName
+                       ,initialSize
+                       ,minIdle
+                       ,maxActive
+                       ,maxWait
+                       ,allowCDC
+                       ,isDel
+                       ,createUserID
+                       ,createTime
+                       ,updateTime
+                       )
+                VALUES (
+                        ':id'
+                       ,':xid'
+                       ,':dataSourceType'
+                       ,':driverClassName'
+                       ,':hostName'
+                       ,':port'
+                       ,':userName'
+                       ,':password'
+                       ,':databaseName'
+                       ,':initialSize'
+                       ,':minIdle'
+                       ,':maxActive'
+                       ,':maxWait'
+                       ,':allowCDC'
+                       ,':isDel'
+                       ,':createUserID'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+            <beforeRule>
+                <file>rule/timing/rule.DataSourceConfig.Encrypt.drl</file>
+            </beforeRule>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DataSourceConfig_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  TDataSourceConfig
+                   SET  updateTime      = NOW()
+                    <[ ,xid             = ':xid'              ]>
+                    <[ ,dataSourceType  = ':dataSourceType'   ]>
+                    <[ ,driverClassName = ':driverClassName'  ]>
+                    <[ ,hostName        = ':hostName'         ]>
+                    <[ ,port            = ':port'             ]>
+                    <[ ,userName        = ':userName'         ]>
+                    <[ ,password        = ':password'         ]>
+                    <[ ,databaseName    = ':databaseName'     ]>
+                    <[ ,initialSize     = ':initialSize'      ]>
+                    <[ ,minIdle         = ':minIdle'          ]>
+                    <[ ,maxActive       = ':maxActive'        ]>
+                    <[ ,maxWait         = ':maxWait'          ]>
+                    <[ ,allowCDC        = ':allowCDC'         ]>
+                    <[ ,isDel           = ':isDel'            ]>
+                 WHERE  id              = ':id'
+                ]]>
+            </content>
+            
+            <beforeRule>
+                <file>rule/timing/rule.DataSourceConfig.Encrypt.drl</file>
+            </beforeRule>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DataSourceConfig_Query"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  id
+                       ,xid
+                       ,dataSourceType
+                       ,driverClassName 
+                       ,hostName
+                       ,port
+                       ,userName
+                       ,password
+                       ,databaseName
+                       ,initialSize
+                       ,minIdle
+                       ,maxActive
+                       ,maxWait
+                       ,allowCDC
+                       ,isDel
+                       ,createUserID
+                       ,createTime
+                       ,updateTime
+                  FROM  TDataSourceConfig
+                 WHERE  isDel = 0
+                 ORDER  BY xid
+                ]]>
+            </content>
+            
+            <result>
+                <table>java.util.LinkedHashMap</table>
+                <fill>put(row.xid ,row)</fill>
+                <row>org.hy.microservice.timing.dataSource.DataSourceConfig</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+            <afterRule>
+                <file>rule/timing/rule.DataSourceConfig.Decrypt_Map.drl</file>
+            </afterRule>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DataSourceConfig_Query_ByXID"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  id
+                       ,xid
+                       ,dataSourceType
+                       ,driverClassName 
+                       ,hostName
+                       ,port
+                       ,userName
+                       ,password
+                       ,databaseName
+                       ,initialSize
+                       ,minIdle
+                       ,maxActive
+                       ,maxWait
+                       ,allowCDC
+                       ,isDel
+                       ,createUserID
+                       ,createTime
+                       ,updateTime
+                  FROM  TDataSourceConfig
+                 WHERE  isDel = 0
+                   ANd  xid   = ':xid'
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.timing.dataSource.DataSourceConfig</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+            <afterRule>
+                <file>rule/timing/rule.DataSourceConfig.Decrypt_List.drl</file>
+            </afterRule>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

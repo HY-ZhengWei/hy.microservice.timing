@@ -1,0 +1,77 @@
+package org.hy.microservice.cdc.dataSource;
+
+import org.hy.common.xml.XJava;
+import org.hy.microservice.timing.dataSource.DataSourceConfig;
+import org.hy.microservice.timing.dataSource.IDataSourceConfigService;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Encrypt_UserName"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( userName != null && userName.indexOf("encrypt:") < 0 );
+    then
+        v_DSConfig.setUserName(((IDataSourceConfigService)XJava.getObject("DataSourceConfigService")).encryptUserName(v_DSConfig));
+end;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Encrypt_Password"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( password != null && password.indexOf("encrypt:") < 0 );
+    then
+        v_DSConfig.setPassword(((IDataSourceConfigService)XJava.getObject("DataSourceConfigService")).encryptPassword(v_DSConfig));
+end;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Default_initialSize"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( initialSize == null || initialSize <= 0 );
+    then
+        v_DSConfig.setInitialSize(5);
+end;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Default_minIdle"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( minIdle == null || minIdle <= 0 );
+    then
+        v_DSConfig.setMinIdle(5);
+end;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Default_maxActive"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( maxActive == null || maxActive <= 0 );
+    then
+        v_DSConfig.setMaxActive(300);
+end;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Default_maxWait"
+    dialect "java"
+    when
+        v_DSConfig : DataSourceConfig( maxWait == null || maxWait <= 1000 );
+    then
+        v_DSConfig.setMaxWait(60000);
+end;

@@ -1,0 +1,34 @@
+package org.hy.microservice.cdc.dataSource;
+
+import java.util.Map;
+import java.util.Set;
+                
+import org.hy.common.xml.XJava;
+import org.hy.microservice.timing.dataSource.DataSourceConfig;
+import org.hy.microservice.timing.dataSource.IDataSourceConfigService;
+
+
+
+
+
+rule "XRule_Timing_DataSourceConfig_Decrypt_Map"
+    dialect "java"
+    when
+        $map : Map()
+    then
+        Set<Map.Entry> v_Entries = $map.entrySet();
+        for (Map.Entry v_Entrie : v_Entries)
+        {
+             DataSourceConfig v_DSConfig = (DataSourceConfig) v_Entrie.getValue();
+             
+             if ( v_DSConfig.getUserName() != null && v_DSConfig.getUserName().indexOf("encrypt:") >= 0 )
+             {
+                v_DSConfig.setUserName(((IDataSourceConfigService)XJava.getObject("DataSourceConfigService")).decryptUserName(v_DSConfig));
+             }
+             
+             if ( v_DSConfig.getPassword() != null && v_DSConfig.getPassword().indexOf("encrypt:") >= 0 )
+             {
+                v_DSConfig.setPassword(((IDataSourceConfigService)XJava.getObject("DataSourceConfigService")).decryptPassword(v_DSConfig));
+             }
+        }
+end;

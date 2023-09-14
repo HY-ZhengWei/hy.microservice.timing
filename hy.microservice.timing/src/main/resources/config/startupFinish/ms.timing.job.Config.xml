@@ -44,7 +44,7 @@
             <call name="shutdown" />  <!-- 停止所有定时任务。预防多次重复加载时的异常 -->
             <call name="delJobs" />   <!-- 删除所有定时任务。预防多次重复加载时的异常 -->
             
-            <!-- <addJob ref="JOB_MS_Timing_Test测试任务" /> -->
+            <addJob ref="JOB_MS_Timing_Init" />
             
             <!-- call name="startup" /  在公共Web项目中启动 -->
         </jobs>

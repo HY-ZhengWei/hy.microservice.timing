@@ -40,7 +40,7 @@ public interface IJobConfigService
      *
      * @return
      */
-    public List<JobConfig> queryList();
+    public List<JobConfigReport> queryList();
     
     
     

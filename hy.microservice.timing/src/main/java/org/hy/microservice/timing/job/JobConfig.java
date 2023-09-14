@@ -73,7 +73,7 @@ public class JobConfig extends Job
      * @version     v1.0
      *
      */
-    public void toStartTimes()
+    public List<Date> toStartTimes()
     {
         this.getStartTimes().clear();
         if ( !Help.isNull(this.jobStartTimes) )
@@ -83,6 +83,40 @@ public class JobConfig extends Job
                 this.getStartTimes().add(v_JobStartTime.getStartTime());
             }
         }
+        
+        return this.getStartTimes();
+    }
+    
+    
+    
+    /**
+     * 创建出一个新的Job对象
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-14
+     * @version     v1.0
+     *
+     * @return
+     */
+    public Job newJob()
+    {
+        Job  v_Job  = new Job();
+        
+        v_Job.setXJavaID(       this.getXJavaID());
+        v_Job.setCode   (       this.getCode());
+        v_Job.setName   (       this.getName());
+        v_Job.setIntervalType(  this.getIntervalType());
+        v_Job.setIntervalLen(   this.getIntervalLen());
+        v_Job.setXid(           this.getXid());
+        v_Job.setMethodName(    this.getMethodName());
+        v_Job.setCloudServer(   this.getCloudServer());
+        v_Job.setCondition(     this.getCondition());
+        v_Job.setTryMaxCount(   this.getTryMaxCount());
+        v_Job.setTryIntervalLen(this.getTryIntervalLen());
+        v_Job.setComment(       this.getComment());
+        v_Job.setStartTimes(    this.getStartTimes());
+        
+        return v_Job;
     }
     
     
@@ -157,7 +191,7 @@ public class JobConfig extends Job
      * 
      * @param i_JobID 主键
      */
-    public void setJObID(String i_JobID)
+    public void setJobID(String i_JobID)
     {
         this.id = i_JobID;
     }

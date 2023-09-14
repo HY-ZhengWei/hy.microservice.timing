@@ -1,9 +1,13 @@
 package org.hy.microservice.timing.job;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.hy.common.Date;
 import org.hy.common.Help;
 import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
@@ -11,6 +15,7 @@ import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
+import org.hy.common.xml.plugins.analyse.AnalyseBase;
 
 
 
@@ -32,6 +37,9 @@ public class JobConfigService implements IJobConfigService ,Serializable
     @Xjava
     private IJobConfigDAO jobConfigDAO;
     
+    @Xjava
+    private AnalyseBase   analyseBase;
+    
     
     
     /**
@@ -43,10 +51,12 @@ public class JobConfigService implements IJobConfigService ,Serializable
      * 
      * @return
      */
+    @Override
     public List<Param> queryCloudServers()
     {
         return this.jobConfigDAO.queryCloudServers();
     }
+    
     
     
     /**
@@ -58,10 +68,76 @@ public class JobConfigService implements IJobConfigService ,Serializable
      *
      * @return
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public List<JobConfig> queryList()
+    public List<JobConfigReport> queryList()
     {
-        return this.jobConfigDAO.queryList();
+        List<JobConfigReport>  v_Reports         = new ArrayList<JobConfigReport>();
+        Map<String ,Job>       v_JobsMM          = XJava.getObjects(Job.class ,false);
+        List<JobConfig>        v_JobsDB          = this.jobConfigDAO.queryList();
+        Map<String ,JobConfig> v_JobsDM          = null;
+        Date                   v_ServerStartTime = new Date(this.analyseBase.analyseCluster_Info().getStartTime());
+        
+        if ( !Help.isNull(v_JobsDB) )
+        {
+            v_JobsDM = (Map<String ,JobConfig>) Help.toMap(v_JobsDB ,"code");
+        }
+        
+        for (Entry<String, Job> v_Item : v_JobsMM.entrySet())
+        {
+            JobConfigReport v_JobReport = new JobConfigReport(v_Item.getKey() ,v_Item.getValue());
+            
+            if ( !Help.isNull(v_JobsDM) )
+            {
+                JobConfig v_JobDB = v_JobsDM.get(v_JobReport.getJobID());
+                if ( v_JobDB != null )
+                {
+                    v_JobReport.setReadOnly(false);
+                    v_JobReport.setId(               v_JobDB.getId());
+                    v_JobReport.setCode(             v_JobDB.getCode());
+                    v_JobReport.setName(             v_JobDB.getName());
+                    v_JobReport.setIntervalTypeValue(v_JobDB.getIntervalType());
+                    v_JobReport.setXid(              v_JobDB.getXid());
+                    v_JobReport.setMethodName(       v_JobDB.getMethodName());
+                    v_JobReport.setCondition(        v_JobDB.getCondition());
+                    v_JobReport.setTryMaxCount(      v_JobDB.getTryMaxCount());
+                    v_JobReport.setTryIntervalLen(   v_JobDB.getTryIntervalLen());
+                    v_JobReport.setComment(          v_JobDB.getComment());
+                    v_JobReport.setIsDel(            v_JobDB.getIsDel());
+                    v_JobReport.setCreateUserID(     v_JobDB.getCreateUserID());
+                    v_JobReport.setCreateTime(       v_JobDB.getCreateTime());
+                    v_JobReport.setUpdateTime(       v_JobDB.getUpdateTime());
+                    v_JobReport.setStartTimes(       v_JobDB.toStartTimes());
+                }
+            }
+            
+            if ( v_JobReport.getReadOnly() )
+            {
+                Job v_JobMM = v_JobsMM.get(v_JobReport.getJobID());
+                if ( v_JobMM != null )
+                {
+                    v_JobReport.setCode(             v_JobMM.getCode());
+                    v_JobReport.setName(             v_JobMM.getName());
+                    v_JobReport.setIntervalTypeValue(v_JobMM.getIntervalType());
+                    v_JobReport.setXid(              v_JobMM.getXid());
+                    v_JobReport.setMethodName(       v_JobMM.getMethodName());
+                    v_JobReport.setCondition(        v_JobMM.getCondition());
+                    v_JobReport.setTryMaxCount(      v_JobMM.getTryMaxCount());
+                    v_JobReport.setTryIntervalLen(   v_JobMM.getTryIntervalLen());
+                    v_JobReport.setComment(          v_JobMM.getComment());
+                    v_JobReport.setIsDel(            0);
+                    v_JobReport.setCreateUserID(     "msTiming");
+                    v_JobReport.setCreateTime(       v_ServerStartTime);
+                    v_JobReport.setStartTimes(       v_JobMM.getStartTimes());
+                }
+            }
+            
+            v_Reports.add(v_JobReport);
+        }
+        
+        Help.toSort(v_Reports ,"nextTime" ,"lastTime" ,"intervalType" ,"intervalLen NUMASC" ,"jobID");
+        
+        return v_Reports;
     }
     
     
@@ -176,21 +252,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
         if ( v_Ret )
         {
             Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
-            Job  v_Job  = new Job();
-            
-            v_Job.setXJavaID(       io_JobConfig.getXJavaID());
-            v_Job.setCode   (       io_JobConfig.getCode());
-            v_Job.setName   (       io_JobConfig.getName());
-            v_Job.setIntervalType(  io_JobConfig.getIntervalType());
-            v_Job.setIntervalLen(   io_JobConfig.getIntervalLen());
-            v_Job.setXid(           io_JobConfig.getXid());
-            v_Job.setMethodName(    io_JobConfig.getMethodName());
-            v_Job.setCloudServer(   io_JobConfig.getCloudServer());
-            v_Job.setCondition(     io_JobConfig.getCondition());
-            v_Job.setTryMaxCount(   io_JobConfig.getTryMaxCount());
-            v_Job.setTryIntervalLen(io_JobConfig.getTryIntervalLen());
-            v_Job.setComment(       io_JobConfig.getComment());
-            v_Job.setStartTimes(    io_JobConfig.getStartTimes());
+            Job  v_Job  = io_JobConfig.newJob();
             
             if ( v_IsNew )
             {

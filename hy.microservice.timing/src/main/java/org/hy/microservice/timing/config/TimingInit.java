@@ -2,10 +2,15 @@ package org.hy.microservice.timing.config;
 
 import java.util.List;
 
+import org.hy.common.Execute;
+import org.hy.common.Help;
 import org.hy.common.net.common.ClientCluster;
+import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
+import org.hy.microservice.timing.job.IJobConfigDAO;
+import org.hy.microservice.timing.job.JobConfig;
 
 
 
@@ -22,6 +27,11 @@ import org.hy.common.xml.annotation.Xjava;
 public class TimingInit
 {
     
+    @Xjava
+    private IJobConfigDAO jobConfigDAO;
+    
+    
+    
     /**
      * 执行初始化
      * 
@@ -37,6 +47,27 @@ public class TimingInit
         XJava.putObject(Jobs.$JOB_DisasterRecoverys_Check ,v_Jobs.createDisasterRecoveryJob());
         
         this.init_ClusterServers();
+        
+        new Execute(this ,"addJobs").start();
+    }
+    
+    
+    
+    public void addJobs()
+    {
+        Jobs            v_Jobs   = (Jobs)XJava.getObject("JOBS_MS_Common");
+        List<JobConfig> v_JobsDB = this.jobConfigDAO.queryList();
+        
+        if ( !Help.isNull(v_JobsDB) )
+        {
+            for (JobConfig v_JobDB : v_JobsDB)
+            {
+                Job v_Job = v_JobDB.newJob();
+                
+                v_Jobs.addJob(v_Job);
+                XJava.putObject(v_Job.getCode() ,v_Job);
+            }
+        }
     }
     
     

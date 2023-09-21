@@ -30,6 +30,7 @@
                 ,tryMaxCount                INT                           COMMENT '执行未成功时，尝试执行的最大次数'
                 ,tryIntervalLen             INT                           COMMENT '执行未成功时，每次尝试间隔时长（秒）'
                 ,comment                    VARCHAR(4000)                 COMMENT '注释。可用于日志的输出等帮助性的信息'
+                ,isEnabled                  INT           NOT NULL        COMMENT '是否启用。1启用；0停用'
                 ,isDel                      INT           NOT NULL        COMMENT '删除标记。1删除；0未删除'
                 ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
                 ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'

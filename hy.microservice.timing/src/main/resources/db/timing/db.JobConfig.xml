@@ -19,22 +19,23 @@
                 <![CDATA[
                 INSERT  INTO TJobConfig
                        (
-                        id            
-                       ,code          
-                       ,name          
-                       ,intervalType  
-                       ,intervalLen   
-                       ,xid           
-                       ,methodName    
-                       ,cloudServer   
-                       ,`condition`   
-                       ,tryMaxCount   
+                        id
+                       ,code
+                       ,name
+                       ,intervalType
+                       ,intervalLen
+                       ,xid
+                       ,methodName
+                       ,cloudServer
+                       ,`condition`
+                       ,tryMaxCount
                        ,tryIntervalLen
-                       ,comment       
+                       ,comment
+                       ,isEnabled
                        ,isDel         
-                       ,createUserID  
-                       ,createTime    
-                       ,updateTime    
+                       ,createUserID
+                       ,createTime
+                       ,updateTime
                        )
                 VALUES (
                         ':Job.id'
@@ -49,6 +50,7 @@
                        ,':Job.tryMaxCount'
                        ,':Job.tryIntervalLen'
                        ,':Job.comment'
+                       ,':Job.isEnabled'
                        ,':Job.isDel'
                        ,':Job.createUserID'
                        ,NOW()
@@ -80,6 +82,7 @@
                     <[ ,tryMaxCount    = ':Job.tryMaxCount'      ]>
                     <[ ,tryIntervalLen = ':Job.tryIntervalLen'   ]>
                     <[ ,comment        = ':Job.comment'          ]>
+                    <[ ,isEnabled      = ':Job.isEnabled'        ]>
                     <[ ,isDel          = ':Job.isDel'            ]>
                  WHERE  id             = ':Job.id'
                 ]]>
@@ -118,22 +121,23 @@
             <content>
                 <![CDATA[
                 SELECT  A.id
-                       ,A.code          
-                       ,A.name          
-                       ,A.intervalType  
-                       ,A.intervalLen  
+                       ,A.code
+                       ,A.name
+                       ,A.intervalType
+                       ,A.intervalLen
                        ,B.startTime       AS "jobStartTimes.startTime"
-                       ,A.xid           
-                       ,A.methodName    
+                       ,A.xid
+                       ,A.methodName
                        ,A.cloudServer     AS cloudServerHost
-                       ,A.`condition`   
-                       ,A.tryMaxCount   
+                       ,A.`condition`
+                       ,A.tryMaxCount
                        ,A.tryIntervalLen
-                       ,A.comment       
-                       ,A.isDel         
+                       ,A.comment
+                       ,A.isEnabled
+                       ,A.isDel
                        ,A.createUserID  
-                       ,A.createTime    
-                       ,A.updateTime 
+                       ,A.createTime
+                       ,A.updateTime
                   FROM  TJobConfig          A
                   LEFT  JOIN TJobStartTime  B ON A.id = B.jobID
                  WHERE  A.isDel = 0

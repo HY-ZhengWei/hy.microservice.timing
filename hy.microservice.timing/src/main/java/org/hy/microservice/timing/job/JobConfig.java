@@ -49,6 +49,9 @@ public class JobConfig extends Job
     /** 修改者编号 */
     private String  updateUserID;
     
+    /** 是否启用。1启用；0停用 */
+    private Integer isEnabled;
+    
     /** 删除标记。1删除；0未删除 */
     private Integer isDel;
     
@@ -399,7 +402,27 @@ public class JobConfig extends Job
     }
     
     
+    /**
+     * 获取：是否启用。1启用；0停用
+     */
+    public Integer getIsEnabled()
+    {
+        return isEnabled;
+    }
+
     
+    /**
+     * 设置：是否启用。1启用；0停用
+     * 
+     * @param i_IsEnabled 是否启用。1启用；0停用
+     */
+    public void setIsEnabled(Integer i_IsEnabled)
+    {
+        this.isEnabled = i_IsEnabled;
+    }
+
+
+
     @Override
     public int compareTo(Job i_Other)
     {

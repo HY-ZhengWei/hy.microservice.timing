@@ -62,10 +62,12 @@ public class TimingInit
         {
             for (JobConfig v_JobDB : v_JobsDB)
             {
-                Job v_Job = v_JobDB.newJob();
-                
-                v_Jobs.addJob(v_Job);
-                XJava.putObject(v_Job.getCode() ,v_Job);
+                if ( v_JobDB.getIsEnabled() == 1 )
+                {
+                    Job v_Job = v_JobDB.newJob();
+                    v_Jobs.addJob(v_Job);
+                    XJava.putObject(v_Job.getCode() ,v_Job);
+                }
             }
         }
     }

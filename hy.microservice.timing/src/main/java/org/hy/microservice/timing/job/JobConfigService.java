@@ -103,6 +103,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_JobReport.setTryMaxCount(      v_JobDB.getTryMaxCount());
                     v_JobReport.setTryIntervalLen(   v_JobDB.getTryIntervalLen());
                     v_JobReport.setComment(          v_JobDB.getComment());
+                    v_JobReport.setIsEnabled(        v_JobDB.getIsEnabled());
                     v_JobReport.setIsDel(            v_JobDB.getIsDel());
                     v_JobReport.setCreateUserID(     v_JobDB.getCreateUserID());
                     v_JobReport.setCreateTime(       v_JobDB.getCreateTime());
@@ -125,6 +126,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_JobReport.setTryMaxCount(      v_JobMM.getTryMaxCount());
                     v_JobReport.setTryIntervalLen(   v_JobMM.getTryIntervalLen());
                     v_JobReport.setComment(          v_JobMM.getComment());
+                    v_JobReport.setIsEnabled(        1);
                     v_JobReport.setIsDel(            0);
                     v_JobReport.setCreateUserID(     "msTiming");
                     v_JobReport.setCreateTime(       v_ServerStartTime);
@@ -245,11 +247,12 @@ public class JobConfigService implements IJobConfigService ,Serializable
         }
         
         io_JobConfig.setCreateUserID(Help.NVL(io_JobConfig.getCreateUserID() ,io_JobConfig.getUserID()));
+        io_JobConfig.setIsEnabled(Help.NVL(io_JobConfig.getIsEnabled() ,1));
         io_JobConfig.setIsDel(Help.NVL(io_JobConfig.getIsDel() ,0));
         io_JobConfig.setXJavaID(io_JobConfig.getCode());
         
         boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes());
-        if ( v_Ret )
+        if ( v_Ret && io_JobConfig.getIsEnabled() == 1 )
         {
             Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
             Job  v_Job  = io_JobConfig.newJob();

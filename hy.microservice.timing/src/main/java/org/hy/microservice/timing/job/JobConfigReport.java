@@ -60,6 +60,7 @@ public class JobConfigReport extends JobReport
     private Integer isDel;
     
     /** 任务开始时间组 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     private List<Date> startTimes;
     
     /** 间隔类型 */
@@ -83,12 +84,16 @@ public class JobConfigReport extends JobReport
     /** 是否为只读模式。即配置在xml文件中，并非配置在数据库中的 */
     private Boolean readOnly;
     
+    /** 是否启用。1启用；0停用 */
+    private Integer isEnabled;
+    
     
     
     public JobConfigReport(String i_JobID ,Job i_Job)
     {
         super(i_JobID ,i_Job);
-        this.readOnly = true;
+        this.readOnly  = true;
+        this.isEnabled = 1;
     }
     
     
@@ -290,6 +295,7 @@ public class JobConfigReport extends JobReport
      * 
      * @param i_StartTimes 任务开始时间组
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     public void setStartTimes(List<Date> i_StartTimes)
     {
         this.startTimes = i_StartTimes;
@@ -508,6 +514,26 @@ public class JobConfigReport extends JobReport
     public void setTryIntervalLen(Integer i_TryIntervalLen)
     {
         this.tryIntervalLen = i_TryIntervalLen;
+    }
+
+    
+    /**
+     * 获取：是否启用。1启用；0停用
+     */
+    public Integer getIsEnabled()
+    {
+        return isEnabled;
+    }
+
+    
+    /**
+     * 设置：是否启用。1启用；0停用
+     * 
+     * @param i_IsEnabled 是否启用。1启用；0停用
+     */
+    public void setIsEnabled(Integer i_IsEnabled)
+    {
+        this.isEnabled = i_IsEnabled;
     }
     
 }

@@ -3,6 +3,8 @@ package org.hy.microservice.timing.job;
 import org.hy.common.Date;
 import org.hy.microservice.common.BaseViewMode;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 
 
@@ -24,6 +26,7 @@ public class JobStartTime extends BaseViewMode
     private String jobID;
     
     /** 任务开始时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     private Date   startTime;
 
     
@@ -62,6 +65,7 @@ public class JobStartTime extends BaseViewMode
      * 
      * @param i_StartTime 任务开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     public void setStartTime(Date i_StartTime)
     {
         this.startTime = i_StartTime;

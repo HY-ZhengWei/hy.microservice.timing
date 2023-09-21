@@ -172,6 +172,11 @@ public class IJobConfigController extends BaseController
                     return v_RetResp.setCode("-12").setMessage("间隔长度为空");
                 }
                 
+                if ( i_JobConfig.getIsEnabled() == null )
+                {
+                    i_JobConfig.setIsEnabled(Help.NVL(v_OldJobConfig.getIsEnabled() ,1));
+                }
+                
                 if ( !Help.isNull(i_JobConfig.getStartTimes()) )
                 {
                     if ( i_JobConfig.getStartTimes().size() >= 2 )

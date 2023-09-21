@@ -44,7 +44,7 @@
             <content>
                 <![CDATA[
                 DELETE FROM TJobStartTime
-                 WHERE jobID = ':jobID'
+                 WHERE jobID = ':Job.id'
                 ]]>
             </content>
             

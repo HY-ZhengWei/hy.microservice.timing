@@ -62,7 +62,7 @@ public class TimingInit
         {
             for (JobConfig v_JobDB : v_JobsDB)
             {
-                if ( v_JobDB.getIsEnabled() == 1 )
+                if ( v_JobDB.getIsEnabled() != null && v_JobDB.getIsEnabled().equals(1) )
                 {
                     Job v_Job = v_JobDB.newJob();
                     v_Jobs.addJob(v_Job);

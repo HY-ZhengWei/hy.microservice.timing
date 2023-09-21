@@ -106,6 +106,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_JobReport.setIsEnabled(        v_JobDB.getIsEnabled());
                     v_JobReport.setIsDel(            v_JobDB.getIsDel());
                     v_JobReport.setCreateUserID(     v_JobDB.getCreateUserID());
+                    v_JobReport.setUserID(           v_JobDB.getCreateUserID());
                     v_JobReport.setCreateTime(       v_JobDB.getCreateTime());
                     v_JobReport.setUpdateTime(       v_JobDB.getUpdateTime());
                     v_JobReport.setStartTimes(       v_JobDB.toStartTimes());
@@ -129,6 +130,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_JobReport.setIsEnabled(        1);
                     v_JobReport.setIsDel(            0);
                     v_JobReport.setCreateUserID(     "msTiming");
+                    v_JobReport.setUserID(           "msTiming");
                     v_JobReport.setCreateTime(       v_ServerStartTime);
                     v_JobReport.setStartTimes(       v_JobMM.getStartTimes());
                 }
@@ -252,15 +254,18 @@ public class JobConfigService implements IJobConfigService ,Serializable
         io_JobConfig.setXJavaID(io_JobConfig.getCode());
         
         boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes());
-        if ( v_Ret && io_JobConfig.getIsEnabled() == 1 )
+        if ( v_Ret )
         {
             Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
             Job  v_Job  = io_JobConfig.newJob();
             
             if ( v_IsNew )
             {
-                v_Jobs.addJob(v_Job);
-                XJava.putObject(v_Job.getCode() ,v_Job);
+                if ( io_JobConfig.getIsEnabled().equals(1) )
+                {
+                    v_Jobs.addJob(v_Job);
+                    XJava.putObject(v_Job.getCode() ,v_Job);
+                }
             }
             else if ( !io_JobConfig.getIsDel().equals(0) )
             {
@@ -268,7 +273,11 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 {
                     v_Job.setCode(io_JobConfig.getCodeOld());
                 }
-                XJava.remove(v_Job.getCode());
+                
+                if ( XJava.getObject(v_Job.getCode() ,false) != null )
+                {
+                    XJava.remove(v_Job.getCode());
+                }
                 delJobByJobs(v_Jobs ,v_Job.getCode());
             }
             else
@@ -277,12 +286,20 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 {
                     v_Job.setCode(io_JobConfig.getCodeOld());
                 }
-                XJava.remove(v_Job.getCode());
+                
+                if ( XJava.getObject(v_Job.getCode() ,false) != null )
+                {
+                    XJava.remove(v_Job.getCode());
+                }
                 delJobByJobs(v_Jobs ,v_Job.getCode());
                 
                 v_Job.setCode(io_JobConfig.getXJavaID());
-                v_Jobs.addJob(v_Job);
-                XJava.putObject(v_Job.getCode() ,v_Job);
+                
+                if ( io_JobConfig.getIsEnabled().equals(1) )
+                {
+                    v_Jobs.addJob(v_Job);
+                    XJava.putObject(v_Job.getCode() ,v_Job);
+                }
             }
         }
         

@@ -12,7 +12,12 @@
     <xconfig>
 
         <xparam id="MS_Timing_JobIntervalTypes">
-        
+            
+            <item>
+                <name>手工</name>
+                <value>-1</value>
+            </item>
+            
             <item>
                 <name>秒</name>
                 <value>-2</value>

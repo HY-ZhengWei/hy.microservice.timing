@@ -208,6 +208,10 @@ public class IJobConfigController extends BaseController
                         i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
                     }
                 }
+                else
+                {
+                    i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
+                }
             }
             
             if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )

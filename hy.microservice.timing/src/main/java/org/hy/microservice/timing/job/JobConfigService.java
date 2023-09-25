@@ -11,10 +11,12 @@ import org.hy.common.Date;
 import org.hy.common.Help;
 import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
+import org.hy.common.net.ClientSocketCluster;
 import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
+import org.hy.common.xml.log.Logger;
 import org.hy.common.xml.plugins.analyse.AnalyseBase;
 
 
@@ -33,7 +35,11 @@ public class JobConfigService implements IJobConfigService ,Serializable
 {
     
     private static final long serialVersionUID = 1688409498515125449L;
+    
+    private static final Logger $Logger = new Logger(JobConfigService.class);
 
+    
+    
     @Xjava
     private IJobConfigDAO jobConfigDAO;
     
@@ -322,9 +328,35 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_Jobs.addJob(v_Job);
                 }
             }
+            
+            try
+            {
+                if ( v_Jobs.isDisasterRecovery() )
+                {
+                    ClientSocketCluster.sendCommands(v_Jobs.getDisasterRecoverys()
+                                                    ,false
+                                                    ,Jobs.$JOB_DisasterRecoverys_Timeout
+                                                    ,"TimingClusterService"
+                                                    ,"syncCluster"
+                                                    ,new Object[] {io_JobConfig.getId() ,Help.NVL(io_JobConfig.getCodeOld() ,"-")}
+                                                    ,true
+                                                    ,"集群同步定时任务的信息");
+                }
+            }
+            catch (Exception exce)
+            {
+                $Logger.error(exce);
+            }
         }
         
         return v_Ret ? io_JobConfig : null;
+    }
+    
+    
+    
+    public void syncCluster()
+    {
+        
     }
     
     
@@ -339,7 +371,8 @@ public class JobConfigService implements IJobConfigService ,Serializable
      * @param i_Jobs   定时任务池
      * @param i_Code   要删除任务编号
      */
-    private void delJobByJobs(Jobs i_Jobs ,String i_Code)
+    @Override
+    public void delJobByJobs(Jobs i_Jobs ,String i_Code)
     {
         Iterator<Job> v_JobList = i_Jobs.getJobs();
         while ( v_JobList.hasNext() )

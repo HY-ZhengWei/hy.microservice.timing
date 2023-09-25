@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hy.common.app.Param;
 import org.hy.common.thread.Job;
+import org.hy.common.thread.Jobs;
 
 
 
@@ -119,5 +120,19 @@ public interface IJobConfigService
      * @return
      */
     public JobConfig save(JobConfig io_JobConfig);
+    
+    
+    
+    /**
+     * 删除定时任务池中的任务
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-13
+     * @version     v1.0
+     *
+     * @param i_Jobs   定时任务池
+     * @param i_Code   要删除任务编号
+     */
+    public void delJobByJobs(Jobs i_Jobs ,String i_Code);
     
 }

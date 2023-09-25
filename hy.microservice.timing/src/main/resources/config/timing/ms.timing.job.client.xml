@@ -10,11 +10,13 @@
     <!-- Job任务的指向的服务器信息 -->
     <xconfig>
         
+        <!-- 
         <client id="CServer_测试云服务">
             <host>127.0.0.1</host>
             <port>9021</port>
             <timeout>30000</timeout>
         </client>
+        -->
         
     </xconfig>
     

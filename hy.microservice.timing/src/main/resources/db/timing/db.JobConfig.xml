@@ -98,9 +98,9 @@
             
             <content>
                 <![CDATA[
-                SELECT  COUNT(1)  AS JobConfig_IsExists
+                SELECT  COUNT(1) AS JobConfig_IsExists
                   FROM  TJobConfig
-                 WHERE  id = ':Job.id'
+                 WHERE  id   = ':Job.id'
                 ]]>
             </content>
             

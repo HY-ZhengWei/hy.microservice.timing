@@ -18,7 +18,7 @@
                 <sql  ref="XSQL_Timing_JobConfig_IsExists" />
                 <type ref="this.$Type_Query" />
             </sqlNode>
-                    
+            
             <sqlNode>
                 <sql  ref="XSQL_Timing_JobConfig_Insert" />
                 <type ref="this.$Type_ExecuteUpdate" />

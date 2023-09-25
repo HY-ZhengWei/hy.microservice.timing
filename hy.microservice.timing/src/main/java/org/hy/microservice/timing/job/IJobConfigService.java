@@ -3,6 +3,7 @@ package org.hy.microservice.timing.job;
 import java.util.List;
 
 import org.hy.common.app.Param;
+import org.hy.common.thread.Job;
 
 
 
@@ -41,6 +42,21 @@ public interface IJobConfigService
      * @return
      */
     public List<JobConfigReport> queryList();
+    
+    
+    
+    /**
+     * 将XJava对象池中的与数据库中定时任务对象合并成JobConfigReport对外安全的暴露
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-09-25
+     * @version     v1.0
+     *
+     * @param i_JobMM  XJava对象池中的定时任务对象
+     * @param i_JobDB  数据库中的定时任务对象
+     * @return
+     */
+    public JobConfigReport toJobConfigReport(Job i_JobMM ,JobConfig i_JobDB);
     
     
     

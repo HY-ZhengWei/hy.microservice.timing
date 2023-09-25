@@ -33,6 +33,7 @@
                 ,isEnabled                  INT           NOT NULL        COMMENT '是否启用。1启用；0停用'
                 ,isDel                      INT           NOT NULL        COMMENT '删除标记。1删除；0未删除'
                 ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
+                ,updateUserID               VARCHAR(64)   NOT NULL        COMMENT '数据修改人ID'
                 ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
                 ,updateTime                 DATETIME      NOT NULL        COMMENT '修改时间'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/

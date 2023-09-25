@@ -34,6 +34,7 @@
                        ,isEnabled
                        ,isDel         
                        ,createUserID
+                       ,updateUserID
                        ,createTime
                        ,updateTime
                        )
@@ -53,6 +54,7 @@
                        ,':Job.isEnabled'
                        ,':Job.isDel'
                        ,':Job.createUserID'
+                       ,':Job.updateUserID'
                        ,NOW()
                        ,NOW()
                        )
@@ -71,6 +73,7 @@
                 <![CDATA[
                 UPDATE  TJobConfig
                    SET  updateTime     = NOW()
+                       ,updateUserID   = ':Job.updateUserID'
                     <[ ,code           = ':Job.code'             ]>
                     <[ ,name           = ':Job.name'             ]>
                     <[ ,intervalType   = ':Job.intervalType'     ]>
@@ -135,7 +138,8 @@
                        ,A.comment
                        ,A.isEnabled
                        ,A.isDel
-                       ,A.createUserID  
+                       ,A.createUserID
+                       ,A.updateUserID  
                        ,A.createTime
                        ,A.updateTime
                   FROM  TJobConfig          A

@@ -134,6 +134,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setIsEnabled(        i_JobDB.getIsEnabled());
             v_JobReport.setIsDel(            i_JobDB.getIsDel());
             v_JobReport.setCreateUserID(     i_JobDB.getCreateUserID());
+            v_JobReport.setUpdateUserID(     i_JobDB.getUpdateUserID());
             v_JobReport.setUserID(           i_JobDB.getCreateUserID());
             v_JobReport.setCreateTime(       i_JobDB.getCreateTime());
             v_JobReport.setUpdateTime(       i_JobDB.getUpdateTime());
@@ -154,6 +155,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setIsEnabled(        1);
             v_JobReport.setIsDel(            0);
             v_JobReport.setCreateUserID(     "msTiming");
+            v_JobReport.setUpdateUserID(     "msTiming");
             v_JobReport.setUserID(           "msTiming");
             v_JobReport.setCreateTime(       new Date(this.analyseBase.analyseCluster_Info().getStartTime()));
             v_JobReport.setStartTimes(       i_JobMM.getStartTimes());
@@ -267,6 +269,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
         }
         
         io_JobConfig.setCreateUserID(Help.NVL(io_JobConfig.getCreateUserID() ,io_JobConfig.getUserID()));
+        io_JobConfig.setUpdateUserID(Help.NVL(io_JobConfig.getUpdateUserID() ,io_JobConfig.getUserID()));
         io_JobConfig.setIsEnabled(Help.NVL(io_JobConfig.getIsEnabled() ,1));
         io_JobConfig.setIsDel(Help.NVL(io_JobConfig.getIsDel() ,0));
         io_JobConfig.setXJavaID(io_JobConfig.getCode());

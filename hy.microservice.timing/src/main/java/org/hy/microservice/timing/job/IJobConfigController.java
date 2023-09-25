@@ -155,6 +155,9 @@ public class IJobConfigController extends BaseController
                     {
                         return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                     }
+                    
+                    i_JobConfig.setCreateUserID(i_JobConfig.getUserID());
+                    i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
                 }
                 // 更新的验证
                 else
@@ -215,6 +218,8 @@ public class IJobConfigController extends BaseController
                     {
                         i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
                     }
+                    
+                    i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
                 }
                 
                 if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )

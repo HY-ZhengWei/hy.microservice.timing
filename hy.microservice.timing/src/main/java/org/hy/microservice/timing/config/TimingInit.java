@@ -1,5 +1,6 @@
 package org.hy.microservice.timing.config;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hy.common.Execute;
@@ -64,6 +65,19 @@ public class TimingInit
             {
                 Job v_Job = v_JobDB.newJob();
                 XJava.putObject(v_Job.getCode() ,v_Job);
+                
+                // 先删除，后添加，预防本方法被重复执行
+                Iterator<Job> v_JobList = v_Jobs.getJobs();
+                while ( v_JobList.hasNext() )
+                {
+                    Job v_Item = v_JobList.next();
+                    if ( v_Item.getCode().equals(v_Job.getCode()) )
+                    {
+                        v_Jobs.delJob(v_Item);
+                        break;
+                    }
+                }
+                
                 if ( v_JobDB.getIsEnabled() != null && v_JobDB.getIsEnabled().equals(1) )
                 {
                     v_Jobs.addJob(v_Job);

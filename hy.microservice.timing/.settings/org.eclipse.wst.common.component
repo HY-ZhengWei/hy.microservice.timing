@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                            
+                                                
+    
     
     
     
@@ -10,7 +11,8 @@
     
     
     <wb-module deploy-name="hy.microservice.timing-1.0.7">
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -21,7 +23,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -32,7 +35,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -43,7 +47,8 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -105,7 +110,8 @@
         <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
             <dependency-type>consumes</dependency-type>
         </dependent-module>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -116,7 +122,8 @@
         
         
         <property name="java-output-path" value="/hy.microservice.timing/target/classes"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -127,7 +134,8 @@
         
         
         <property name="context-root" value="hy.microservice.timing"/>
-                                                                                    
+                                                                                            
+    
     
     
     
@@ -138,7 +146,8 @@
     
     
     </wb-module>
-                                        
+                                            
+
 
 
 

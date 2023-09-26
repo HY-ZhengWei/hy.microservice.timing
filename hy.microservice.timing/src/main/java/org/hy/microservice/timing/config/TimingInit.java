@@ -63,6 +63,8 @@ public class TimingInit
         {
             for (JobConfig v_JobDB : v_JobsDB)
             {
+                v_JobDB.setStartTimes(v_JobDB.toStartTimes());
+                
                 Job v_Job = v_JobDB.newJob();
                 XJava.putObject(v_Job.getCode() ,v_Job);
                 

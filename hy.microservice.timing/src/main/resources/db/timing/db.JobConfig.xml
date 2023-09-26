@@ -184,5 +184,18 @@
         </sql>
         
     </sqls>
-    
+
+
+
+<!--
+物理删除
+DELETE FROM TJobStartTime 
+ WHERE EXISTS (
+               SELECT  1 FROM TJobConfig A
+                WHERE  A.id    = TJobStartTime.jobID
+                  AND  A.isDel != 0
+              );
+              
+DELETE FROM TJobConfig A WHERE A.isDel != 0; 
+ -->
 </config>

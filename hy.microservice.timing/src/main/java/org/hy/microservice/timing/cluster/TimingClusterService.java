@@ -70,6 +70,7 @@ public class TimingClusterService implements ITimingClusterService ,Serializable
             return !Help.isNull(i_JobOldCode);
         }
         
+        v_JobDB.setStartTimes(v_JobDB.toStartTimes());
         Job v_Job = v_JobDB.newJob();
         XJava.putObject(v_Job.getCode() ,v_Job);
         

@@ -3,7 +3,6 @@ package org.hy.microservice.timing.config;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hy.common.Execute;
 import org.hy.common.Help;
 import org.hy.common.net.common.ClientCluster;
 import org.hy.common.thread.Job;
@@ -49,7 +48,7 @@ public class TimingInit
         
         this.init_ClusterServers();
         
-        new Execute(this ,"addJobs").start();
+        // new Execute(this ,"addJobs").start();
     }
     
     

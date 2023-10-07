@@ -184,6 +184,7 @@ public class JobConfigController extends BaseController
                     
                     if ( i_JobConfig.getIsEnabled() == null )
                     {
+                        // 当未修改启用状态时，取原始启用状态
                         i_JobConfig.setIsEnabled(Help.NVL(v_OldJobConfig.getIsEnabled() ,1));
                     }
                     
@@ -197,6 +198,11 @@ public class JobConfigController extends BaseController
                                 return v_RetResp.setCode("-16").setMessage("多组开始时间，不支持间隔类型为：分钟或秒");
                             }
                         }
+                    }
+                    else
+                    {
+                        // 当未修改时间组时，取原始时间组
+                        i_JobConfig.setStartTimes(v_OldJobConfig.toStartTimes());
                     }
                     
                     if ( !this.checkIntervalType(i_JobConfig.getIntervalType()) )
@@ -215,12 +221,14 @@ public class JobConfigController extends BaseController
                                 return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                             }
                             
+                            // 修改定时任务编码时，向后传递原始编码
                             i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
                         }
                     }
                     else
                     {
-                        i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
+                        // 当未定时任务编码时，取原始编码
+                        i_JobConfig.setCode(v_OldJobConfig.getCode());
                     }
                     
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());

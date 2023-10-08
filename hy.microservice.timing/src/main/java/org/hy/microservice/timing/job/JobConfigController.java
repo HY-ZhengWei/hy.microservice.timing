@@ -12,7 +12,6 @@ import org.hy.common.xml.XJava;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseController;
 import org.hy.microservice.common.BaseResponse;
-import org.hy.microservice.common.operationLog.OperationLogController;
 import org.hy.microservice.common.user.UserSSO;
 import org.hy.microservice.common.user.UserService;
 import org.hy.microservice.timing.cluster.TimingClusterInfo;
@@ -42,7 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JobConfigController extends BaseController
 {
     
-    private static final Logger $Logger = new Logger(OperationLogController.class);
+    private static final Logger $Logger = new Logger(JobConfigController.class);
     
     
     

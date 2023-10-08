@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务责任人的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_JobUser">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TJobUser
+                (
+                 id                         VARCHAR(64)   NOT NULL        COMMENT '主键'
+                ,userName                   VARCHAR(64)   NOT NULL        COMMENT '用户名称'
+                ,phone                      VARCHAR(32)                   COMMENT '用户手机号'
+                ,email                      VARCHAR(100)                  COMMENT '用户邮箱'
+                ,openID                     VARCHAR(64)                   COMMENT '用户微信应用ID'
+                ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
+                ,updateUserID               VARCHAR(64)   NOT NULL        COMMENT '数据修改人ID'
+                ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
+                ,updateTime                 DATETIME      NOT NULL        COMMENT '更新时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TJobUser ADD CONSTRAINT PK_JobUser PRIMARY KEY (id);/
+                
+                Alter TABLE TJobUser COMMENT                           = '任务责任人';/
+                ]]>
+            </content>
+            
+            <comment>任务责任人</comment>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TJobUser</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

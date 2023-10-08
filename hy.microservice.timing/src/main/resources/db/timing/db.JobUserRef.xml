@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务责任人关系的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_JobUserRef_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TJobUserRef
+                       (
+                        jobID
+                       ,userID
+                       ,createUserID
+                       ,createTime
+                       )
+                VALUES (
+                        ':jobID'
+                       ,':userID'
+                       ,':createUserID'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        
+        <sql id="XSQL_Timing_JobUserRef_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM TJobUserRef
+                 WHERE  id     = ':jobID'
+                   AND  userID = ':userID'
+                ]]>
+            </content>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

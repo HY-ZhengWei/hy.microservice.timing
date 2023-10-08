@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 任务责任人的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_JobUser_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TJobUser
+                       (
+                        id
+                       ,userName
+                       ,phone
+                       ,email
+                       ,openID
+                       ,createUserID
+                       ,updateUserID
+                       ,createTime
+                       ,updateTime
+                       )
+                VALUES (
+                        ':id'
+                       ,':userName'
+                       ,':phone'
+                       ,':email'
+                       ,':openID'
+                       ,':createUserID'
+                       ,':updateUserID'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobUser_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  TJobUser
+                   SET  updateTime   = NOW()
+                       ,updateUserID = ':updateUserID'
+                    <[ ,userName     = ':userName'      ]>
+                    <[ ,phone        = ':phone'         ]>
+                    <[ ,email        = ':email'         ]>
+                    <[ ,openID       = ':openID'        ]>
+                 WHERE  id           = ':id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobUser_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                DELETE FROM TJobUser
+                 WHERE id = ':id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobUser_Query_All"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.userName
+                       ,A.phone
+                       ,A.email
+                       ,A.openID
+                       ,A.createUserID
+                       ,A.updateUserID
+                       ,A.createTime
+                       ,A.updateTime
+                  FROM  TJobUser  A
+                 ORDER  BY A.userName
+                          ,A.createTime
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.timing.monitor.JobUser</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobUser_Query_ByJobID"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.userName
+                       ,A.phone
+                       ,A.email
+                       ,A.openID
+                       ,A.createUserID
+                       ,A.updateUserID
+                       ,A.createTime
+                       ,A.updateTime
+                  FROM  TJobUser     A
+                       ,TJobUserRef  B
+                 WHERE  B.userID = A.id
+                   ANd  B.jobID  = ':id'  
+                 ORDER  BY A.userName
+                          ,A.createTime
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.timing.monitor.JobUser</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

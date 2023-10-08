@@ -25,8 +25,8 @@
                        ,createTime
                        )
                 VALUES (
-                        ':jobID'
-                       ,':userID'
+                        ':Job.id'
+                       ,':id'
                        ,':createUserID'
                        ,NOW()
                        )
@@ -45,8 +45,7 @@
             <content>
                 <![CDATA[
                 DELETE  FROM TJobUserRef
-                 WHERE  id     = ':jobID'
-                   AND  userID = ':userID'
+                 WHERE  jobID = ':Job.id'
                 ]]>
             </content>
             

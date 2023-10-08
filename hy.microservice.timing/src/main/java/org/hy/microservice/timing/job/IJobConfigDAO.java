@@ -7,6 +7,7 @@ import org.hy.common.xml.annotation.XType;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.annotation.Xparam;
 import org.hy.common.xml.annotation.Xsql;
+import org.hy.microservice.timing.monitor.JobUser;
 
 
 
@@ -75,10 +76,12 @@ public interface IJobConfigDAO
      *
      * @param i_JobConfig      任务配置信息
      * @param i_JobStartTimes  任务开始时间组
+     * @param i_JobUsers       任务责任人
      * @return
      */
     @Xsql("GXSQL_Timing_JobConfig_Save")
     public boolean save(@Xparam("Job")           JobConfig          i_JobConfig
-                       ,@Xparam("JobStartTimes") List<JobStartTime> i_JobStartTimes);
+                       ,@Xparam("JobStartTimes") List<JobStartTime> i_JobStartTimes
+                       ,@Xparam("JobUsers")      List<JobUser>      i_JobUsers);
     
 }

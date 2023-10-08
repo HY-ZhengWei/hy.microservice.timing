@@ -1,5 +1,6 @@
 package org.hy.microservice.timing.job;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hy.common.Help;
@@ -15,6 +16,8 @@ import org.hy.microservice.common.BaseResponse;
 import org.hy.microservice.common.user.UserSSO;
 import org.hy.microservice.common.user.UserService;
 import org.hy.microservice.timing.cluster.TimingClusterInfo;
+import org.hy.microservice.timing.monitor.IJobUserService;
+import org.hy.microservice.timing.monitor.JobUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -48,6 +51,10 @@ public class JobConfigController extends BaseController
     @Autowired
     @Qualifier("JobConfigService")
     private IJobConfigService          jobConfigService;
+    
+    @Autowired
+    @Qualifier("JobUserService")
+    private IJobUserService            jobUserService;
     
     @Autowired
     @Qualifier("MS_Timing_JobIntervalTypes")
@@ -233,6 +240,84 @@ public class JobConfigController extends BaseController
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
                 }
                 
+                // 验证任务责任人
+                if ( !Help.isNull(i_JobConfig.getJobUsers()) )
+                {
+                    for (JobUser v_JobUser : i_JobConfig.getJobUsers())
+                    {
+                        if ( Help.isNull(v_JobUser.getId()) )
+                        {
+                            if ( Help.isNull(v_JobUser.getUserName()) )
+                            {
+                                return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                            }
+                            
+                            if ( Help.isNull(v_JobUser.getPhone())
+                              && Help.isNull(v_JobUser.getEmail())
+                              && Help.isNull(v_JobUser.getOpenID()) )
+                            {
+                                return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                            }
+                            
+                            v_JobUser.setId(StringHelp.getUUID());
+                        }
+                        else
+                        {
+                            JobUser v_JobUserExists = this.jobUserService.queryByUserID(v_JobUser.getId());
+                            if ( v_JobUserExists == null )
+                            {
+                                return v_RetResp.setCode("-202").setMessage("任务责任人ID=" + v_JobUser.getId() + "不存");
+                            }
+                            else
+                            {
+                                // 判定责任人是否有改变
+                                if ( !Help.isNull(v_JobUser.getUserName()) && !v_JobUser.getUserName().equals(v_JobUserExists.getUserName()) )
+                                {
+                                    v_JobUser.setAllowUpdate(1);
+                                }
+                                else if ( !Help.isNull(v_JobUser.getPhone()) && !v_JobUser.getPhone().equals(v_JobUserExists.getPhone()) )
+                                {
+                                    v_JobUser.setAllowUpdate(1);
+                                }
+                                else if ( !Help.isNull(v_JobUser.getEmail()) && !v_JobUser.getEmail().equals(v_JobUserExists.getEmail()) )
+                                {
+                                    v_JobUser.setAllowUpdate(1);
+                                }
+                                else if ( !Help.isNull(v_JobUser.getOpenID()) && !v_JobUser.getOpenID().equals(v_JobUserExists.getOpenID()) )
+                                {
+                                    v_JobUser.setAllowUpdate(1);
+                                }
+                                
+                                if ( v_JobUser.getAllowUpdate().equals(1) )
+                                {
+                                    if ( Help.isNull(v_JobUser.getUserName()) )
+                                    {
+                                        return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                                    }
+                                    
+                                    if ( Help.isNull(v_JobUser.getPhone())
+                                      && Help.isNull(v_JobUser.getEmail())
+                                      && Help.isNull(v_JobUser.getOpenID()) )
+                                    {
+                                        return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                                    }
+                                    
+                                    v_JobUser.setPhone( Help.NVL(v_JobUser.getPhone()));
+                                    v_JobUser.setEmail( Help.NVL(v_JobUser.getEmail()));
+                                    v_JobUser.setOpenID(Help.NVL(v_JobUser.getOpenID()));
+                                }
+                            }
+                        }
+                        
+                        v_JobUser.setCreateUserID(i_JobConfig.getUserID());
+                        v_JobUser.setUpdateUserID(i_JobConfig.getUserID());
+                    }
+                }
+                else
+                {
+                    i_JobConfig.setJobUsers(new ArrayList<JobUser>());
+                }
+                
                 if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
                 {
                     // 验证票据及用户登录状态
@@ -252,7 +337,7 @@ public class JobConfigController extends BaseController
                         return v_RetResp.setCode("-902").setMessage("操作用户与登录用户不一致");
                     }
                 }
-    
+                
                 JobConfig v_SaveRet = this.jobConfigService.save(i_JobConfig);
                 if ( v_SaveRet != null )
                 {

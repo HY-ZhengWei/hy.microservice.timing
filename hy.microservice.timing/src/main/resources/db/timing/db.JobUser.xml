@@ -68,16 +68,23 @@
         
         
         
-        <sql id="XSQL_Timing_JobUser_Delete"> 
-        
+        <sql id="XSQL_Timing_JobUser_Query_IsExists"> 
+            
             <dataSourceGroup ref="DSG_MS_Timing" />
             
             <content>
                 <![CDATA[
-                DELETE FROM TJobUser
-                 WHERE id = ':id'
+                SELECT  COUNT(1)  AS JobUser_IsExists
+                  FROM  TJobUser  A
+                 WHERE  A.id = ':id'
                 ]]>
             </content>
+            
+            <result>
+                <row>java.util.HashMap</row>
+                <cfill>put(colName ,colValue)</cfill>
+                <cstyle>NORMAL</cstyle>
+            </result>
             
         </sql>
         
@@ -99,6 +106,7 @@
                        ,A.createTime
                        ,A.updateTime
                   FROM  TJobUser  A
+            <[   WHERE  A.id = ':id'    ]>
                  ORDER  BY A.userName
                           ,A.createTime
                 ]]>

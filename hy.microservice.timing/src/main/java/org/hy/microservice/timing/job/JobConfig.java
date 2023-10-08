@@ -6,6 +6,7 @@ import java.util.List;
 import org.hy.common.Date;
 import org.hy.common.Help;
 import org.hy.common.thread.Job;
+import org.hy.microservice.timing.monitor.JobUser;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -58,12 +59,16 @@ public class JobConfig extends Job
     /** 任务开始时间组 */
     private List<JobStartTime> jobStartTimes;
     
+    /** 任务责任人 */
+    private List<JobUser>      jobUsers;
+    
     
     
     public JobConfig()
     {
         super();
         this.jobStartTimes = new ArrayList<JobStartTime>();
+        this.jobUsers      = new ArrayList<JobUser>();
     }
     
     
@@ -419,6 +424,26 @@ public class JobConfig extends Job
     public void setIsEnabled(Integer i_IsEnabled)
     {
         this.isEnabled = i_IsEnabled;
+    }
+
+    
+    /**
+     * 获取：任务责任人
+     */
+    public List<JobUser> getJobUsers()
+    {
+        return jobUsers;
+    }
+
+    
+    /**
+     * 设置：任务责任人
+     * 
+     * @param i_JobUsers 任务责任人
+     */
+    public void setJobUsers(List<JobUser> i_JobUsers)
+    {
+        this.jobUsers = i_JobUsers;
     }
 
 

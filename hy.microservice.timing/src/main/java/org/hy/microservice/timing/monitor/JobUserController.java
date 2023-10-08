@@ -39,7 +39,7 @@ public class JobUserController extends BaseController
     
     
     @Autowired
-    @Qualifier("JobConfigService")
+    @Qualifier("JobUserService")
     private IJobUserService            jobUserService;
     
     @Autowired

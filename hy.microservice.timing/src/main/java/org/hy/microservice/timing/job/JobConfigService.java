@@ -280,7 +280,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
         io_JobConfig.setIsDel(Help.NVL(io_JobConfig.getIsDel() ,0));
         io_JobConfig.setXJavaID(io_JobConfig.getCode());
         
-        boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes());
+        boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes() ,io_JobConfig.getJobUsers());
         if ( v_Ret )
         {
             JobConfig v_JobDB = this.queryByCode(io_JobConfig.getCode());

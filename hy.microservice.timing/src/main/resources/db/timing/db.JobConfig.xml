@@ -195,6 +195,13 @@ DELETE FROM TJobStartTime
                 WHERE  A.id    = TJobStartTime.jobID
                   AND  A.isDel != 0
               );
+            
+DELETE FROM TJobUserRef 
+ WHERE EXISTS (
+               SELECT  1 FROM TJobConfig A
+                WHERE  A.id    = TJobUserRef.jobID
+                  AND  A.isDel != 0
+              );            
               
 DELETE FROM TJobConfig A WHERE A.isDel != 0; 
  -->

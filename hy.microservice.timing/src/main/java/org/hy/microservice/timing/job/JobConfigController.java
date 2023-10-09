@@ -416,7 +416,14 @@ public class JobConfigController extends BaseController
                 }
             }
             
-            return v_RetResp.setData(this.jobConfigService.queryList());
+            if ( !Help.isNull(i_JobConfig.getId()) || !Help.isNull(i_JobConfig.getCode()) )
+            {
+                return v_RetResp.setData(this.jobConfigService.queryByIDCodeForReport(i_JobConfig));
+            }
+            else
+            {
+                return v_RetResp.setData(this.jobConfigService.queryList());
+            }
         }
         catch (Exception exce)
         {

@@ -18,6 +18,8 @@ import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.log.Logger;
 import org.hy.common.xml.plugins.analyse.AnalyseBase;
+import org.hy.microservice.timing.monitor.IJobUserDAO;
+import org.hy.microservice.timing.monitor.JobUser;
 
 
 
@@ -44,6 +46,9 @@ public class JobConfigService implements IJobConfigService ,Serializable
     private IJobConfigDAO jobConfigDAO;
     
     @Xjava
+    private IJobUserDAO   jobUserDAO;
+    
+    @Xjava
     private AnalyseBase   analyseBase;
     
     
@@ -61,6 +66,56 @@ public class JobConfigService implements IJobConfigService ,Serializable
     public List<Param> queryCloudServers()
     {
         return this.jobConfigDAO.queryCloudServers();
+    }
+    
+    
+    
+    /**
+     * 按ID或Code查询任务配置信息
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-10-09
+     * @version     v1.0
+     *
+     * @return
+     */
+    @Override
+    public List<JobConfigReport> queryByIDCodeForReport(JobConfig i_JobConfig)
+    {
+        List<JobConfigReport> v_Reports = new ArrayList<JobConfigReport>();
+        JobConfig             v_JobDB   = this.jobConfigDAO.queryByIDCode(i_JobConfig);
+        if ( v_JobDB == null )
+        {
+            return v_Reports;
+        }
+        
+        Job v_JobMM = (Job) XJava.getObject(v_JobDB.getCode());
+        if ( v_JobMM == null )
+        {
+            return v_Reports;
+        }
+        
+        JobConfigReport v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
+        v_Report.setJobUsers(this.jobUserDAO.queryByJobID(v_JobDB.getId()));
+        
+        if ( !Help.isNull(v_Report.getJobUsers()) )
+        {
+            // 除了用户ID保留外，其它均不返回
+            for (JobUser v_JobUser : v_Report.getJobUsers())
+            {
+                v_JobUser.setUserName(null);
+                v_JobUser.setPhone(null);
+                v_JobUser.setEmail(null);
+                v_JobUser.setOpenID(null);
+                v_JobUser.setCreateTime(null);
+                v_JobUser.setUpdateTime(null);
+                v_JobUser.setCreateUserID(null);
+                v_JobUser.setUpdateUserID(null);
+            }
+        }
+        
+        v_Reports.add(v_Report);
+        return v_Reports;
     }
     
     
@@ -98,7 +153,28 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 v_JobDB = v_JobsDM.get(v_Item.getKey());
             }
             
-            v_Reports.add(this.toJobConfigReport(v_JobMM ,v_JobDB));
+            JobConfigReport v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
+            if ( v_JobDB != null )
+            {
+                v_Report.setJobUsers(this.jobUserDAO.queryByJobID(v_JobDB.getId()));
+                if ( !Help.isNull(v_Report.getJobUsers()) )
+                {
+                    // 除了用户ID保留外，其它均不返回
+                    for (JobUser v_JobUser : v_Report.getJobUsers())
+                    {
+                        v_JobUser.setUserName(null);
+                        v_JobUser.setPhone(null);
+                        v_JobUser.setEmail(null);
+                        v_JobUser.setOpenID(null);
+                        v_JobUser.setCreateTime(null);
+                        v_JobUser.setUpdateTime(null);
+                        v_JobUser.setCreateUserID(null);
+                        v_JobUser.setUpdateUserID(null);
+                    }
+                }
+            }
+            
+            v_Reports.add(v_Report);
         }
         
         Help.toSort(v_Reports ,"nextTime" ,"lastTime" ,"intervalType" ,"intervalLen NUMASC" ,"jobID");

@@ -47,6 +47,19 @@ public interface IJobConfigService
     
     
     /**
+     * 按ID或Code查询任务配置信息
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-10-09
+     * @version     v1.0
+     *
+     * @return
+     */
+    public List<JobConfigReport> queryByIDCodeForReport(JobConfig i_JobConfig);
+    
+    
+    
+    /**
      * 将XJava对象池中的与数据库中定时任务对象合并成JobConfigReport对外安全的暴露
      * 
      * @author      ZhengWei(HY)

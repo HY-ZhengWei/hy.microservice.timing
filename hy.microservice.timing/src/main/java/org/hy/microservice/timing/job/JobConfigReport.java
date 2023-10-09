@@ -5,6 +5,7 @@ import java.util.List;
 import org.hy.common.Date;
 import org.hy.common.thread.Job;
 import org.hy.common.thread.JobReport;
+import org.hy.microservice.timing.monitor.JobUser;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -86,6 +87,9 @@ public class JobConfigReport extends JobReport
     
     /** 是否启用。1启用；0停用 */
     private Integer isEnabled;
+    
+    /** 任务责任人 */
+    private List<JobUser> jobUsers;
     
     
     
@@ -534,6 +538,26 @@ public class JobConfigReport extends JobReport
     public void setIsEnabled(Integer i_IsEnabled)
     {
         this.isEnabled = i_IsEnabled;
+    }
+
+    
+    /**
+     * 获取：任务责任人
+     */
+    public List<JobUser> getJobUsers()
+    {
+        return jobUsers;
+    }
+
+    
+    /**
+     * 设置：任务责任人
+     * 
+     * @param i_JobUsers 任务责任人
+     */
+    public void setJobUsers(List<JobUser> i_JobUsers)
+    {
+        this.jobUsers = i_JobUsers;
     }
     
 }

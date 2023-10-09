@@ -360,12 +360,28 @@ public class JobConfigService implements IJobConfigService ,Serializable
         if ( v_Ret )
         {
             JobConfig v_JobDB = this.queryByCode(io_JobConfig.getCode());
-            v_JobDB.setStartTimes(v_JobDB.toStartTimes());
+            Jobs      v_Jobs  = (Jobs) XJava.getObject("JOBS_MS_Common");
+            Job       v_Job   = null;
+            if ( v_JobDB != null )
+            {
+                v_JobDB.setStartTimes(v_JobDB.toStartTimes());
+                v_Job = v_JobDB.newJob();
+            }
             
-            Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
-            Job  v_Job  = v_JobDB.newJob();
-            
-            if ( v_IsNew )
+            // 删除
+            if ( !io_JobConfig.getIsDel().equals(0) || v_Job == null )
+            {
+                if ( !Help.isNull(io_JobConfig.getCodeOld()) )
+                {
+                    if ( XJava.getObject(io_JobConfig.getCodeOld() ,false) != null )
+                    {
+                        XJava.remove(io_JobConfig.getCodeOld());
+                    }
+                    delJobByJobs(v_Jobs ,io_JobConfig.getCodeOld());
+                }
+            }
+            // 创建
+            else if ( v_IsNew )
             {
                 XJava.putObject(v_Job.getCode() ,v_Job);
                 if ( io_JobConfig.getIsEnabled().equals(1) )
@@ -373,34 +389,30 @@ public class JobConfigService implements IJobConfigService ,Serializable
                     v_Jobs.addJob(v_Job);
                 }
             }
-            else if ( !io_JobConfig.getIsDel().equals(0) )
-            {
-                if ( !Help.isNull(io_JobConfig.getCodeOld()) )
-                {
-                    v_Job.setCode(io_JobConfig.getCodeOld());
-                }
-                
-                if ( XJava.getObject(v_Job.getCode() ,false) != null )
-                {
-                    XJava.remove(v_Job.getCode());
-                }
-                delJobByJobs(v_Jobs ,v_Job.getCode());
-            }
+            // 修改
             else
             {
+                // 防止修改Code，先删除原Code
                 if ( !Help.isNull(io_JobConfig.getCodeOld()) )
                 {
-                    v_Job.setCode(io_JobConfig.getCodeOld());
+                    if ( XJava.getObject(io_JobConfig.getCodeOld() ,false) != null )
+                    {
+                        XJava.remove(io_JobConfig.getCodeOld());
+                    }
+                    delJobByJobs(v_Jobs ,io_JobConfig.getCodeOld());
                 }
                 
-                if ( XJava.getObject(v_Job.getCode() ,false) != null )
+                // 重新添加前，先删除，再添加
+                if ( !Help.isNull(io_JobConfig.getCode()) )
                 {
-                    XJava.remove(v_Job.getCode());
+                    if ( XJava.getObject(io_JobConfig.getCode() ,false) != null )
+                    {
+                        XJava.remove(io_JobConfig.getCode());
+                    }
+                    delJobByJobs(v_Jobs ,io_JobConfig.getCode());
                 }
-                delJobByJobs(v_Jobs ,v_Job.getCode());
                 
                 v_Job.setCode(io_JobConfig.getXJavaID());
-                
                 XJava.putObject(v_Job.getCode() ,v_Job);
                 if ( io_JobConfig.getIsEnabled().equals(1) )
                 {

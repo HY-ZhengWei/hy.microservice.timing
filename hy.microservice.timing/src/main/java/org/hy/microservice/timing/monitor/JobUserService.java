@@ -183,7 +183,7 @@ public class JobUserService implements IJobUserService ,Serializable
                 continue;
             }
             
-            String v_Message = this.signature.getValue() + "定时任务-告警：" + v_JobDB.getTaskDesc() + Date.getNowTime().getYMDHM();
+            String v_Message = this.signature.getValue() + "定时-告警：" + Help.NVL(v_JobDB.getCloudServer()) + v_JobDB.getTaskDesc() + Date.getNowTime().getYMDHM();
             for (JobUser v_JobUser : v_JobUsers)
             {
                 String v_MTUserLastTimeID = v_JobDB.getCode() + ":" + v_JobUser.getId();
@@ -200,12 +200,12 @@ public class JobUserService implements IJobUserService ,Serializable
                 
                 if ( !Help.isNull(v_JobUser.getEmail()) )
                 {
-                    this.messageService.mail(v_JobUser.getEmail() ,"定时任务-告警：" + v_JobDB.getCode() ,v_Message);
+                    this.messageService.mail(v_JobUser.getEmail() ,"定时-告警：" + v_JobDB.getCode() ,v_Message);
                 }
                 
                 if ( !Help.isNull(v_JobUser.getOpenID()) )
                 {
-                    this.messageService.weixin(v_JobUser.getOpenID() ,"定时任务-告警：" + v_JobDB.getCode() ,v_Message);
+                    this.messageService.weixin(v_JobUser.getOpenID() ,"定时-告警：" + v_JobDB.getCode() ,v_Message);
                 }
                 
                 $MessageToUserLastTime.put(v_MTUserLastTimeID ,new Date() ,Integer.parseInt(timeLen.getValue()) * 60);

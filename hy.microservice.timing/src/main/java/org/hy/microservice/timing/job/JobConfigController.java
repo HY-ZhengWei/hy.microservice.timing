@@ -166,6 +166,7 @@ public class JobConfigController extends BaseController
                         return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                     }
                     
+                    i_JobConfig.setIsDel(null);
                     i_JobConfig.setCreateUserID(i_JobConfig.getUserID());
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
                 }
@@ -230,11 +231,16 @@ public class JobConfigController extends BaseController
                             // 修改定时任务编码时，向后传递原始编码
                             i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
                         }
+                        else
+                        {
+                            i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
+                        }
                     }
                     else
                     {
                         // 当未定时任务编码时，取原始编码
-                        i_JobConfig.setCode(v_OldJobConfig.getCode());
+                        i_JobConfig.setCodeOld(v_OldJobConfig.getCode());
+                        i_JobConfig.setCode(   v_OldJobConfig.getCode());
                     }
                     
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());

@@ -508,10 +508,8 @@ public class JobConfigController extends BaseController
                 return v_RetResp.setCode("-910").setMessage("定时任务编号不存");
             }
             
-            boolean v_ForceRun = v_JobMM.isForceRun();
-            v_JobMM.setForceRun(true);
+            v_JobMM.setLastTime(null);
             v_JobMM.execute();
-            v_JobMM.setForceRun(v_ForceRun);
             
             return v_RetResp.setData(this.jobConfigService.toJobConfigReport(v_JobMM ,v_JobDB));
         }

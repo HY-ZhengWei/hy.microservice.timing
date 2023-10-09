@@ -53,4 +53,14 @@
         
     </sqls>
     
+<!-- 
+定时任务关联责任人
+INSERT INTO TJobUserRef
+SELECT A.id                                 AS jobID
+      ,'9695C00612224F9C9110949B44EDE723'   AS userID
+      ,'ZhengWei'                           AS createUserID 
+      ,NOW()                                AS createTime  
+  FROM TJobConfig A
+ WHERE A.cloudServer LIKE '%20.27%'
+-->
 </config>

@@ -21,6 +21,19 @@
             <initExecute>true</initExecute>
         </job>
         
+        
+        <job id="JOB_MS_Timing_Monitor">
+            <code>JOB_MS_Timing_Monitor</code>
+            <name>定时任务的责任人告警</name>
+            <comment>定时任务的责任人告警</comment>
+            <intervalType ref="this.$IntervalType_Minute"/>
+            <intervalLen>15</intervalLen>
+            <startTime>2000-01-01 00:00:00</startTime>
+            <xid>JobUserService</xid>
+            <methodName>monitorJobTask</methodName>
+        </job>
+        
+        
         <!-- 
         <job id="JOB_MS_Timing_Test测试任务">
             <code>JOB_Test测试任务</code>
@@ -45,6 +58,7 @@
             <call name="delJobs" />   <!-- 删除所有定时任务。预防多次重复加载时的异常 -->
             
             <addJob ref="JOB_MS_Timing_Init" />
+            <addJob ref="JOB_MS_Timing_Monitor" />
             
             <!-- call name="startup" /  在公共Web项目中启动 -->
         </jobs>

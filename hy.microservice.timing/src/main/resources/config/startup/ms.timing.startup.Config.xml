@@ -28,6 +28,14 @@
             <item>
                 <value>config/timing/ms.timing.job.client.xml</value>
             </item>
+            
+            <item>
+                <value>config/timing/ms.timing.Message.AppKey.Config.xml</value>
+            </item>
+            
+            <item>
+                <value>config/timing/ms.timing.Message.Http.xml</value>
+            </item>
 
         </startupConfig>
         

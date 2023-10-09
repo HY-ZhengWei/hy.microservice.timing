@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"  class="java.util.ArrayList" />
+    <import name="akey"     class="org.hy.common.license.AppKey" />
+    
+    
+    
+    <!-- 短消息系统的密钥配置参数信息 -->
+    <xconfig>
+        
+        <akey id="Message_MS_Timing_AppKey">
+            <appKey>3BF8A6CCB2814DCB9A26AB60C3959AAF</appKey>
+            <privateKey encrypt="org.hy.common.StringHelp">MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKgNVxTLzxhzeiFwEAcZ7CBO8dnFASpc2/EOXD/zUg3VFRkTQwgfkkVluP4m2esY7WdMWmbg5YkZo0n42l9HdFKCqaPgxEPbXCqE/CGN2URL08P/0zUnSXaT3aBFGsFfmYPZdZ+UkBRwQoQ8RVdzrtboxOY3KFJA9vIAGdacDSc7AgMBAAECgYEAlxJe/Tf2tVFiMlsOXYPlLGorqowabx3JLtus/GRdmEe8zqztLolLMg2vDvKYJmtjR+BwyFlWnzgn/aCzlsGig+9kHLryvoZg9zsj52E+4GhZhtVsVi/tVZcEGEVeNqMwbYBcjGLdlKrrb0C2dJ8n0iMpoUEaaQ2YNd1IOBu/bsECQQDlGOWbhiGMn6XxJ/oclofalGn0+2aW/YRgMMSy85WUp8dYAcdYnqCTaspV/ldhM8Dt2Z+gDe6H+ysZ9R+JuxmhAkEAu8lPIKmSi27W9EDg5HTRCJM/tvmHFVC5P0qbLT7kSAWWNkMgfCy5Rpeovm2qyi/j4SuOtZuvmEjOs28fEh0rWwJAJE2CrNdfX5o4wHMWRgtwcamM9L4Vrp1zqY5wzO6eaFUB2KdHgHp6dYG5mFDaZdO+obIXglRS1Qdu+AkIu1mDoQJANVO2r8zX+9avHk/qTZZK4keGmXyE+u2gnbOfG5s3kqhbfu9TI1BEESLyXZmhHae56/DFpxceJ33NjTEqPqef7wJBALn2LUFaXRsGiVbjuz3qc4OpzJ8sHfpz+eeZVB4nPZVl3/NPPznfqkGbEbS1OqucQEaJiFDrNvsfkBNhgJ6vOe0=</privateKey>
+        </akey>
+        
+    </xconfig>
+    
+</config>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xobjects"        class="java.util.ArrayList" />
+    <import name="http"            class="org.hy.common.xml.XHttp" />
+    <import name="xparam"          class="org.hy.common.app.Param" />
+    
+    
+    
+    <xobjects>
+    
+        <!-- 发短信 -->
+        <http id="XHTTP_MS_Timing_Message_SendSMS">
+            <protocol>http</protocol>
+            <ip>10.1.50.60</ip>
+            <url>/msMessage/message/sendSMS</url>
+            <contentType>application/json</contentType> <!-- text/html -->
+            <requestType ref="this.$Request_Type_Post" />
+            <encode>false</encode>
+            <toUnicode>false</toUnicode>
+            
+            <addParam>
+                <paramName>token</paramName>
+            </addParam>
+        </http>
+        
+        
+        
+        <!-- 发微信 -->
+        <http id="XHTTP_MS_Timing_Message_SendWeiXin">
+            <protocol>http</protocol>
+            <ip>10.1.50.60</ip>
+            <url>/msMessage/message/sendWeiXin</url>
+            <contentType>application/json</contentType> <!-- text/html -->
+            <requestType ref="this.$Request_Type_Post" />
+            <encode>false</encode>
+            <toUnicode>false</toUnicode>
+            
+            <addParam>
+                <paramName>token</paramName>
+            </addParam>
+        </http>
+        
+        
+        
+        <!-- 发邮件 -->
+        <http id="XHTTP_MS_Timing_Message_SendMail">
+            <protocol>http</protocol>
+            <ip>10.1.50.60</ip>
+            <url>/msMessage/message/sendMail</url>
+            <contentType>application/json</contentType> <!-- text/html -->
+            <requestType ref="this.$Request_Type_Post" />
+            <encode>false</encode>
+            <toUnicode>false</toUnicode>
+            
+            <addParam>
+                <paramName>token</paramName>
+            </addParam>
+        </http>
+        
+    </xobjects>
+
+</config>

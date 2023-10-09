@@ -14,14 +14,14 @@
         <xparam id="SYSParam_MS_Timing" key="name">
         
             <item id="MS_Timing_ProjectName" this="MS_Common_ProjectName">
-                <name>MS_MWindows_ProjectName</name>
+                <name>MS_Timing_ProjectName</name>
                 <value>hy.microservice.timing</value>
                 <comment>项目名称，开发测试时使用</comment>
                 <onlyRead>true</onlyRead>
             </item>
             
             
-            <item id="MS_MWindows_ServiceName" this="MS_Common_ServiceName">
+            <item id="MS_Timing_ServiceName" this="MS_Common_ServiceName">
                 <name>MS_Timing_ServiceName</name>
                 <value>msTiming</value>
                 <comment>服务名称，产品运维时使用</comment>
@@ -75,6 +75,20 @@
                 <value>/pages/timing</value>
                 <comment>Freemarker模板页面的顶级路径（*.ftl的路径）</comment>
                 <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_Timing_Monitor_Signature">
+                <name>MS_Timing_Monitor_Signature</name>
+                <value>【msTiming】</value>
+                <comment>监控定时任务，发送异常信息给责任人的前缀签名。一般为短信签名</comment>
+            </item>
+            
+            
+            <item id="MS_Timing_Monitor_TimeLen">
+                <name>MS_Timing_Monitor_TimeLen</name>
+                <value>60</value>
+                <comment>责任人告警消息重复发送的间隔时长（单位：分钟）</comment>
             </item>
             
         </xparam>

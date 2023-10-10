@@ -87,7 +87,7 @@
             
             <item id="MS_Timing_Monitor_TimeLen">
                 <name>MS_Timing_Monitor_TimeLen</name>
-                <value>60</value>
+                <value>120</value>
                 <comment>责任人告警消息重复发送的间隔时长（单位：分钟）</comment>
             </item>
             

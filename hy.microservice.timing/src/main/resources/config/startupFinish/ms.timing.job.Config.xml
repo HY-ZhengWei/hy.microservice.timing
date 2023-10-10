@@ -29,6 +29,7 @@
             <intervalType ref="this.$IntervalType_Minute"/>
             <intervalLen>15</intervalLen>
             <startTime>2000-01-01 00:00:00</startTime>
+            <condition><![CDATA[:H >= 8 && :H <= 21]]></condition>
             <xid>JobUserService</xid>
             <methodName>monitorJobTask</methodName>
         </job>

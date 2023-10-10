@@ -139,6 +139,7 @@ public class JobUserService implements IJobUserService ,Serializable
             return;
         }
         
+        Date v_Now = new Date();
         for (Entry<String, Job> v_Item : v_JobsMM.entrySet())
         {
             Job       v_JobMM = v_Item.getValue();
@@ -175,11 +176,19 @@ public class JobUserService implements IJobUserService ,Serializable
                 // 尚未调度过的
                 continue;
             }
-            
+
             String v_LastRunLog = v_RunLogs[v_RunLogs.length - 1].toString();
             if ( v_LastRunLog.indexOf("对方接收成功") >= 0 )
             {
                 // 过滤最后一次调度成功的
+                continue;
+            }
+            
+            String [] v_LastRunLogArr = v_LastRunLog.split("\\.");
+            Date v_LastRunLogTime = new Date(v_LastRunLogArr[0]);
+            if ( v_Now.differ(v_LastRunLogTime) <= 1000 * 60 * 10 )
+            {
+                // 10分钟内的异常不告警，因为它还有尝试执行成功的机会
                 continue;
             }
             

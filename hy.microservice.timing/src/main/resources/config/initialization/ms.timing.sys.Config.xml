@@ -91,6 +91,13 @@
                 <comment>责任人告警消息重复发送的间隔时长（单位：分钟）</comment>
             </item>
             
+            
+            <item id="MS_Timing_Monitor_WaitTimeLen">
+                <name>MS_Timing_Monitor_WaitTimeLen</name>
+                <value>5</value>
+                <comment>多长时间内刚发生的异常，暂时不告警，因为它还有尝试执行成功的机会（单位：分钟）</comment>
+            </item>
+            
         </xparam>
         
     </xconfig>

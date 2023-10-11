@@ -54,6 +54,9 @@ public class JobUserService implements IJobUserService ,Serializable
     @Xjava(ref="MS_Timing_Monitor_TimeLen")
     private Param          timeLen;
     
+    @Xjava(ref="MS_Timing_Monitor_WaitTimeLen")
+    private Param          waitTimeLen;
+    
     
     
     /**
@@ -186,9 +189,9 @@ public class JobUserService implements IJobUserService ,Serializable
             
             String [] v_LastRunLogArr = v_LastRunLog.split("\\.");
             Date v_LastRunLogTime = new Date(v_LastRunLogArr[0]);
-            if ( v_Now.differ(v_LastRunLogTime) <= 1000 * 60 * 10 )
+            if ( v_Now.differ(v_LastRunLogTime) <= 1000 * 60 * Integer.parseInt(waitTimeLen.getValue()) )
             {
-                // 10分钟内的异常不告警，因为它还有尝试执行成功的机会
+                // 多长时间内刚发生的异常，暂时不告警，因为它还有尝试执行成功的机会
                 continue;
             }
             

@@ -84,18 +84,27 @@ public class JobConfigService implements IJobConfigService ,Serializable
     {
         List<JobConfigReport> v_Reports = new ArrayList<JobConfigReport>();
         JobConfig             v_JobDB   = this.jobConfigDAO.queryByIDCode(i_JobConfig);
+        Job                   v_JobMM   = null;
+        JobConfigReport       v_Report  = null;
+        
         if ( v_JobDB == null )
         {
+            if ( !Help.isNull(i_JobConfig.getCode()) )
+            {
+                v_JobMM = (Job) XJava.getObject(i_JobConfig.getCode());
+                v_Report = this.toJobConfigReport(v_JobMM ,null);
+                v_Reports.add(v_Report);
+            }
             return v_Reports;
         }
         
-        Job v_JobMM = (Job) XJava.getObject(v_JobDB.getCode());
+        v_JobMM = (Job) XJava.getObject(v_JobDB.getCode());
         if ( v_JobMM == null )
         {
             return v_Reports;
         }
         
-        JobConfigReport v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
+        v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
         v_Report.setJobUsers(this.jobUserDAO.queryByJobID(v_JobDB.getId()));
         
         if ( !Help.isNull(v_Report.getJobUsers()) )

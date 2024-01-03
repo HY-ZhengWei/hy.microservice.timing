@@ -166,6 +166,7 @@ public class JobConfigController extends BaseController
                         return v_RetResp.setCode("-18").setMessage("任务编码已存在");
                     }
                     
+                    // 禁止创建时就删除
                     i_JobConfig.setIsDel(null);
                     i_JobConfig.setCreateUserID(i_JobConfig.getUserID());
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
@@ -510,6 +511,9 @@ public class JobConfigController extends BaseController
             
             v_JobMM.setLastTime(null);
             v_JobMM.execute();
+            
+            // 异步执行时，未得到执行结果就返回了。稍稍等一下，能等到就等到结果，等不到结果也返回
+            Thread.sleep(3000);
             
             return v_RetResp.setData(this.jobConfigService.toJobConfigReport(v_JobMM ,v_JobDB));
         }

@@ -368,6 +368,18 @@ public class JobConfigService implements IJobConfigService ,Serializable
         boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes() ,io_JobConfig.getJobUsers());
         if ( v_Ret )
         {
+            if ( io_JobConfig.getIsDel().equals(0) )
+            {
+                try
+                {
+                    Thread.sleep(3000);
+                }
+                catch (InterruptedException e)
+                {
+                    // Nothing.
+                }
+            }
+            
             JobConfig v_JobDB = this.queryByCode(io_JobConfig.getCode());
             Jobs      v_Jobs  = (Jobs) XJava.getObject("JOBS_MS_Common");
             Job       v_Job   = null;

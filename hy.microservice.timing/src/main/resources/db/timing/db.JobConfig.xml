@@ -204,5 +204,45 @@ DELETE FROM TJobUserRef
               );            
               
 DELETE FROM TJobConfig A WHERE A.isDel != 0; 
+
+
+
+全年运行统计
+SELECT  WA.TotalDay * 365 + WA.TotalWeek * 52 + WA.TotalMonth * 12 + WA.TotalYear AS TotalAll
+       ,WA.TotalHour
+       ,WA.TotalDay
+       ,WA.TotalWeek
+       ,WA.TotalMonth
+       ,WA.TotalYear
+  FROM  (
+        SELECT  SUM(
+                   CASE WHEN A.intervalType = 3600    THEN (SELECT COUNT(1) FROM TJobStartTime SA WHERE SA.jobID = A.id)
+                        WHEN A.intervalType IN (1 ,2) THEN 0
+                        WHEN A.intervalType < 3600    THEN 3600 / A.intervalType
+                        ELSE 0 END 
+                  )  AS TotalHour
+               ,SUM(
+                   CASE WHEN A.intervalType = 86400   THEN (SELECT COUNT(1) FROM TJobStartTime SA WHERE SA.jobID = A.id)
+                        WHEN A.intervalType IN (1 ,2) THEN 0
+                        WHEN A.intervalType < 86400   THEN 86400 / A.intervalType
+                        ELSE 0 END 
+                  )  AS TotalDay
+               ,SUM(
+                   CASE WHEN A.intervalType = 604800  THEN (SELECT COUNT(1) FROM TJobStartTime SA WHERE SA.jobID = A.id)
+                        ELSE 0 END 
+                  )  AS TotalWeek
+               ,SUM(
+                   CASE WHEN A.intervalType = 1       THEN (SELECT COUNT(1) FROM TJobStartTime SA WHERE SA.jobID = A.id)
+                        ELSE 0 END 
+                  )  AS TotalMonth
+               ,SUM(
+                   CASE WHEN A.intervalType = 2       THEN (SELECT COUNT(1) FROM TJobStartTime SA WHERE SA.jobID = A.id)
+                        ELSE 0 END 
+                  )  AS TotalYear
+          FROM  TJobConfig A 
+         WHERE  A.isDel        = 0 
+           AND  A.isEnabled    = 1
+           AND  A.cloudServer IS NOT NULL
+        )  WA
  -->
 </config>

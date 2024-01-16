@@ -31,15 +31,6 @@ public class JobUser extends BaseViewMode
     /** 用户微信应用ID */
     private String  openID;
     
-    /** 是否允许更新 */
-    private Integer allowUpdate;
-
-    
-    
-    public JobUser()
-    {
-        this.allowUpdate = 0;
-    }
     
     
     /**
@@ -119,26 +110,6 @@ public class JobUser extends BaseViewMode
     public void setOpenID(String i_OpenID)
     {
         this.openID = i_OpenID;
-    }
-
-
-    /**
-     * 获取：是否允许更新
-     */
-    public Integer getAllowUpdate()
-    {
-        return allowUpdate;
-    }
-
-    
-    /**
-     * 设置：是否允许更新
-     * 
-     * @param i_AllowUpdate 是否允许更新
-     */
-    public void setAllowUpdate(Integer i_AllowUpdate)
-    {
-        this.allowUpdate = i_AllowUpdate;
     }
     
 }

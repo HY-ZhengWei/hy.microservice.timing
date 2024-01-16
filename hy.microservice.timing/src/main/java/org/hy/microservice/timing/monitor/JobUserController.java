@@ -174,31 +174,41 @@ public class JobUserController extends BaseController
                 {
                     return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
                 }
+                
+                // 禁止创建时就删除
+                i_JobUser.setIsDel(null);
             }
             else
             {
                 JobUser v_JobUserExists = this.jobUserService.queryByUserID(i_JobUser.getId());
                 if ( v_JobUserExists == null )
                 {
-                    return v_RetResp.setCode("-202").setMessage("任务责任人ID=" + i_JobUser.getId() + "不存");
+                    return v_RetResp.setCode("-200").setMessage("任务责任人ID=" + i_JobUser.getId() + "不存");
                 }
                 else
                 {
-                    if ( Help.isNull(i_JobUser.getUserName()) )
+                    if ( i_JobUser.getIsDel() != null && i_JobUser.getIsDel() == 1 )
                     {
-                        return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                        // 删除时，不用判定
                     }
-                    
-                    if ( Help.isNull(i_JobUser.getPhone())
-                      && Help.isNull(i_JobUser.getEmail())
-                      && Help.isNull(i_JobUser.getOpenID()) )
+                    else
                     {
-                        return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                        if ( Help.isNull(i_JobUser.getUserName()) )
+                        {
+                            return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                        }
+                        
+                        if ( Help.isNull(i_JobUser.getPhone())
+                          && Help.isNull(i_JobUser.getEmail())
+                          && Help.isNull(i_JobUser.getOpenID()) )
+                        {
+                            return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                        }
+                        
+                        i_JobUser.setPhone( Help.NVL(i_JobUser.getPhone()));
+                        i_JobUser.setEmail( Help.NVL(i_JobUser.getEmail()));
+                        i_JobUser.setOpenID(Help.NVL(i_JobUser.getOpenID()));
                     }
-                    
-                    i_JobUser.setPhone( Help.NVL(i_JobUser.getPhone()));
-                    i_JobUser.setEmail( Help.NVL(i_JobUser.getEmail()));
-                    i_JobUser.setOpenID(Help.NVL(i_JobUser.getOpenID()));
                 }
             }
             

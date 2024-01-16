@@ -24,6 +24,7 @@
                        ,phone
                        ,email
                        ,openID
+                       ,isDel
                        ,createUserID
                        ,updateUserID
                        ,createTime
@@ -35,6 +36,7 @@
                        ,':phone'
                        ,':email'
                        ,':openID'
+                       ,':isDel'
                        ,':createUserID'
                        ,':updateUserID'
                        ,NOW()
@@ -60,6 +62,7 @@
                     <[ ,phone        = ':phone'         ]>
                     <[ ,email        = ':email'         ]>
                     <[ ,openID       = ':openID'        ]>
+                    <[ ,isDel        = ':isDel'         ]>
                  WHERE  id           = ':id'
                 ]]>
             </content>
@@ -106,7 +109,8 @@
                        ,A.createTime
                        ,A.updateTime
                   FROM  TJobUser  A
-            <[   WHERE  A.id = ':id'    ]>
+                 WHERE  A.isDel = 0
+              <[   AND  A.id    = ':id'   ]>
                  ORDER  BY A.userName
                           ,A.createTime
                 ]]>
@@ -138,8 +142,9 @@
                        ,A.updateTime
                   FROM  TJobUser     A
                        ,TJobUserRef  B
-                 WHERE  B.userID = A.id
-                   ANd  B.jobID  = ':id'  
+                 WHERE  A.isDel  = 0
+                   AND  B.userID = A.id
+                   AND  B.jobID  = ':id'  
                  ORDER  BY A.userName
                           ,A.createTime
                 ]]>

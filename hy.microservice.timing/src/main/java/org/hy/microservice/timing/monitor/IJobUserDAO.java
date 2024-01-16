@@ -64,4 +64,19 @@ public interface IJobUserDAO
     @Xsql("XSQL_Timing_JobUser_Query_ByJobID")
     public List<JobUser> queryByJobID(@Xparam("id") String i_JobID);
     
+
+    
+    /**
+     * 新增、修改、逻辑删除任务责任人
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-01-16
+     * @version     v1.0
+     *
+     * @param i_JobUser 任务责任人
+     * @return
+     */
+    @Xsql("GXSQL_Timing_JobUser_Save")
+    public boolean save(JobUser i_JobUser);
+    
 }

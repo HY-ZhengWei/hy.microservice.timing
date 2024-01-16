@@ -55,4 +55,18 @@ public interface IJobUserService
      */
     public List<JobUser> queryByJobID(String i_JobID);
     
+    
+    
+    /**
+     * 新增、修改、逻辑删除任务责任人
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-01-16
+     * @version     v1.0
+     *
+     * @param io_JobUser  定时任务责任人
+     * @return
+     */
+    public JobUser save(JobUser io_JobUser);
+    
 }

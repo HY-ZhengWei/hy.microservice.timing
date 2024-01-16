@@ -127,4 +127,120 @@ public class JobUserController extends BaseController
         }
     }
     
+    
+    
+    /**
+     * 保存任务责任人
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-01-16
+     * @version     v1.0
+     *
+     * @param i_Token
+     * @param i_JobUser
+     * @return
+     */
+    @RequestMapping(name="保存任务责任人" ,value="saveJobUser" ,method={RequestMethod.POST} ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<JobUser> saveJobUser(@RequestParam(value="token" ,required=false) String i_Token
+                                            ,@RequestBody JobUser i_JobUser)
+    {
+        $Logger.info("saveJobUser Start: " + i_Token);
+        
+        BaseResponse<JobUser> v_RetResp = new BaseResponse<JobUser>();
+        
+        if ( i_JobUser == null )
+        {
+            return v_RetResp.setCode("-1").setMessage("未收到任何参数");
+        }
+        
+        try
+        {
+            if ( Help.isNull(i_JobUser.getUserID()) )
+            {
+                return v_RetResp.setCode("-2").setMessage("用户编号为空");
+            }
+            
+            if ( Help.isNull(i_JobUser.getId()) )
+            {
+                if ( Help.isNull(i_JobUser.getUserName()) )
+                {
+                    return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                }
+                
+                if ( Help.isNull(i_JobUser.getPhone())
+                  && Help.isNull(i_JobUser.getEmail())
+                  && Help.isNull(i_JobUser.getOpenID()) )
+                {
+                    return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                }
+            }
+            else
+            {
+                JobUser v_JobUserExists = this.jobUserService.queryByUserID(i_JobUser.getId());
+                if ( v_JobUserExists == null )
+                {
+                    return v_RetResp.setCode("-202").setMessage("任务责任人ID=" + i_JobUser.getId() + "不存");
+                }
+                else
+                {
+                    if ( Help.isNull(i_JobUser.getUserName()) )
+                    {
+                        return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
+                    }
+                    
+                    if ( Help.isNull(i_JobUser.getPhone())
+                      && Help.isNull(i_JobUser.getEmail())
+                      && Help.isNull(i_JobUser.getOpenID()) )
+                    {
+                        return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
+                    }
+                    
+                    i_JobUser.setPhone( Help.NVL(i_JobUser.getPhone()));
+                    i_JobUser.setEmail( Help.NVL(i_JobUser.getEmail()));
+                    i_JobUser.setOpenID(Help.NVL(i_JobUser.getOpenID()));
+                }
+            }
+            
+            if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+            {
+                // 验证票据及用户登录状态
+                if ( Help.isNull(i_Token) )
+                {
+                    return v_RetResp.setCode("-901").setMessage("非法访问");
+                }
+                
+                UserSSO v_User = this.userService.getUser(i_Token);
+                if ( v_User == null )
+                {
+                    return v_RetResp.setCode("-901").setMessage("非法访问");
+                }
+            }
+            
+            synchronized (this)
+            {
+                JobUser v_SaveRet = this.jobUserService.save(i_JobUser);
+                if ( v_SaveRet != null )
+                {
+                    $Logger.info("用户（" + i_JobUser.getCreateUserID() + "）创建成功");
+                    return v_RetResp.setData(v_SaveRet);
+                }
+                else
+                {
+                    $Logger.error("用户（" + Help.NVL(i_JobUser.getCreateUserID() ,i_JobUser.getUserID()) + "）创建" + i_JobUser.getUserName() + "，异常");
+                    return v_RetResp.setCode("-998").setMessage("系统异常");
+                }
+            }
+        }
+        catch (Exception exce)
+        {
+            $Logger.error(exce);
+            return v_RetResp.setCode("-999").setMessage("系统异常，请联系管理员");
+        }
+        finally
+        {
+            $Logger.info("saveJobUser End: "  + i_Token + ": " + v_RetResp.getMessage());
+        }
+    }
+    
 }

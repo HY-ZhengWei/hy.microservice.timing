@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import org.hy.common.Date;
 import org.hy.common.ExpireMap;
 import org.hy.common.Help;
+import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
@@ -108,6 +109,46 @@ public class JobUserService implements IJobUserService ,Serializable
     public List<JobUser> queryByJobID(String i_JobID)
     {
         return this.jobUserDAO.queryByJobID(i_JobID);
+    }
+    
+    
+    
+    /**
+     * 新增、修改、逻辑删除任务责任人
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-01-16
+     * @version     v1.0
+     *
+     * @param io_JobUser  定时任务责任人
+     * @return
+     */
+    @Override
+    public JobUser save(JobUser io_JobUser)
+    {
+        if ( io_JobUser == null )
+        {
+            return null;
+        }
+        
+        if ( Help.isNull(io_JobUser.getId()) )
+        {
+            io_JobUser.setId("JU" + StringHelp.getUUID());
+        }
+        
+        io_JobUser.setCreateUserID(Help.NVL(io_JobUser.getCreateUserID() ,io_JobUser.getUserID()));
+        io_JobUser.setUpdateUserID(Help.NVL(io_JobUser.getUpdateUserID() ,io_JobUser.getUserID()));
+        io_JobUser.setIsDel(       Help.NVL(io_JobUser.getIsDel() ,0));
+        
+        boolean v_Ret = this.jobUserDAO.save(io_JobUser);
+        if ( v_Ret )
+        {
+            return io_JobUser;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     

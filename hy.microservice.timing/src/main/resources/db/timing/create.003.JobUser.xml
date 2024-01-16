@@ -23,6 +23,7 @@
                 ,phone                      VARCHAR(32)                   COMMENT '用户手机号'
                 ,email                      VARCHAR(100)                  COMMENT '用户邮箱'
                 ,openID                     VARCHAR(64)                   COMMENT '用户微信应用ID'
+                ,isDel                      INT           NOT NULL        COMMENT '删除标记。1删除；0未删除'
                 ,createUserID               VARCHAR(64)   NOT NULL        COMMENT '数据创建人ID'
                 ,updateUserID               VARCHAR(64)   NOT NULL        COMMENT '数据修改人ID'
                 ,createTime                 DATETIME      NOT NULL        COMMENT '创建时间'
@@ -32,6 +33,13 @@
                 ALTER TABLE TJobUser ADD CONSTRAINT PK_JobUser PRIMARY KEY (id);/
                 
                 Alter TABLE TJobUser COMMENT                           = '任务责任人';/
+                
+                CREATE TABLE TUpgrade20240116
+                (
+                 id                         VARCHAR(64)   NOT NULL COMMENT '主键'
+                ,createTime                 DATETIME      NOT NULL COMMENT '创建时间'
+                ,updateTime                 DATETIME               COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
                 ]]>
             </content>
             

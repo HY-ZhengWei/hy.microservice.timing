@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.hy.common.Date;
 import org.hy.common.Help;
+import org.hy.common.PartitionMap;
 import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.net.ClientSocketCluster;
@@ -18,6 +19,7 @@ import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.log.Logger;
 import org.hy.common.xml.plugins.analyse.AnalyseBase;
+import org.hy.microservice.common.BaseViewMode;
 import org.hy.microservice.timing.monitor.IJobUserDAO;
 import org.hy.microservice.timing.monitor.JobUser;
 
@@ -142,16 +144,25 @@ public class JobConfigService implements IJobConfigService ,Serializable
     @Override
     public List<JobConfigReport> queryList()
     {
-        List<JobConfigReport>  v_Reports = new ArrayList<JobConfigReport>();
-        Map<String ,Job>       v_JobsMM  = XJava.getObjects(Job.class ,false);
-        List<JobConfig>        v_JobsDB  = this.jobConfigDAO.queryList();
-        Map<String ,JobConfig> v_JobsDM  = null;
+        Date                          v_STime    = new Date();
+        List<JobConfigReport>         v_Reports  = new ArrayList<JobConfigReport>();
+        Map<String ,Job>              v_JobsMM   = XJava.getObjects(Job.class ,false);
+        List<JobConfig>               v_JobsDB   = this.jobConfigDAO.queryList();
+        PartitionMap<String ,JobUser> v_JobsUser = this.jobUserDAO.queryByJobsOnlyHaveID();
+        Map<String ,JobConfig>        v_JobsDM   = null;
+        
+        $Logger.info("查库用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
+        v_STime = new Date();
         
         if ( !Help.isNull(v_JobsDB) )
         {
             v_JobsDM = (Map<String ,JobConfig>) Help.toMap(v_JobsDB ,"code");
         }
         
+        $Logger.info("转换用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
+        v_STime = new Date();
+        
+        long v_TimeLen = 0L;
         for (Entry<String, Job> v_Item : v_JobsMM.entrySet())
         {
             JobConfig v_JobDB = null;
@@ -162,31 +173,25 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 v_JobDB = v_JobsDM.get(v_Item.getKey());
             }
             
+            Date v_TTSTime = new Date();
             JobConfigReport v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
+            v_TimeLen += Date.getNowTime().differ(v_TTSTime);
             if ( v_JobDB != null )
             {
-                v_Report.setJobUsers(this.jobUserDAO.queryByJobID(v_JobDB.getId()));
-                if ( !Help.isNull(v_Report.getJobUsers()) )
-                {
-                    // 除了用户ID保留外，其它均不返回
-                    for (JobUser v_JobUser : v_Report.getJobUsers())
-                    {
-                        v_JobUser.setUserName(null);
-                        v_JobUser.setPhone(null);
-                        v_JobUser.setEmail(null);
-                        v_JobUser.setOpenID(null);
-                        v_JobUser.setCreateTime(null);
-                        v_JobUser.setUpdateTime(null);
-                        v_JobUser.setCreateUserID(null);
-                        v_JobUser.setUpdateUserID(null);
-                    }
-                }
+                v_Report.setJobUsers(v_JobsUser.get(v_JobDB.getId()));
             }
             
             v_Reports.add(v_Report);
         }
         
-        Help.toSort(v_Reports ,"nextTime" ,"lastTime" ,"intervalType" ,"intervalLen NUMASC" ,"jobID");
+        $Logger.info("分片用时：" + v_TimeLen);
+        $Logger.info("处理用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
+        v_STime = new Date();
+        
+        Help.toSort(v_Reports ,"isEnabled DESC" ,"nextTime" ,"lastTime" ,"intervalType" ,"intervalLen NUMASC" ,"jobID");
+        
+        $Logger.info("排序用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
+        v_STime = new Date();
         
         return v_Reports;
     }
@@ -207,10 +212,11 @@ public class JobConfigService implements IJobConfigService ,Serializable
     @Override
     public JobConfigReport toJobConfigReport(Job i_JobMM ,JobConfig i_JobDB)
     {
-        JobConfigReport v_JobReport = new JobConfigReport(i_JobMM.getXJavaID() ,i_JobMM);
+        JobConfigReport v_JobReport = null;
         
         if ( i_JobDB != null )
         {
+            v_JobReport = new JobConfigReport(i_JobMM.getXJavaID() ,i_JobMM ,i_JobDB.getIsEnabled() == 1);
             v_JobReport.setReadOnly(false);
             v_JobReport.setId(               i_JobDB.getId());
             v_JobReport.setCode(             i_JobDB.getCode());
@@ -232,6 +238,11 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setStartTimes(       i_JobDB.toStartTimes());
         }
         
+        if ( v_JobReport == null )
+        {
+            v_JobReport = new JobConfigReport(i_JobMM.getXJavaID() ,i_JobMM ,true);
+        }
+        
         if ( v_JobReport.getReadOnly() )
         {
             v_JobReport.setCode(             i_JobMM.getCode());
@@ -248,7 +259,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setCreateUserID(     "msTiming");
             v_JobReport.setUpdateUserID(     "msTiming");
             v_JobReport.setUserID(           "msTiming");
-            v_JobReport.setCreateTime(       new Date(this.analyseBase.analyseCluster_Info().getStartTime()));
+            v_JobReport.setCreateTime(       BaseViewMode.$StartupTime);
             v_JobReport.setStartTimes(       i_JobMM.getStartTimes());
         }
         
@@ -355,7 +366,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
         boolean v_IsNew = false;
         if ( Help.isNull(io_JobConfig.getId()) )
         {
-            io_JobConfig.setId(StringHelp.getUUID());
+            io_JobConfig.setId("JC" + StringHelp.getUUID());
             v_IsNew = true;
         }
         

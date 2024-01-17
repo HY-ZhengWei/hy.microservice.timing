@@ -31,6 +31,9 @@ public class JobUser extends BaseViewMode
     /** 用户微信应用ID */
     private String  openID;
     
+    /** 关键的任务ID */
+    private String  jobID;
+    
     
     
     /**
@@ -110,6 +113,26 @@ public class JobUser extends BaseViewMode
     public void setOpenID(String i_OpenID)
     {
         this.openID = i_OpenID;
+    }
+
+    
+    /**
+     * 获取：关键的任务ID
+     */
+    public String getJobID()
+    {
+        return jobID;
+    }
+
+    
+    /**
+     * 设置：关键的任务ID
+     * 
+     * @param i_JobID 关键的任务ID
+     */
+    public void setJobID(String i_JobID)
+    {
+        this.jobID = i_JobID;
     }
     
 }

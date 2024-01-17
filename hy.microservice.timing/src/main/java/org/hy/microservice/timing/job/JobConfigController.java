@@ -254,70 +254,14 @@ public class JobConfigController extends BaseController
                     {
                         if ( Help.isNull(v_JobUser.getId()) )
                         {
-                            if ( Help.isNull(v_JobUser.getUserName()) )
-                            {
-                                return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
-                            }
-                            
-                            if ( Help.isNull(v_JobUser.getPhone())
-                              && Help.isNull(v_JobUser.getEmail())
-                              && Help.isNull(v_JobUser.getOpenID()) )
-                            {
-                                return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
-                            }
-                            
-                            v_JobUser.setId(StringHelp.getUUID());
-                        }
-                        else
-                        {
-                            JobUser v_JobUserExists = this.jobUserService.queryByUserID(v_JobUser.getId());
-                            if ( v_JobUserExists == null )
-                            {
-                                return v_RetResp.setCode("-202").setMessage("任务责任人ID=" + v_JobUser.getId() + "不存");
-                            }
-                            else
-                            {
-                                // 判定责任人是否有改变
-                                if ( !Help.isNull(v_JobUser.getUserName()) && !v_JobUser.getUserName().equals(v_JobUserExists.getUserName()) )
-                                {
-                                    v_JobUser.setAllowUpdate(1);
-                                }
-                                else if ( !Help.isNull(v_JobUser.getPhone()) && !v_JobUser.getPhone().equals(v_JobUserExists.getPhone()) )
-                                {
-                                    v_JobUser.setAllowUpdate(1);
-                                }
-                                else if ( !Help.isNull(v_JobUser.getEmail()) && !v_JobUser.getEmail().equals(v_JobUserExists.getEmail()) )
-                                {
-                                    v_JobUser.setAllowUpdate(1);
-                                }
-                                else if ( !Help.isNull(v_JobUser.getOpenID()) && !v_JobUser.getOpenID().equals(v_JobUserExists.getOpenID()) )
-                                {
-                                    v_JobUser.setAllowUpdate(1);
-                                }
-                                
-                                if ( v_JobUser.getAllowUpdate().equals(1) )
-                                {
-                                    if ( Help.isNull(v_JobUser.getUserName()) )
-                                    {
-                                        return v_RetResp.setCode("-201").setMessage("任务责任人名称为空");
-                                    }
-                                    
-                                    if ( Help.isNull(v_JobUser.getPhone())
-                                      && Help.isNull(v_JobUser.getEmail())
-                                      && Help.isNull(v_JobUser.getOpenID()) )
-                                    {
-                                        return v_RetResp.setCode("-202").setMessage("任务责任人手机、邮箱、微信均为空");
-                                    }
-                                    
-                                    v_JobUser.setPhone( Help.NVL(v_JobUser.getPhone()));
-                                    v_JobUser.setEmail( Help.NVL(v_JobUser.getEmail()));
-                                    v_JobUser.setOpenID(Help.NVL(v_JobUser.getOpenID()));
-                                }
-                            }
+                            return v_RetResp.setCode("-201").setMessage("任务责任人ID为空");
                         }
                         
-                        v_JobUser.setCreateUserID(i_JobConfig.getUserID());
-                        v_JobUser.setUpdateUserID(i_JobConfig.getUserID());
+                        JobUser v_JobUserExists = this.jobUserService.queryByUserID(v_JobUser.getId());
+                        if ( v_JobUserExists == null )
+                        {
+                            return v_RetResp.setCode("-202").setMessage("任务责任人ID=" + v_JobUser.getId() + "不存");
+                        }
                     }
                 }
                 else
@@ -513,7 +457,7 @@ public class JobConfigController extends BaseController
             v_JobMM.execute();
             
             // 异步执行时，未得到执行结果就返回了。稍稍等一下，能等到就等到结果，等不到结果也返回
-            Thread.sleep(3000);
+            Thread.sleep(5000);
             
             return v_RetResp.setData(this.jobConfigService.toJobConfigReport(v_JobMM ,v_JobDB));
         }

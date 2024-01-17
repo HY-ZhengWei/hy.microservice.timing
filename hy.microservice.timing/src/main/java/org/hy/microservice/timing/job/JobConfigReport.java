@@ -93,11 +93,11 @@ public class JobConfigReport extends JobReport
     
     
     
-    public JobConfigReport(String i_JobID ,Job i_Job)
+    public JobConfigReport(String i_JobID ,Job i_Job ,Boolean i_IsAddJobs)
     {
-        super(i_JobID ,i_Job);
-        this.readOnly  = true;
-        this.isEnabled = 1;
+        super(i_JobID ,i_Job ,i_IsAddJobs);
+        this.setReadOnly (true);
+        this.setIsEnabled(1);
     }
     
     

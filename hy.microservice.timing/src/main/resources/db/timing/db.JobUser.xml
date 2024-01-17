@@ -140,17 +140,49 @@
                        ,A.updateUserID
                        ,A.createTime
                        ,A.updateTime
+                       ,B.jobID
                   FROM  TJobUser     A
                        ,TJobUserRef  B
                  WHERE  A.isDel  = 0
                    AND  B.userID = A.id
-                   AND  B.jobID  = ':id'  
+             <[    AND  B.jobID  = ':jobID'    ]>
                  ORDER  BY A.userName
                           ,A.createTime
                 ]]>
             </content>
             
             <result>
+                <table>org.hy.common.TablePartition</table>
+                <fill>putRow(row.jobID ,row)</fill>
+                <row>org.hy.microservice.timing.monitor.JobUser</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobUser_Query_OnlyHaveID"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,B.jobID
+                  FROM  TJobUser     A
+                       ,TJobUserRef  B
+                 WHERE  A.isDel  = 0
+                   AND  B.userID = A.id
+             <[    AND  B.jobID  = ':jobID'    ]>
+                 ORDER  BY A.userName
+                          ,A.createTime
+                ]]>
+            </content>
+            
+            <result>
+                <table>org.hy.common.TablePartition</table>
+                <fill>putRow(row.jobID ,row)</fill>
                 <row>org.hy.microservice.timing.monitor.JobUser</row>
                 <cfill>setter(colValue)</cfill>
             </result>

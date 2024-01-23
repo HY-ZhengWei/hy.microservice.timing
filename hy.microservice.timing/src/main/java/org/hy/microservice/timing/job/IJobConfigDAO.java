@@ -53,6 +53,21 @@ public interface IJobConfigDAO
     
     
     /**
+     * 查询任务配置信息列表
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-01-23
+     * @version     v1.0
+     * 
+     * @param i_JobConfig  任务配置信息
+     * @return
+     */
+    @Xsql("XSQL_Timing_JobConfig_Query")
+    public List<JobConfig> queryList(JobConfig i_JobConfig);
+    
+    
+    
+    /**
      * 按ID或Code查询任务配置信息
      * 
      * @author      ZhengWei(HY)

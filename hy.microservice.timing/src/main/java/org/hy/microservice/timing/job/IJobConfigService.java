@@ -40,9 +40,10 @@ public interface IJobConfigService
      * @createDate  2023-09-12
      * @version     v1.0
      *
+     * @param i_JobConfig  任务配置信息
      * @return
      */
-    public List<JobConfigReport> queryList();
+    public List<JobConfigReport> queryList(JobConfig i_JobConfig);
     
     
     

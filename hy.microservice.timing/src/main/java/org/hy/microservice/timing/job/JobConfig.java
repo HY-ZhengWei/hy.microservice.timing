@@ -25,36 +25,39 @@ public class JobConfig extends Job
 {
     
     /** 主键 */
-    private String  id;
+    private String             id;
+    
+    /** 项目ID */
+    private String             projectID;
     
     /** 旧的任务编号(即Job自身的旧XJavaID) */
-    private String  codeOld;
+    private String             codeOld;
     
     /** 用户编号 */
-    private String  userID;
+    private String             userID;
     
     /** 用户名称 */
-    private String  userName;
+    private String             userName;
     
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
-    private Date    createTime;
+    private Date               createTime;
     
     /** 修改时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
-    private Date    updateTime;
+    private Date               updateTime;
     
     /** 创建人编号 */
-    private String  createUserID;
+    private String             createUserID;
     
     /** 修改者编号 */
-    private String  updateUserID;
+    private String             updateUserID;
     
     /** 是否启用。1启用；0停用 */
-    private Integer isEnabled;
+    private Integer            isEnabled;
     
     /** 删除标记。1删除；0未删除 */
-    private Integer isDel;
+    private Integer            isDel;
     
     /** 任务开始时间组 */
     private List<JobStartTime> jobStartTimes;
@@ -444,6 +447,26 @@ public class JobConfig extends Job
     public void setJobUsers(List<JobUser> i_JobUsers)
     {
         this.jobUsers = i_JobUsers;
+    }
+
+    
+    /**
+     * 获取：项目ID
+     */
+    public String getProjectID()
+    {
+        return projectID;
+    }
+
+    
+    /**
+     * 设置：项目ID
+     * 
+     * @param i_ProjectID 项目ID
+     */
+    public void setProjectID(String i_ProjectID)
+    {
+        this.projectID = i_ProjectID;
     }
 
 

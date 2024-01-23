@@ -20,6 +20,7 @@
                 (
                  id                         VARCHAR(64)   NOT NULL        COMMENT '主键'
                 ,code                       VARCHAR(200)  NOT NULL        COMMENT '任务编号'
+                ,projectID                  VARCHAR(64)                   COMMENT '项目ID'
                 ,name                       VARCHAR(500)                  COMMENT '任务名称'
                 ,intervalType               INT           NOT NULL        COMMENT '间隔类型'
                 ,intervalLen                INT           NOT NULL        COMMENT '间隔长度'
@@ -41,6 +42,13 @@
                 ALTER TABLE TJobConfig ADD CONSTRAINT PK_JobConfig PRIMARY KEY (id);/
                 
                 Alter TABLE TJobConfig COMMENT                           = '任务配置';/
+                
+                CREATE TABLE TUpgrade20240123
+                (
+                 id                         VARCHAR(64)   NOT NULL COMMENT '主键'
+                ,createTime                 DATETIME      NOT NULL COMMENT '创建时间'
+                ,updateTime                 DATETIME               COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
                 ]]>
             </content>
             

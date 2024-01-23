@@ -28,6 +28,9 @@ public class JobConfigReport extends JobReport
     /** 主键 */
     private String  id;
     
+    /** 项目ID */
+    private String  projectID;
+    
     /** 任务编号 */
     private String  code;
     
@@ -558,6 +561,26 @@ public class JobConfigReport extends JobReport
     public void setJobUsers(List<JobUser> i_JobUsers)
     {
         this.jobUsers = i_JobUsers;
+    }
+
+    
+    /**
+     * 获取：项目ID
+     */
+    public String getProjectID()
+    {
+        return projectID;
+    }
+
+    
+    /**
+     * 设置：项目ID
+     * 
+     * @param i_ProjectID 项目ID
+     */
+    public void setProjectID(String i_ProjectID)
+    {
+        this.projectID = i_ProjectID;
     }
     
 }

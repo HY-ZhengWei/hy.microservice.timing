@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hy.common.Date;
 import org.hy.common.Help;
 import org.hy.common.PartitionMap;
 import org.hy.common.StringHelp;
@@ -138,31 +137,24 @@ public class JobConfigService implements IJobConfigService ,Serializable
      * @createDate  2023-09-12
      * @version     v1.0
      *
+     * @param i_JobConfig  任务配置信息
      * @return
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<JobConfigReport> queryList()
+    public List<JobConfigReport> queryList(JobConfig i_JobConfig)
     {
-        Date                          v_STime    = new Date();
         List<JobConfigReport>         v_Reports  = new ArrayList<JobConfigReport>();
         Map<String ,Job>              v_JobsMM   = XJava.getObjects(Job.class ,false);
-        List<JobConfig>               v_JobsDB   = this.jobConfigDAO.queryList();
+        List<JobConfig>               v_JobsDB   = this.jobConfigDAO.queryList(i_JobConfig);
         PartitionMap<String ,JobUser> v_JobsUser = this.jobUserDAO.queryByJobsOnlyHaveID();
         Map<String ,JobConfig>        v_JobsDM   = null;
-        
-        $Logger.info("查库用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
-        v_STime = new Date();
         
         if ( !Help.isNull(v_JobsDB) )
         {
             v_JobsDM = (Map<String ,JobConfig>) Help.toMap(v_JobsDB ,"code");
         }
         
-        $Logger.info("转换用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
-        v_STime = new Date();
-        
-        long v_TimeLen = 0L;
         for (Entry<String, Job> v_Item : v_JobsMM.entrySet())
         {
             JobConfig v_JobDB = null;
@@ -173,9 +165,16 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 v_JobDB = v_JobsDM.get(v_Item.getKey());
             }
             
-            Date v_TTSTime = new Date();
+            if ( i_JobConfig != null && !Help.isNull(i_JobConfig.getProjectID()) )
+            {
+                if ( v_JobDB == null )
+                {
+                    // 不用再判定数据库中的查询结果了，因为已在SQL条件中过滤了
+                    continue;
+                }
+            }
+            
             JobConfigReport v_Report = this.toJobConfigReport(v_JobMM ,v_JobDB);
-            v_TimeLen += Date.getNowTime().differ(v_TTSTime);
             if ( v_JobDB != null )
             {
                 v_Report.setJobUsers(v_JobsUser.get(v_JobDB.getId()));
@@ -184,14 +183,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_Reports.add(v_Report);
         }
         
-        $Logger.info("分片用时：" + v_TimeLen);
-        $Logger.info("处理用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
-        v_STime = new Date();
-        
         Help.toSort(v_Reports ,"isEnabled DESC" ,"nextTime" ,"lastTime" ,"intervalType" ,"intervalLen NUMASC" ,"jobID");
-        
-        $Logger.info("排序用时：" + Date.toTimeLen(Date.getNowTime().differ(v_STime)));
-        v_STime = new Date();
         
         return v_Reports;
     }
@@ -220,6 +212,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setReadOnly(false);
             v_JobReport.setId(               i_JobDB.getId());
             v_JobReport.setCode(             i_JobDB.getCode());
+            v_JobReport.setProjectID(        i_JobDB.getProjectID());
             v_JobReport.setName(             i_JobDB.getName());
             v_JobReport.setIntervalTypeValue(i_JobDB.getIntervalType());
             v_JobReport.setXid(              i_JobDB.getXid());
@@ -247,6 +240,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
         {
             v_JobReport.setCode(             i_JobMM.getCode());
             v_JobReport.setName(             i_JobMM.getName());
+            v_JobReport.setProjectID(        "");
             v_JobReport.setIntervalTypeValue(i_JobMM.getIntervalType());
             v_JobReport.setXid(              i_JobMM.getXid());
             v_JobReport.setMethodName(       i_JobMM.getMethodName());

@@ -1,5 +1,8 @@
 package org.hy.microservice.timing.monitor;
 
+import java.nio.file.FileStore;
+import java.nio.file.FileSystems;
+
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.plugins.analyse.data.ClusterReport;
 
@@ -19,6 +22,16 @@ public class JU_TooManyOpenFiles
         {
             System.out.println("x=" + x);
             v_ClusterReport.calcLinuxDiskUseRate();
+        }
+    }
+    
+    
+    
+    public void test02()
+    {
+        for (FileStore v_Item : FileSystems.getDefault().getFileStores())
+        {
+            System.out.println(v_Item);
         }
     }
     

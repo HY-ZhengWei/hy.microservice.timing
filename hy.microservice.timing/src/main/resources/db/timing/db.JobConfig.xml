@@ -20,6 +20,7 @@
                 INSERT  INTO TJobConfig
                        (
                         id
+                       ,projectID
                        ,code
                        ,name
                        ,intervalType
@@ -40,6 +41,7 @@
                        )
                 VALUES (
                         ':Job.id'
+                       ,':Job.projectID'
                        ,':Job.code'
                        ,':Job.name'
                        ,':Job.intervalType'
@@ -75,6 +77,7 @@
                    SET  updateTime     = NOW()
                        ,updateUserID   = ':Job.updateUserID'
                     <[ ,code           = ':Job.code'             ]>
+                    <[ ,projectID      = ':Job.projectID'        ]>
                     <[ ,name           = ':Job.name'             ]>
                     <[ ,intervalType   = ':Job.intervalType'     ]>
                     <[ ,intervalLen    = ':Job.intervalLen'      ]>
@@ -125,6 +128,7 @@
                 <![CDATA[
                 SELECT  A.id
                        ,A.code
+                       ,A.projectID
                        ,A.name
                        ,A.intervalType
                        ,A.intervalLen
@@ -144,9 +148,10 @@
                        ,A.updateTime
                   FROM  TJobConfig          A
                   LEFT  JOIN TJobStartTime  B ON A.id = B.jobID
-                 WHERE  A.isDel = 0
-              <[   AND  A.id    = ':id'    ]>
-              <[   AND  A.code  = ':code'  ]>
+                 WHERE  A.isDel     = 0
+              <[   AND  A.id        = ':id'         ]>
+              <[   AND  A.code      = ':code'       ]>
+              <[   AND  A.projectID = ':projectID'  ]>
                  ORDER  BY A.id
                 ]]>
             </content>

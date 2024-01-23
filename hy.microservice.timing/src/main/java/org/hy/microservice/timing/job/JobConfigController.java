@@ -373,7 +373,7 @@ public class JobConfigController extends BaseController
             }
             else
             {
-                return v_RetResp.setData(this.jobConfigService.queryList());
+                return v_RetResp.setData(this.jobConfigService.queryList(i_JobConfig));
             }
         }
         catch (Exception exce)

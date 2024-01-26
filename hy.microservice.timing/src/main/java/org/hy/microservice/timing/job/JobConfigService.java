@@ -180,6 +180,8 @@ public class JobConfigService implements IJobConfigService ,Serializable
                 v_Report.setJobUsers(v_JobsUser.get(v_JobDB.getId()));
             }
             
+            // 为了网络传输性能，查询列表时，不传输日志
+            v_Report.setRunLogs(null);
             v_Reports.add(v_Report);
         }
         
@@ -373,21 +375,28 @@ public class JobConfigService implements IJobConfigService ,Serializable
         boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes() ,io_JobConfig.getJobUsers());
         if ( v_Ret )
         {
+            JobConfig v_JobDB = null;
+            
             if ( io_JobConfig.getIsDel().equals(0) )
             {
-                try
+                do
                 {
-                    Thread.sleep(3000);
+                    try
+                    {
+                        Thread.sleep(1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // Nothing.
+                    }
+                    
+                    v_JobDB = this.queryByCode(io_JobConfig.getCode());
                 }
-                catch (InterruptedException e)
-                {
-                    // Nothing.
-                }
+                while ( v_JobDB == null );
             }
             
-            JobConfig v_JobDB = this.queryByCode(io_JobConfig.getCode());
-            Jobs      v_Jobs  = (Jobs) XJava.getObject("JOBS_MS_Common");
-            Job       v_Job   = null;
+            Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
+            Job  v_Job  = null;
             if ( v_JobDB != null )
             {
                 v_JobDB.setStartTimes(v_JobDB.toStartTimes());

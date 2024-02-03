@@ -39,12 +39,28 @@ public interface IJobConfigDAO
     
     
     /**
+     * 查询本地任务配置信息列表
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-02-02
+     * @version     v1.0
+     * 
+     * @param i_JobConfig  任务配置信息
+     * @return
+     */
+    @Xsql("XSQL_Timing_JobConfig_Query_ByLocal")
+    public List<JobConfig> queryListByLocal(JobConfig i_JobConfig);
+    
+    
+    
+    /**
      * 查询任务配置信息列表
      * 
      * @author      ZhengWei(HY)
      * @createDate  2023-09-12
      * @version     v1.0
      * 
+
      * @return
      */
     @Xsql("XSQL_Timing_JobConfig_Query")
@@ -79,6 +95,21 @@ public interface IJobConfigDAO
      */
     @Xsql(id="XSQL_Timing_JobConfig_Query" ,returnOne=true)
     public JobConfig queryByIDCode(JobConfig i_JobConfig);
+    
+    
+    
+    /**
+     * 更新本机定时任务的XID
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-02-02
+     * @version     v1.0
+     *
+     * @param i_JobConfig
+     * @return
+     */
+    @Xsql("XSQL_Timing_JobConfig_Update_ByLocal")
+    public int updateXIDByLocal(JobConfig i_JobConfig);
     
     
     

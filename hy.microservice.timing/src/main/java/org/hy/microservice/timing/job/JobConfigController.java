@@ -132,11 +132,6 @@ public class JobConfigController extends BaseController
                         return v_RetResp.setCode("-14").setMessage("被执行任务对象的方法名为空");
                     }
                     
-                    if ( Help.isNull(i_JobConfig.getMethodName()) )
-                    {
-                        return v_RetResp.setCode("-14").setMessage("被执行任务对象的方法名为空");
-                    }
-                    
                     if ( Help.isNull(i_JobConfig.getName()) && Help.isNull(i_JobConfig.getComment()) )
                     {
                         return v_RetResp.setCode("-15").setMessage("任务名称和备注至少填写一个");
@@ -170,6 +165,9 @@ public class JobConfigController extends BaseController
                     i_JobConfig.setIsDel(null);
                     i_JobConfig.setCreateUserID(i_JobConfig.getUserID());
                     i_JobConfig.setUpdateUserID(i_JobConfig.getUserID());
+                    i_JobConfig.setCode(        i_JobConfig.getCode().trim());
+                    i_JobConfig.setXid(         i_JobConfig.getXid().trim());
+                    i_JobConfig.setMethodName(  i_JobConfig.getMethodName().trim());
                 }
                 // 更新的验证
                 else
@@ -188,6 +186,16 @@ public class JobConfigController extends BaseController
                     if ( i_JobConfig.getIntervalLen() <= 0 )
                     {
                         return v_RetResp.setCode("-12").setMessage("间隔长度为空");
+                    }
+                    
+                    if ( !Help.isNull(i_JobConfig.getXid()) )
+                    {
+                        i_JobConfig.setXid(i_JobConfig.getXid().trim());
+                    }
+                    
+                    if ( !Help.isNull(i_JobConfig.getMethodName()) )
+                    {
+                        i_JobConfig.setMethodName(i_JobConfig.getMethodName().trim());
                     }
                     
                     if ( i_JobConfig.getIsEnabled() == null )
@@ -220,6 +228,7 @@ public class JobConfigController extends BaseController
                     
                     if ( !Help.isNull(i_JobConfig.getCode()) )
                     {
+                        i_JobConfig.setCode(i_JobConfig.getCode().trim());
                         if ( !v_OldJobConfig.getCode().equals(i_JobConfig.getCode()) )
                         {
                             // 防止重复

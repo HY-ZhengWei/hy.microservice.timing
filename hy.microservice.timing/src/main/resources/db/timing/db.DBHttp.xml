@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据Http请求的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_DBHttp_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <contentDB>
+                <defaultNull>true</defaultNull>
+            </contentDB>
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TDBHttp
+                       (
+                        id
+                       ,xid
+                       ,protocol
+                       ,ip
+                       ,port
+                       ,url
+                       ,requestType
+                       ,contentType
+                       ,charset
+                       ,connectTimeout
+                       ,readTimeout
+                       ,proxyHost
+                       ,proxyPort
+                       ,encodeType
+                       ,projectID
+                       ,comment
+                       ,isDel
+                       ,createUserID
+                       ,updateUserID
+                       ,createTime
+                       ,updateTime
+                       )
+                VALUES (
+                        ':Http.id'
+                       ,':Http.xid'
+                       ,':Http.protocol'
+                       ,':Http.ip'
+                       ,':Http.port'
+                       ,':Http.url'
+                       ,':Http.requestType'
+                       ,':Http.contentType'
+                       ,':Http.charset'
+                       ,':Http.connectTimeout'
+                       ,':Http.readTimeout'
+                       ,':Http.proxyHost'
+                       , :Http.proxyPort
+                       ,':Http.encodeType'
+                       ,':Http.projectID'
+                       ,':Http.comment'
+                       ,':Http.isDel'
+                       ,':Http.createUserID'
+                       ,':Http.updateUserID'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DBHttp_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  TDBHttp
+                   SET  updateTime     = NOW()
+                       ,updateUserID   = ':Http.updateUserID'
+                    <[ ,xid            = ':Http.xid'             ]>
+                    <[ ,protocol       = ':Http.protocol'        ]>
+                    <[ ,ip             = ':Http.ip'              ]>
+                    <[ ,port           = ':Http.port'            ]>
+                    <[ ,url            = ':Http.url'             ]>
+                    <[ ,requestType    = ':Http.requestType'     ]>
+                    <[ ,contentType    = ':Http.contentType'     ]>
+                    <[ ,charset        = ':Http.charset'         ]>
+                    <[ ,connectTimeout = ':Http.connectTimeout'  ]>
+                    <[ ,readTimeout    = ':Http.readTimeout'     ]>
+                    <[ ,proxyHost      = ':Http.proxyHost'       ]>
+                    <[ ,proxyPort      = ':Http.proxyPort'       ]>
+                    <[ ,encodeType     = ':Http.encodeType'      ]>
+                    <[ ,projectID      = ':Http.projectID'       ]>
+                    <[ ,comment        = ':Http.comment'         ]>
+                    <[ ,isDel          = ':Http.isDel'           ]>
+                 WHERE  id             = ':Http.id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DBHttp_IsExists"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  COUNT(1) AS Http_IsExists
+                  FROM  TDBHttp
+                 WHERE  id = ':Http.id'
+                ]]>
+            </content>
+            
+            <result>
+                <row>java.util.HashMap</row>
+                <cfill>put(colName ,colValue)</cfill>
+                <cstyle>UPPER</cstyle>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DBHttp_Query"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.xid
+                       ,A.protocol
+                       ,A.ip
+                       ,A.port
+                       ,A.url
+                       ,A.requestType
+                       ,A.contentType
+                       ,A.charset
+                       ,A.connectTimeout
+                       ,A.readTimeout
+                       ,A.proxyHost
+                       ,A.proxyPort
+                       ,A.encodeType
+                       ,A.projectID
+                       ,A.comment
+                       ,A.isDel
+                       ,A.createUserID
+                       ,A.updateUserID
+                       ,A.createTime
+                       ,A.updateTime
+                       ,B.httpID          AS "httpParams.httpID"
+                       ,B.paramName       AS "httpParams.paramName"
+                       ,B.paramValue      AS "httpParams.paramValue"
+                       ,B.comment         AS "httpParams.comment"
+                       ,B.createUserID    AS "httpParams.createUserID"
+                       ,B.createTime      AS "httpParams.createTime"
+                  FROM  TDBHttp            A
+                  LEFT  JOIN TDBHttpParam  B ON A.id = B.httpID
+                 WHERE  A.isDel     = 0
+              <[   AND  A.id        = ':id'         ]>
+              <[   AND  A.xid       = ':xid'        ]>
+              <[   AND  A.projectID = ':projectID'  ]>
+                 ORDER  BY A.xid
+                          ,B.paramName
+                ]]>
+            </content>
+            
+            <result>
+                <table>java.util.LinkedHashMap</table>
+                <fill>put(row.id ,row)</fill>
+                <row>org.hy.microservice.timing.http.DBHttp</row>
+                <cfill>setter(colValue)</cfill>
+                <relationKeys>id</relationKeys>
+            </result>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

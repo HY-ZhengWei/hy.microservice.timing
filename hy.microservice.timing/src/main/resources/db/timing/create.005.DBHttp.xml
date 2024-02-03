@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据Http请求的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_DBHttp">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TDBHttp
+                (
+                 id                         VARCHAR(64)   NOT NULL  COMMENT '主键'
+                ,xid                        VARCHAR(64)   NOT NULL  COMMENT '逻辑ID'
+                ,protocol                   VARCHAR(10)   NOT NULL  COMMENT '协议类型'
+                ,ip                         VARCHAR(200)  NOT NULL  COMMENT '域名'
+                ,port                       INT           NOT NULL  COMMENT '端口'
+                ,url                        VARCHAR(4000) NOT NULL  COMMENT '资源地址'
+                ,requestType                INT           NOT NULL  COMMENT '访问方式'
+                ,contentType                VARCHAR(100)  NOT NULL  COMMENT '资源类型'
+                ,charset                    VARCHAR(20)   NOT NULL  COMMENT '字符名称'
+                ,connectTimeout             INT           NOT NULL  COMMENT '连接超时'
+                ,readTimeout                INT           NOT NULL  COMMENT '读取超时'
+                ,proxyHost                  VARCHAR(100)            COMMENT '代理域名'
+                ,proxyPort                  INT                     COMMENT '代理端口'
+                ,encodeType                 INT           NOT NULL  COMMENT '转义类型'
+                ,projectID                  VARCHAR(64)             COMMENT '项目ID'
+                ,comment                    VARCHAR(4000)           COMMENT '注释说明'
+                ,isDel                      INT           NOT NULL  COMMENT '删除标记。1删除；0未删除'
+                ,createUserID               VARCHAR(64)   NOT NULL  COMMENT '数据创建人ID'
+                ,updateUserID               VARCHAR(64)   NOT NULL  COMMENT '数据修改人ID'
+                ,createTime                 DATETIME      NOT NULL  COMMENT '创建时间'
+                ,updateTime                 DATETIME      NOT NULL  COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TDBHttp ADD CONSTRAINT PK_DBHttp PRIMARY KEY (id);/
+                
+                ALTER TABLE TDBHttp COMMENT                           = '数据Http请求';/
+                
+                CREATE INDEX IDX_DBHttp_xid ON TDBHttp (xid);/
+                ]]>
+            </content>
+            
+            <comment>数据Http请求</comment>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TDBHttp</create>
+            
+        </sql>
+        
+    </sqls>
+
+</config>

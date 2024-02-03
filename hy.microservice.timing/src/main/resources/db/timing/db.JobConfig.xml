@@ -98,6 +98,26 @@
         
         
         
+        <sql id="XSQL_Timing_JobConfig_Update_ByLocal"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  TJobConfig
+                   SET  updateTime   = NOW()
+                       ,xid          = ':xid'
+                 WHERE (cloudServer IS NULL
+                    OR  cloudServer  = '')
+                   AND  xid          = ':xidOld'
+              <[   AND  projectID    = ':projectID'  ]>
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
         <sql id="XSQL_Timing_JobConfig_IsExists"> 
         
             <dataSourceGroup ref="DSG_MS_Timing" />
@@ -152,6 +172,53 @@
               <[   AND  A.id        = ':id'         ]>
               <[   AND  A.code      = ':code'       ]>
               <[   AND  A.projectID = ':projectID'  ]>
+                 ORDER  BY A.id
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.timing.job.JobConfig</row>
+                <cfill>setter(colValue)</cfill>
+                <relationKeys>id</relationKeys>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobConfig_Query_ByLocal"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.code
+                       ,A.projectID
+                       ,A.name
+                       ,A.intervalType
+                       ,A.intervalLen
+                       ,B.startTime       AS "jobStartTimes.startTime"
+                       ,A.xid
+                       ,A.methodName
+                       ,A.cloudServer     AS cloudServerHost
+                       ,A.`condition`
+                       ,A.tryMaxCount
+                       ,A.tryIntervalLen
+                       ,A.comment
+                       ,A.isEnabled
+                       ,A.isDel
+                       ,A.createUserID
+                       ,A.updateUserID  
+                       ,A.createTime
+                       ,A.updateTime
+                  FROM  TJobConfig          A
+                  LEFT  JOIN TJobStartTime  B ON A.id = B.jobID
+                 WHERE  A.isDel        = 0
+                   AND (A.cloudServer IS NULL
+                    OR  A.cloudServer  = '')
+              <[   AND  A.xid          = ':xid'        ]>
+              <[   AND  A.projectID    = ':projectID'  ]>
                  ORDER  BY A.id
                 ]]>
             </content>

@@ -2,6 +2,7 @@ package org.hy.microservice.timing.config;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hy.common.Execute;
 import org.hy.common.Help;
@@ -10,6 +11,9 @@ import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
+import org.hy.microservice.timing.http.DBHttp;
+import org.hy.microservice.timing.http.IDBHttpCache;
+import org.hy.microservice.timing.http.IDBHttpService;
 import org.hy.microservice.timing.job.IJobConfigDAO;
 import org.hy.microservice.timing.job.JobConfig;
 
@@ -29,7 +33,13 @@ public class TimingInit
 {
     
     @Xjava
-    private IJobConfigDAO jobConfigDAO;
+    private IJobConfigDAO  jobConfigDAO;
+    
+    @Xjava
+    private IDBHttpService dbHttpService;
+    
+    @Xjava
+    private IDBHttpCache   dbHttpCache;
     
     
     
@@ -49,7 +59,33 @@ public class TimingInit
         
         this.init_ClusterServers();
         
+        Map<String ,DBHttp> v_DBHttps = this.dbHttpService.queryList();
+        this.loadDBHttp(v_DBHttps);
+        
         new Execute(this ,"addJobs").start();
+    }
+    
+    
+    
+    /**
+     * 加载&初始化数据请求
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2023-10-25
+     * @version     v1.0
+     *
+     */
+    private void loadDBHttp(Map<String ,DBHttp> i_DBHttps)
+    {
+        if ( Help.isNull(i_DBHttps) )
+        {
+            return;
+        }
+        
+        for (DBHttp v_DBHttp : i_DBHttps.values())
+        {
+            this.dbHttpCache.refreshXJava(v_DBHttp);
+        }
     }
     
     

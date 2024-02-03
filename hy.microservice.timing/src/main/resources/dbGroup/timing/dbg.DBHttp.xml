@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据Http请求的相关SQL组 -->
+    <sqls>
+        
+        <sqlGroup id="GXSQL_Timing_DBHttp_Save">
+            <comment>保存数据Http请求，确保数据的一致性</comment>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_DBHttp_IsExists" />
+                <type ref="this.$Type_Query" />
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_DBHttp_Insert" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:Http_IsExists <= 0]]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_DBHttp_Update" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:Http_IsExists >= 1]]></condition>
+            </sqlNode>
+            
+            <!-- 数据Http请求参数 -->
+            <sqlNode>
+                <sql  ref="XSQL_Timing_DBHttpParam_Delete" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:Http.isDel == 0]]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_Timing_DBHttpParam_Insert" />
+                <type ref="this.$Type_CollectionToExecuteUpdate" />
+                <collectionID>HttpParams</collectionID>
+                <condition><![CDATA[:Http.isDel == 0]]></condition>
+            </sqlNode>
+        </sqlGroup>
+        
+    </sqls>
+    
+</config>

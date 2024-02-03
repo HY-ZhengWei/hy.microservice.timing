@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据Http请求参数的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_DBHttpParam_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TDBHttpParam
+                       (
+                        httpID   
+                       ,paramName    
+                       ,paramValue 
+                       ,comment     
+                       ,createUserID
+                       ,createTime  
+                       )
+                VALUES (
+                        ':httpID'
+                       ,':paramName'
+                       ,':paramValue'
+                       ,':comment'
+                       ,':createUserID'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_DBHttpParam_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM TDBHttpParam
+                 WHERE  httpID = ':Http.id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

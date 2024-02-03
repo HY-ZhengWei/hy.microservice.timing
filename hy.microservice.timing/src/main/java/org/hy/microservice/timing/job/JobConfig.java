@@ -65,6 +65,9 @@ public class JobConfig extends Job
     /** 任务责任人 */
     private List<JobUser>      jobUsers;
     
+    /** 旧的XJava对象标识 */
+    private String             xidOld;
+    
     
     
     public JobConfig()
@@ -469,6 +472,25 @@ public class JobConfig extends Job
         this.projectID = i_ProjectID;
     }
 
+    
+    /**
+     * 获取：旧的XJava对象标识
+     */
+    public String getXidOld()
+    {
+        return xidOld;
+    }
+
+    
+    /**
+     * 设置：旧的XJava对象标识
+     * 
+     * @param i_XidOld 旧的XJava对象标识
+     */
+    public void setXidOld(String i_XidOld)
+    {
+        this.xidOld = i_XidOld;
+    }
 
 
     @Override

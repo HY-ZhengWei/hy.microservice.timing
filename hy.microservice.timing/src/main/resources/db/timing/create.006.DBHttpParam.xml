@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 数据Http请求参数的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Data_Create_DBHttpParam">
+        
+            <dataSourceGroup ref="DSG_MS_Data" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TDBHttpParam
+                (
+                 httpID                     VARCHAR(64)   NOT NULL  COMMENT 'Http请求的ID'
+                ,paramName                  VARCHAR(100)  NOT NULL  COMMENT '参数名称'
+                ,paramValue                 VARCHAR(4000)           COMMENT '参数数值'
+                ,comment                    VARCHAR(4000)           COMMENT '注释说明'
+                ,createUserID               VARCHAR(64)   NOT NULL  COMMENT '数据创建人ID'
+                ,createTime                 DATETIME      NOT NULL  COMMENT '创建时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TDBHttpParam ADD CONSTRAINT PK_DBHttpParam        PRIMARY KEY (httpID ,paramName);/
+                ALTER TABLE TDBHttpParam ADD CONSTRAINT FK_DBHttpParam_HttpID FOREIGN KEY (httpID) REFERENCES TDBHttp (id);/
+                
+                ALTER TABLE TDBHttpParam COMMENT                           = '数据Http请求参数';/
+                ]]>
+            </content>
+            
+            <comment>数据Http请求参数</comment>
+            <create if="启用 == IsCreateDB_MS_Data.getValue">TDBHttpParam</create>
+            
+        </sql>
+        
+    </sqls>
+
+</config>

@@ -1,5 +1,6 @@
 package org.hy.microservice.timing.jobHttp;
 
+import org.hy.common.XJavaID;
 import org.hy.microservice.common.BaseViewMode;
 import org.hy.microservice.timing.http.DBHttp;
 
@@ -14,7 +15,7 @@ import org.hy.microservice.timing.http.DBHttp;
  * @createDate  2024-02-03
  * @version     v1.0
  */
-public class JobHttp extends BaseViewMode
+public class JobHttp extends BaseViewMode implements XJavaID
 {
 
     private static final long serialVersionUID = 3840269704122773035L;
@@ -30,10 +31,10 @@ public class JobHttp extends BaseViewMode
     /** 旧的逻辑ID */
     private String                     xidOld;
     
-    /** 数据请求ID */
+    /** 数据请求 */
     private DBHttp                     taskHttp;
     
-    /** 获取Token的数据请求ID */
+    /** 获取Token的数据请求 */
     private DBHttp                     tokenHttp;
     
     /** 请求模板 */
@@ -48,6 +49,46 @@ public class JobHttp extends BaseViewMode
     {
         this.taskHttp  = new DBHttp();
         this.tokenHttp = new DBHttp();
+    }
+    
+    
+    /**
+     * 获取：数据请求ID
+     */
+    public String getTaskHttpID()
+    {
+        return this.taskHttp.getId();
+    }
+
+    
+    /**
+     * 设置：数据请求ID
+     * 
+     * @param i_TaskHttpID 数据请求ID
+     */
+    public void setTaskHttpID(String i_TaskHttpID)
+    {
+        this.taskHttp.setId(i_TaskHttpID);
+    }
+
+    
+    /**
+     * 获取：获取Token的数据请求ID
+     */
+    public String getTokenHttpID()
+    {
+        return this.tokenHttp.getId();
+    }
+
+    
+    /**
+     * 设置：获取Token的数据请求ID
+     * 
+     * @param i_TokenHttpID 获取Token的数据请求ID
+     */
+    public void setTokenHttpID(String i_TokenHttpID)
+    {
+        this.tokenHttp.setId(i_TokenHttpID);
     }
 
     
@@ -112,7 +153,7 @@ public class JobHttp extends BaseViewMode
 
     
     /**
-     * 获取：数据请求ID
+     * 获取：数据请求
      */
     public DBHttp getTaskHttp()
     {
@@ -121,7 +162,7 @@ public class JobHttp extends BaseViewMode
 
     
     /**
-     * 设置：数据请求ID
+     * 设置：数据请求
      * 
      * @param i_TaskHttp 数据请求ID
      */
@@ -132,7 +173,7 @@ public class JobHttp extends BaseViewMode
 
     
     /**
-     * 获取：获取Token的数据请求ID
+     * 获取：获取Token的数据请求
      */
     public DBHttp getTokenHttp()
     {
@@ -141,7 +182,7 @@ public class JobHttp extends BaseViewMode
 
     
     /**
-     * 设置：获取Token的数据请求ID
+     * 设置：获取Token的数据请求
      * 
      * @param i_TokenHttp 获取Token的数据请求ID
      */
@@ -188,6 +229,30 @@ public class JobHttp extends BaseViewMode
     public void setSucceedKey(String i_SucceedKey)
     {
         this.succeedKey = i_SucceedKey;
+    }
+    
+    
+    /**
+     * 设置XJava池中对象的ID标识。此方法不用用户调用设置值，是自动的。
+     * 
+     * @param i_XJavaID
+     */
+    @Override
+    public void setXJavaID(String i_XJavaID)
+    {
+        this.xid = i_XJavaID;
+    }
+    
+    
+    /**
+     * 获取XJava池中对象的ID标识。
+     * 
+     * @return
+     */
+    @Override
+    public String getXJavaID()
+    {
+        return this.xid;
     }
     
 }

@@ -1,32 +1,26 @@
-package org.hy.microservice.timing.http;
-
-import org.hy.common.xml.XHttp;
-
-
-
-
+package org.hy.microservice.timing.jobHttp;
 
 /**
- * 数据请求的缓存层
+ * 定时任务请求的缓存层
  *
  * @author      ZhengWei(HY)
- * @createDate  2023-12-08
+ * @createDate  2024-02-03
  * @version     v1.0
  */
-public interface IDBHttpCache
+public interface IJobHttpCache
 {
     
     /**
      * 刷新XJava对象池
      * 
      * @author      ZhengWei(HY)
-     * @createDate  2023-10-19
+     * @createDate  2024-02-03
      * @version     v1.0
      *
-     * @param i_DBHttp
+     * @param i_JobHttp
      * @return
      */
-    public boolean refreshXJava(DBHttp i_DBHttp);
+    public boolean refreshXJava(JobHttp i_JobHttp);
     
     
     
@@ -37,13 +31,13 @@ public interface IDBHttpCache
      * 解绑：无新X对象时，表示移除引用关系
      * 
      * @author      ZhengWei(HY)
-     * @createDate  2023-12-08
+     * @createDate  2024-02-03
      * @version     v1.0
      *
-     * @param i_Old  旧的数据请求X对象
-     * @param i_New  新的数据请求X对象
+     * @param i_Old  旧的定时任务请求X对象
+     * @param i_New  新的定时任务请求X对象
      * @return
      */
-    public boolean refreshRelations(XHttp i_Old ,XHttp i_New);
+    public boolean refreshRelations(XJobHttp i_Old ,XJobHttp i_New);
     
 }

@@ -22,6 +22,17 @@ public class JobHttp extends BaseViewMode implements XJavaID
     
     
     
+    /** 模板占位符：票据号 */
+    public  static final String  $Template_Token        = ":token";
+    
+    /** 模板占位符：时间戳  */
+    public  static final String  $Template_Timestamp    = ":timestamp";
+    
+    /** 模板占位符：数字签名  */
+    public  static final String  $Template_Sign         = ":sign";
+    
+    
+    
     /** 主键 */
     private String                     id;
     
@@ -92,6 +103,46 @@ public class JobHttp extends BaseViewMode implements XJavaID
     }
 
     
+    /**
+     * 获取：数据请求逻辑XID
+     */
+    public String getTaskHttpXID()
+    {
+        return this.taskHttp.getXid();
+    }
+
+    
+    /**
+     * 设置：数据请求逻辑XID
+     * 
+     * @param i_TaskHttpXID 数据请求逻辑XID
+     */
+    public void setTaskHttpXID(String i_TaskHttpXID)
+    {
+        this.taskHttp.setXid(i_TaskHttpXID);
+    }
+
+    
+    /**
+     * 获取：获取Token的数据请求XID
+     */
+    public String getTokenHttpXID()
+    {
+        return this.tokenHttp.getXid();
+    }
+
+    
+    /**
+     * 设置：获取Token的数据请求XID
+     * 
+     * @param i_TokenHttpXID 获取Token的数据请求XID
+     */
+    public void setTokenHttpXID(String i_TokenHttpXID)
+    {
+        this.tokenHttp.setXid(i_TokenHttpXID);
+    }
+
+
     /**
      * 获取：主键
      */

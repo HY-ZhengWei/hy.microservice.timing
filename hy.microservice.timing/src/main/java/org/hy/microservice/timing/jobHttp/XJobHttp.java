@@ -1,12 +1,19 @@
 package org.hy.microservice.timing.jobHttp;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hy.common.Date;
+import org.hy.common.Help;
 import org.hy.common.Return;
+import org.hy.common.StringHelp;
 import org.hy.common.XJavaID;
 import org.hy.common.xml.XHttp;
+import org.hy.common.xml.XHttpParam;
+import org.hy.common.xml.XJSON;
 import org.hy.common.xml.log.Logger;
+import org.hy.microservice.timing.http.otherToken.TokenResponseData;
 
 
 
@@ -60,12 +67,129 @@ public class XJobHttp implements XJavaID ,Serializable
      * @createDate  2023-11-13
      * @version     v1.0
      *
-     * @return
+     * @return  返回是否请求成功。
+     *          Return.paramObj  真实完整的请求URL，及请求报文
+     *          Return.paramStr  保存响应信息
+     *          Return.paramInt  保存响应异常类型代码
+     *          Return.exception 保存异常信息
      */
     public Return<Object> execute()
     {
-        return null;
+        synchronized ( this )
+        {
+            if ( this.isRunning )
+            {
+                return new Return<Object>(false).setParamStr("正在运行中，上次执行时间为：" + this.runStartTime.getFull());
+            }
+            
+            this.isRunning    = true;
+            this.runStartTime = new Date();
+        }
+        
+        Return<Object> v_Ret = null;
+        try
+        {
+            v_Ret = this.executeTaskHttp();
+        }
+        catch (Exception exce)
+        {
+            v_Ret.setParamInt(-900).setParamStr(exce.getMessage());
+            $Logger.error(exce);
+        }
+        finally
+        {
+            this.isRunning = false;
+        }
+        
+        return v_Ret;
     }
+    
+    
+    
+    /**
+     * 执行数据请求的发送
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-02-03
+     * @version     v1.0
+     *
+     * @return  返回是否请求成功。
+     *          Return.paramObj  真实完整的请求URL，及请求报文
+     *          Return.paramStr  保存响应信息
+     *          Return.paramInt  保存响应异常类型代码
+     *          Return.exception 保存异常信息
+     */
+    @SuppressWarnings("unchecked")
+    private Return<Object> executeTaskHttp()
+    {
+        Map<String ,Object> v_TaskHttpUrlData = new HashMap<String ,Object>();
+        String              v_TokenValue      = "";
+        if ( this.tokenHttp != null )
+        {
+            // {"code":"200","message":"成功","data":{"data":"addeba19eede4a97916d79c5c209e62a"}}
+            Return<Object> v_TokenRet = (Return<Object>) this.tokenHttp.request();
+            
+            if ( v_TokenRet !=null && v_TokenRet.booleanValue() && !Help.isNull(v_TokenRet.getParamStr()) )
+            {
+                XJSON v_XJson = new XJSON();
+                try
+                {
+                    TokenResponseData v_Data = (TokenResponseData)v_XJson.toJava(v_TokenRet.getParamStr() ,"data" ,TokenResponseData.class);
+                    if ( v_Data != null )
+                    {
+                        if ( !Help.isNull(v_Data.getData()) )
+                        {
+                            v_TokenValue = v_Data.getData();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    $Logger.error(e);
+                    return v_TokenRet.set(false).setException(e);
+                }
+            }
+            
+            if ( !Help.isNull(this.taskHttp.getParams()) )
+            {
+                for (XHttpParam v_UrlParam : this.taskHttp.getParams())
+                {
+                    if ( JobHttp.$Template_Token.equals(v_UrlParam.getParamValue()) )
+                    {
+                        v_TaskHttpUrlData.put(v_UrlParam.getUrlParamName() ,v_TokenValue);
+                    }
+                }
+            }
+        }
+        
+        Map<String ,Object> v_TemplateParams = new HashMap<String ,Object>();
+        v_TemplateParams.put(JobHttp.$Template_Token     ,v_TokenValue);
+        v_TemplateParams.put(JobHttp.$Template_Timestamp ,Date.getNowTime().getTime());
+        v_TemplateParams.put(JobHttp.$Template_Sign      ,"");
+        
+        String v_TaskHttpBodyData = StringHelp.replaceAll(this.jobHttp.getRequestTemplate() ,v_TemplateParams);
+        Return<Object> v_TaskHttpRet = (Return<Object>) this.taskHttp.request(v_TaskHttpUrlData ,v_TaskHttpBodyData);
+        v_TaskHttpRet.setParamObj(v_TaskHttpRet.getParamObj() + "\r\n\r\n" + v_TaskHttpBodyData);
+        
+        if ( v_TaskHttpRet.booleanValue() )
+        {
+            // 判定业务逻辑上是否有成功
+            if ( !Help.isNull(this.getJobHttp().getSucceedKey()) )
+            {
+                if ( Help.isNull(v_TaskHttpRet.getParamStr()) )
+                {
+                    v_TaskHttpRet.set(false).setParamInt(-191).setParamStr("返回信息为空，与成功标记不符");
+                }
+                else if ( v_TaskHttpRet.getParamStr().indexOf(this.getJobHttp().getSucceedKey()) < 0 )
+                {
+                    v_TaskHttpRet.set(false).setParamInt(-192).setParamStr(v_TaskHttpRet.getParamStr() + "\r\n\r\n返回信息不包含成功标记");
+                }
+            }
+        }
+        
+        return v_TaskHttpRet;
+    }
+
     
     
     /**

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 定时任务请求的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_JobHttp_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <contentDB>
+                <defaultNull>true</defaultNull>
+            </contentDB>
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO TJobHttp
+                       (
+                        id
+                       ,xid
+                       ,taskHttpID
+                       ,tokenHttpID
+                       ,requestTemplate
+                       ,succeedKey
+                       ,projectID
+                       ,comment
+                       ,isDel
+                       ,createUserID
+                       ,updateUserID
+                       ,createTime
+                       ,updateTime
+                       )
+                VALUES (
+                        ':id'
+                       ,':xid'
+                       ,':taskHttpID'
+                       ,':tokenHttpID'
+                       ,':requestTemplate'
+                       ,':succeedKey'
+                       ,':projectID'
+                       ,':comment'
+                       ,':isDel'
+                       ,':createUserID'
+                       ,':updateUserID'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobHttp_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <contentDB>
+                <defaultNull>true</defaultNull>
+            </contentDB>
+            
+            <content>
+                <![CDATA[
+                UPDATE  TJobHttp
+                   SET  updateTime      = NOW()
+                       ,updateUserID    = ':updateUserID'
+                       ,tokenHttpID     = ':tokenHttpID'
+                    <[ ,xid             = ':xid'                ]>
+                    <[ ,taskHttpID      = ':taskHttpID'         ]>
+                    <[ ,requestTemplate = ':requestTemplate'    ]>
+                    <[ ,succeedKey      = ':succeedKey'         ]>
+                    <[ ,projectID       = ':projectID'          ]>
+                    <[ ,comment         = ':comment'            ]>
+                    <[ ,isDel           = ':isDel'              ]>
+                 WHERE  id              = ':id'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_Timing_JobHttp_Query"> 
+            
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id
+                       ,A.xid         
+                       ,A.taskHttpID
+                       ,C.xid                AS "jobHttp.xid"
+                       ,C.comment            AS "jobHttp.comment"
+                       ,A.tokenHttpID
+                       ,D.xid                AS "tokenHttp.xid"
+                       ,D.comment            AS "tokenHttp.comment"
+                       ,A.requestTemplate
+                       ,A.succeedKey
+                       ,A.projectID
+                       ,A.comment
+                       ,A.isDel
+                       ,A.createUserID
+                       ,A.updateUserID
+                       ,A.createTime
+                       ,A.updateTime
+                  FROM  TJobHttp A
+                  JOIN  TDBHttp  C ON C.id = A.taskHttpID
+             LEFT JOIN  TDBHttp  D ON D.id = A.tokenHttpID
+                 WHERE  A.isDel       = 0
+              <[   AND  A.id          = ':id'           ]>
+              <[   AND  A.xid         = ':xid'          ]>
+              <[   AND  A.taskHttpID  = ':taskHttpID'   ]>
+              <[   AND  A.tokenHttpID = ':tokenHttpID'  ]>
+              <[   AND  A.projectID   = ':projectID'    ]>
+                 ORDER  BY A.xid
+                ]]>
+            </content>
+            
+            <result>
+                <table>java.util.LinkedHashMap</table>
+                <fill>put(row.id ,row)</fill>
+                <row>org.hy.microservice.timing.jobHttp.JobHttp</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

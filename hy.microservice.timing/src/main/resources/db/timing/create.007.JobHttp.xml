@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 定时任务请求的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Timing_Create_JobHttp">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TJobHttp
+                (
+                 id                         VARCHAR(64)   NOT NULL  COMMENT '主键'
+                ,xid                        VARCHAR(64)   NOT NULL  COMMENT '逻辑ID'
+                ,taskHttpID                 VARCHAR(64)   NOT NULL  COMMENT '数据请求ID'
+                ,tokenHttpID                VARCHAR(64)             COMMENT '获取Token的数据请求ID'
+                ,requestTemplate            VARCHAR(4000) NOT NULL  COMMENT '数据请求模板'
+                ,succeedKey                 VARCHAR(200)            COMMENT '成功判定关键字'
+                ,projectID                  VARCHAR(64)             COMMENT '项目ID'
+                ,comment                    VARCHAR(4000)           COMMENT '注释说明'
+                ,isDel                      INT           NOT NULL  COMMENT '删除标记。1删除；0未删除'
+                ,createUserID               VARCHAR(64)   NOT NULL  COMMENT '数据创建人ID'
+                ,updateUserID               VARCHAR(64)   NOT NULL  COMMENT '数据修改人ID'
+                ,createTime                 DATETIME      NOT NULL  COMMENT '创建时间'
+                ,updateTime                 DATETIME      NOT NULL  COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TJobHttp ADD CONSTRAINT PK_JobHttp             PRIMARY KEY (id);/
+                ALTER TABLE TJobHttp ADD CONSTRAINT FK_JobHttp_TaskHttpID  FOREIGN KEY (taskHttpID)  REFERENCES TDBHttp (id);/
+                ALTER TABLE TJobHttp ADD CONSTRAINT FK_JobHttp_TokenID     FOREIGN KEY (tokenHttpID) REFERENCES TDBHttp (id);/
+                
+                ALTER TABLE TJobHttp COMMENT                        = '定时任务请求';/
+                
+                CREATE INDEX IDX_JobHttp_xid ON TJobHttp (xid);/
+                ]]>
+            </content>
+            
+            <comment>定时任务请求</comment>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TJobHttp</create>
+            
+        </sql>
+        
+    </sqls>
+
+</config>

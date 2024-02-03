@@ -3,6 +3,7 @@ package org.hy.microservice.timing.common;
 import org.hy.common.XJavaID;
 import org.hy.microservice.timing.http.DBHttp;
 import org.hy.microservice.timing.job.JobConfig;
+import org.hy.microservice.timing.jobHttp.JobHttp;
 
 
 
@@ -19,10 +20,13 @@ public class XObject implements XJavaID
 {
     
     /** X对象的类型：数据请求 */
-    public static final String $Type_Http = "XHttp";
+    public static final String $Type_Http    = "XHttp";
+    
+    /** X对象的类型：定时任务请求 */
+    public static final String $Type_JobHttp = "XJobHttp";
     
     /** X对象的类型：定时任务 */
-    public static final String $Type_JOb  = "XJob";
+    public static final String $Type_JOb     = "XJob";
     
     
     
@@ -53,6 +57,16 @@ public class XObject implements XJavaID
         this.xid        = i_Http.getXid();
         this.comment    = i_Http.getComment();
         this.objectType = $Type_Http;
+    }
+    
+    
+    
+    public XObject(JobHttp i_JobHttp)
+    {
+        this.id         = i_JobHttp.getId();
+        this.xid        = i_JobHttp.getXid();
+        this.comment    = i_JobHttp.getComment();
+        this.objectType = $Type_JobHttp;
     }
     
     

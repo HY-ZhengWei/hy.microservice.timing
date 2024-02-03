@@ -92,7 +92,7 @@ public interface IJobHttpDAO
      * @return
      */
     @Xsql(id="XSQL_Timing_JobHttp_Query")
-    public Map<String ,JobHttp> queryByPushHttpID(@Xparam("taskHttpID") String i_TaskHttpID);
+    public Map<String ,JobHttp> queryByTaskHttpID(@Xparam("taskHttpID") String i_TaskHttpID);
     
     
     

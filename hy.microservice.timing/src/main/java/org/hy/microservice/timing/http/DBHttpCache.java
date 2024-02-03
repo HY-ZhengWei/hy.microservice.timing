@@ -3,13 +3,12 @@ package org.hy.microservice.timing.http;
 import java.util.Map;
 
 import org.hy.common.Help;
-import org.hy.common.thread.Job;
 import org.hy.common.xml.XHttp;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.microservice.common.ConfigToJavaDefault;
 import org.hy.microservice.timing.job.IJobConfigDAO;
-import org.hy.microservice.timing.job.JobConfig;
+import org.hy.microservice.timing.jobHttp.XJobHttp;
 
 
 
@@ -117,28 +116,28 @@ public class DBHttpCache implements IDBHttpCache
      * @createDate  2023-12-08
      * @version     v1.0
      *
-     * @param i_Old  旧的数据任务X对象
-     * @param i_New  新的数据任务X对象
+     * @param i_Old  旧的数据请求X对象
+     * @param i_New  新的数据请求X对象
      * @return
      */
     @Override
     public boolean refreshRelations(XHttp i_Old ,XHttp i_New)
     {
-        Map<String ,Job> v_XJobs = XJava.getObjects(Job.class);
-        if ( !Help.isNull(v_XJobs) )
+        Map<String ,XJobHttp> v_XJobHttps = XJava.getObjects(XJobHttp.class);
+        if ( !Help.isNull(v_XJobHttps) )
         {
-            for (Job v_XJob : v_XJobs.values())
+            for (XJobHttp v_XJobHttp : v_XJobHttps.values())
             {
-                if ( i_Old.getXJavaID().equals(v_XJob.getXid()) )
+                if ( i_Old.equals(v_XJobHttp.getTokenHttp()) )
                 {
-                    v_XJob.setXid(i_New.getXJavaID());
+                    v_XJobHttp.setTokenHttp(i_New);
+                }
+                
+                if ( i_Old.equals(v_XJobHttp.getTaskHttp()) )
+                {
+                    v_XJobHttp.setTaskHttp(i_New);
                 }
             }
-            
-            JobConfig v_UpdateJob = new JobConfig();
-            v_UpdateJob.setXidOld(i_Old.getXJavaID());
-            v_UpdateJob.setXid   (i_New.getXJavaID());
-            this.jobConfigDAO.updateXIDByLocal(v_UpdateJob);
         }
         
         return true;

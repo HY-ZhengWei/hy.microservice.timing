@@ -10,8 +10,8 @@ import org.hy.common.StringHelp;
 import org.hy.common.xml.XHttp;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.microservice.timing.common.XObject;
-import org.hy.microservice.timing.job.IJobConfigDAO;
-import org.hy.microservice.timing.job.JobConfig;
+import org.hy.microservice.timing.jobHttp.IJobHttpDAO;
+import org.hy.microservice.timing.jobHttp.JobHttp;
 
 
 
@@ -33,13 +33,13 @@ public class DBHttpService implements IDBHttpService ,Serializable
     
     
     @Xjava
-    private IDBHttpDAO    dbHttpDAO;
+    private IDBHttpDAO   dbHttpDAO;
     
     @Xjava
-    private IJobConfigDAO jobConfigDAO;
+    private IDBHttpCache dbHttpCache;
     
     @Xjava
-    private IDBHttpCache  dbHttpCache;
+    private IJobHttpDAO  jobHttpDAO;
     
 
 
@@ -231,17 +231,21 @@ public class DBHttpService implements IDBHttpService ,Serializable
             return v_XObjects;
         }
         
-        DBHttp v_Http = this.dbHttpDAO.queryByID(i_HttpID);
-        
-        JobConfig v_JobParam = new JobConfig();
-        v_JobParam.setXid(v_Http.getXid());
-        
-        List<JobConfig> v_JobLocals = this.jobConfigDAO.queryListByLocal(v_JobParam);
-        if ( !Help.isNull(v_JobLocals) )
+        Map<String ,JobHttp> v_TaskJobHttps = this.jobHttpDAO.queryByTaskHttpID(i_HttpID);
+        if ( !Help.isNull(v_TaskJobHttps) )
         {
-            for (JobConfig v_Job : v_JobLocals)
+            for (JobHttp v_TaskJobHttp : v_TaskJobHttps.values())
             {
-                v_XObjects.add(new XObject(v_Job));
+                v_XObjects.add(new XObject(v_TaskJobHttp));
+            }
+        }
+        
+        Map<String ,JobHttp> v_TokenJobHttps = this.jobHttpDAO.queryByTokenHttpID(i_HttpID);
+        if ( !Help.isNull(v_TokenJobHttps) )
+        {
+            for (JobHttp v_TokenJobHttp : v_TokenJobHttps.values())
+            {
+                v_XObjects.add(new XObject(v_TokenJobHttp));
             }
         }
         

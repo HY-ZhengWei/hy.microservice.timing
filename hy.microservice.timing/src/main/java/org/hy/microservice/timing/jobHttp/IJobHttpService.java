@@ -50,7 +50,7 @@ public interface IJobHttpService
      * 按ID查询定时任务请求
      * 
      * @author      ZhengWei(HY)
-     * @createDate  2023-09-18
+     * @createDate  2024-02-03
      * @version     v1.0
      * 
      * @param i_ID  定时任务请求ID
@@ -78,13 +78,13 @@ public interface IJobHttpService
      * 按定时任务请求ID，排查引其它数据对象是否有引用它
      * 
      * @author      ZhengWei(HY)
-     * @createDate  2023-10-27
+     * @createDate  2024-02-03
      * @version     v1.0
      *
-     * @param i_PushID  定时任务请求ID
+     * @param i_JobHttpID  定时任务请求ID
      * @return
      */
-    public List<XObject> queryRelations(String i_PushID);
+    public List<XObject> queryRelations(String i_JobHttpID);
     
     
     

@@ -9,6 +9,8 @@ import org.hy.common.Help;
 import org.hy.common.StringHelp;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.microservice.timing.common.XObject;
+import org.hy.microservice.timing.job.IJobConfigDAO;
+import org.hy.microservice.timing.job.JobConfig;
 
 
 
@@ -30,10 +32,13 @@ public class JobHttpService implements IJobHttpService ,Serializable
     
 
     @Xjava
-    private IJobHttpDAO   JobHttpDAO;
+    private IJobHttpDAO   jobHttpDAO;
     
     @Xjava
-    private IJobHttpCache JobHttpCache;
+    private IJobHttpCache jobHttpCache;
+    
+    @Xjava
+    private IJobConfigDAO jobConfigDAO;
     
     
     
@@ -49,7 +54,7 @@ public class JobHttpService implements IJobHttpService ,Serializable
     @Override
     public Map<String ,JobHttp> queryList()
     {
-        return this.JobHttpDAO.queryList();
+        return this.jobHttpDAO.queryList();
     }
     
     
@@ -67,7 +72,7 @@ public class JobHttpService implements IJobHttpService ,Serializable
     @Override
     public Map<String ,JobHttp> queryList(JobHttp i_JobHttp)
     {
-        return this.JobHttpDAO.queryList(i_JobHttp);
+        return this.jobHttpDAO.queryList(i_JobHttp);
     }
     
     
@@ -79,13 +84,13 @@ public class JobHttpService implements IJobHttpService ,Serializable
      * @createDate  2024-02-03
      * @version     v1.0
      * 
-     * @param i_PushID  定时任务请求ID
+     * @param i_ID  定时任务请求ID
      * @return
      */
     @Override
-    public JobHttp queryByID(String i_PushID)
+    public JobHttp queryByID(String i_ID)
     {
-        return this.JobHttpDAO.queryByID(i_PushID);
+        return this.jobHttpDAO.queryByID(i_ID);
     }
     
     
@@ -97,13 +102,13 @@ public class JobHttpService implements IJobHttpService ,Serializable
      * @createDate  2024-02-03
      * @version     v1.0
      * 
-     * @param i_PushXID  定时任务请求的XID
+     * @param i_XID  定时任务请求的XID
      * @return
      */
     @Override
-    public JobHttp queryByXID(String i_PushXID)
+    public JobHttp queryByXID(String i_XID)
     {
-        return this.JobHttpDAO.queryByXID(i_PushXID);
+        return this.jobHttpDAO.queryByXID(i_XID);
     }
     
     
@@ -115,13 +120,33 @@ public class JobHttpService implements IJobHttpService ,Serializable
      * @createDate  2023-10-27
      * @version     v1.0
      *
-     * @param i_PushID  定时任务请求ID
+     * @param i_JobHttpID  定时任务请求ID
      * @return
      */
     @Override
-    public List<XObject> queryRelations(String i_PushID)
+    public List<XObject> queryRelations(String i_JobHttpID)
     {
-        return new ArrayList<XObject>();
+        List<XObject> v_XObjects = new ArrayList<XObject>();
+        if ( Help.isNull(i_JobHttpID) )
+        {
+            return v_XObjects;
+        }
+        
+        JobHttp v_JobHttp = this.jobHttpDAO.queryByID(i_JobHttpID);
+        
+        JobConfig v_JobParam = new JobConfig();
+        v_JobParam.setXid(v_JobHttp.getXid());
+        
+        List<JobConfig> v_JobLocals = this.jobConfigDAO.queryListByLocal(v_JobParam);
+        if ( !Help.isNull(v_JobLocals) )
+        {
+            for (JobConfig v_Job : v_JobLocals)
+            {
+                v_XObjects.add(new XObject(v_Job));
+            }
+        }
+        
+        return v_XObjects;
     }
     
     
@@ -144,10 +169,10 @@ public class JobHttpService implements IJobHttpService ,Serializable
         io_JobHttp.setUpdateUserID(io_JobHttp.getCreateUserID());
         io_JobHttp.setIsDel(       Help.NVL(io_JobHttp.getIsDel() ,0));
         
-        int v_Ret = this.JobHttpDAO.insert(io_JobHttp);
+        int v_Ret = this.jobHttpDAO.insert(io_JobHttp);
         if ( v_Ret == 1 )
         {
-            return this.JobHttpCache.refreshXJava(io_JobHttp);
+            return this.jobHttpCache.refreshXJava(io_JobHttp);
         }
         else
         {
@@ -174,7 +199,7 @@ public class JobHttpService implements IJobHttpService ,Serializable
         io_JobHttp.setIsDel(       Help.NVL(io_JobHttp.getIsDel() ,0));
         
         JobHttp v_Old = this.queryByID(io_JobHttp.getId());
-        int v_Ret = this.JobHttpDAO.update(io_JobHttp);
+        int v_Ret = this.jobHttpDAO.update(io_JobHttp);
         if ( v_Ret == 1 )
         {
             if ( Help.isNull(io_JobHttp.getTokenHttpID()) && !"".equals(io_JobHttp.getTokenHttpID()) )
@@ -194,7 +219,7 @@ public class JobHttpService implements IJobHttpService ,Serializable
             
             io_JobHttp.setXid(Help.NVL(io_JobHttp.getXid() ,v_Old.getXid()));
             io_JobHttp.setXidOld(v_Old.getXid());
-            return this.JobHttpCache.refreshXJava(io_JobHttp);
+            return this.jobHttpCache.refreshXJava(io_JobHttp);
         }
         else
         {

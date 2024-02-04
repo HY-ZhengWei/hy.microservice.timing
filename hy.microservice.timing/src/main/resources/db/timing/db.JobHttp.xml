@@ -97,8 +97,8 @@
                 SELECT  A.id
                        ,A.xid         
                        ,A.taskHttpID
-                       ,C.xid                AS "jobHttp.xid"
-                       ,C.comment            AS "jobHttp.comment"
+                       ,C.xid                AS "taskHttp.xid"
+                       ,C.comment            AS "taskHttp.comment"
                        ,A.tokenHttpID
                        ,D.xid                AS "tokenHttp.xid"
                        ,D.comment            AS "tokenHttp.comment"

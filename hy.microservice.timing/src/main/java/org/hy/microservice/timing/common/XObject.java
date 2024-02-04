@@ -26,7 +26,7 @@ public class XObject implements XJavaID
     public static final String $Type_JobHttp = "XJobHttp";
     
     /** X对象的类型：定时任务 */
-    public static final String $Type_JOb     = "XJob";
+    public static final String $Type_Job     = "XJob";
     
     
     
@@ -74,9 +74,9 @@ public class XObject implements XJavaID
     public XObject(JobConfig i_JobConfig)
     {
         this.id         = i_JobConfig.getId();
-        this.xid        = i_JobConfig.getXid();
+        this.xid        = i_JobConfig.getCode();
         this.comment    = i_JobConfig.getComment();
-        this.objectType = $Type_JOb;
+        this.objectType = $Type_Job;
     }
     
     

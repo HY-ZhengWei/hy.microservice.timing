@@ -16,6 +16,9 @@ import org.hy.microservice.timing.http.IDBHttpCache;
 import org.hy.microservice.timing.http.IDBHttpService;
 import org.hy.microservice.timing.job.IJobConfigDAO;
 import org.hy.microservice.timing.job.JobConfig;
+import org.hy.microservice.timing.jobHttp.IJobHttpCache;
+import org.hy.microservice.timing.jobHttp.IJobHttpService;
+import org.hy.microservice.timing.jobHttp.JobHttp;
 
 
 
@@ -33,13 +36,19 @@ public class TimingInit
 {
     
     @Xjava
-    private IJobConfigDAO  jobConfigDAO;
+    private IJobConfigDAO   jobConfigDAO;
+                            
+    @Xjava
+    private IDBHttpService  dbHttpService;
+                            
+    @Xjava
+    private IDBHttpCache    dbHttpCache;
     
     @Xjava
-    private IDBHttpService dbHttpService;
+    private IJobHttpService jobHttpService;
     
     @Xjava
-    private IDBHttpCache   dbHttpCache;
+    private IJobHttpCache   jobHttpCache;
     
     
     
@@ -59,10 +68,18 @@ public class TimingInit
         
         this.init_ClusterServers();
         
-        Map<String ,DBHttp> v_DBHttps = this.dbHttpService.queryList();
+        Map<String ,DBHttp>  v_DBHttps  = this.dbHttpService.queryList();
+        Map<String ,JobHttp> v_JobHttps = this.jobHttpService.queryList();
+        
         this.loadDBHttp(v_DBHttps);
+        this.loadJobHttp(v_JobHttps);
         
         new Execute(this ,"addJobs").start();
+        
+        v_JobHttps.clear();
+        v_DBHttps .clear();
+        v_JobHttps = null;
+        v_DBHttps  = null;
     }
     
     
@@ -85,6 +102,30 @@ public class TimingInit
         for (DBHttp v_DBHttp : i_DBHttps.values())
         {
             this.dbHttpCache.refreshXJava(v_DBHttp);
+        }
+    }
+    
+    
+    
+    /**
+     * 加载&初始化定时任务请求
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2024-02-04
+     * @version     v1.0
+     *
+     * @param i_JobHttps
+     */
+    private void loadJobHttp(Map<String ,JobHttp> i_JobHttps)
+    {
+        if ( Help.isNull(i_JobHttps) )
+        {
+            return;
+        }
+        
+        for (JobHttp v_JobHttp : i_JobHttps.values())
+        {
+            this.jobHttpCache.refreshXJava(v_JobHttp);
         }
     }
     

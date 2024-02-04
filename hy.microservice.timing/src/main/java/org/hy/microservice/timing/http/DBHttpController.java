@@ -53,7 +53,7 @@ public class DBHttpController extends BaseController
     private UserService                userService;
     
     @Autowired
-    @Qualifier("MS_Data_IsCheckToken")
+    @Qualifier("MS_Timing_IsCheckToken")
     private Param                      isCheckToken;
     
     

@@ -32,7 +32,7 @@ public interface IDBHttpDAO
      * 
      * @return
      */
-    @Xsql("XSQL_Data_DBHttp_Query")
+    @Xsql("XSQL_Timing_DBHttp_Query")
     public Map<String ,DBHttp> queryList();
     
     
@@ -47,7 +47,7 @@ public interface IDBHttpDAO
      * @param i_DBHttp  数据Http请求
      * @return
      */
-    @Xsql("XSQL_Data_DBHttp_Query")
+    @Xsql("XSQL_Timing_DBHttp_Query")
     public Map<String ,DBHttp> queryList(DBHttp i_DBHttp);
     
     
@@ -62,7 +62,7 @@ public interface IDBHttpDAO
      * @param i_DBHttp  数据Http请求
      * @return
      */
-    @Xsql(id="XSQL_Data_DBHttp_Query" ,returnOne=true)
+    @Xsql(id="XSQL_Timing_DBHttp_Query" ,returnOne=true)
     public DBHttp queryByIDXID(DBHttp i_DBHttp);
     
     
@@ -77,7 +77,7 @@ public interface IDBHttpDAO
      * @param i_HttpID  数据Http请求ID
      * @return
      */
-    @Xsql(id="XSQL_Data_DBHttp_Query" ,returnOne=true)
+    @Xsql(id="XSQL_Timing_DBHttp_Query" ,returnOne=true)
     public DBHttp queryByID(@Xparam("id") String i_HttpID);
     
     
@@ -92,7 +92,7 @@ public interface IDBHttpDAO
      * @param i_HttpXID  数据Http请求的XID
      * @return
      */
-    @Xsql(id="XSQL_Data_DBHttp_Query" ,returnOne=true)
+    @Xsql(id="XSQL_Timing_DBHttp_Query" ,returnOne=true)
     public DBHttp queryByXID(@Xparam("xid") String i_HttpXID);
     
     
@@ -108,7 +108,7 @@ public interface IDBHttpDAO
      * @param i_DBHttpParams  数据Http请求参数的集合
      * @return
      */
-    @Xsql("GXSQL_Data_DBHttp_Save")
+    @Xsql("GXSQL_Timing_DBHttp_Save")
     public boolean save(@Xparam("Http")       DBHttp            i_DBHttp
                        ,@Xparam("HttpParams") List<DBHttpParam> i_DBHttpParams);
     

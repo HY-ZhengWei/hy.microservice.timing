@@ -10,9 +10,9 @@
     <!-- 数据Http请求参数的相关SQL -->
     <sqls>
     
-        <sql id="XSQL_Data_Create_DBHttpParam">
+        <sql id="XSQL_Timing_Create_DBHttpParam">
         
-            <dataSourceGroup ref="DSG_MS_Data" />
+            <dataSourceGroup ref="DSG_MS_Timing" />
             
             <content>
                 <![CDATA[
@@ -34,7 +34,7 @@
             </content>
             
             <comment>数据Http请求参数</comment>
-            <create if="启用 == IsCreateDB_MS_Data.getValue">TDBHttpParam</create>
+            <create if="启用 == IsCreateDB_MS_Timing.getValue">TDBHttpParam</create>
             
         </sql>
         

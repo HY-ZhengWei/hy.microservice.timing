@@ -14,11 +14,13 @@ import org.hy.common.app.Param;
 import org.hy.common.net.ClientSocketCluster;
 import org.hy.common.thread.Job;
 import org.hy.common.thread.Jobs;
+import org.hy.common.xml.XHttp;
 import org.hy.common.xml.XJava;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.log.Logger;
 import org.hy.common.xml.plugins.analyse.AnalyseBase;
 import org.hy.microservice.common.BaseViewMode;
+import org.hy.microservice.timing.jobHttp.XJobHttp;
 import org.hy.microservice.timing.monitor.IJobUserDAO;
 import org.hy.microservice.timing.monitor.JobUser;
 
@@ -231,6 +233,24 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setCreateTime(       i_JobDB.getCreateTime());
             v_JobReport.setUpdateTime(       i_JobDB.getUpdateTime());
             v_JobReport.setStartTimes(       i_JobDB.toStartTimes());
+            
+            if ( Help.isNull(v_JobReport.getCloudServer()) )
+            {
+                Object v_XObject = XJava.getObject(v_JobReport.getXid() ,false);
+                if ( v_XObject instanceof XJobHttp )
+                {
+                    XHttp v_XHttp = ((XJobHttp)v_XObject).getTaskHttp();
+                    v_JobReport.setCloudType("H:" + v_XHttp.getIp() + ":" + v_XHttp.getPort());
+                }
+                else
+                {
+                    v_JobReport.setCloudType("");
+                }
+            }
+            else
+            {
+                v_JobReport.setCloudType("S:" + v_JobReport.getCloudServer());
+            }
         }
         
         if ( v_JobReport == null )
@@ -257,6 +277,7 @@ public class JobConfigService implements IJobConfigService ,Serializable
             v_JobReport.setUserID(           "msTiming");
             v_JobReport.setCreateTime(       BaseViewMode.$StartupTime);
             v_JobReport.setStartTimes(       i_JobMM.getStartTimes());
+            v_JobReport.setCloudType("");
         }
         
         return v_JobReport;

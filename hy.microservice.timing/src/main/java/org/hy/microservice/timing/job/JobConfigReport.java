@@ -94,6 +94,9 @@ public class JobConfigReport extends JobReport
     /** 任务责任人 */
     private List<JobUser> jobUsers;
     
+    /** 云类型（本机、云请求、云主机） */
+    private String cloudType;
+    
     
     
     public JobConfigReport(String i_JobID ,Job i_Job ,Boolean i_IsAddJobs)
@@ -581,6 +584,26 @@ public class JobConfigReport extends JobReport
     public void setProjectID(String i_ProjectID)
     {
         this.projectID = i_ProjectID;
+    }
+
+    
+    /**
+     * 获取：云类型（本机、云请求、云主机）
+     */
+    public String getCloudType()
+    {
+        return cloudType;
+    }
+
+    
+    /**
+     * 设置：云类型（本机、云请求、云主机）
+     * 
+     * @param i_CloudType 云类型（本机、本机请求、云主机IP）
+     */
+    public void setCloudType(String i_CloudType)
+    {
+        this.cloudType = i_CloudType;
     }
     
 }

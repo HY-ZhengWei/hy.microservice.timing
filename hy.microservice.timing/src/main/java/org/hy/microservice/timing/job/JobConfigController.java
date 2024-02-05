@@ -192,6 +192,15 @@ public class JobConfigController extends BaseController
                     {
                         i_JobConfig.setXid(i_JobConfig.getXid().trim());
                     }
+                    else
+                    {
+                        i_JobConfig.setXid(v_OldJobConfig.getXid());
+                    }
+                    
+                    if ( Help.isNull(i_JobConfig.getCloudServer()) )
+                    {
+                        i_JobConfig.setCloudServer(v_OldJobConfig.getCloudServer());
+                    }
                     
                     if ( !Help.isNull(i_JobConfig.getMethodName()) )
                     {
@@ -298,16 +307,46 @@ public class JobConfigController extends BaseController
                     }
                 }
                 
-                JobConfig v_SaveRet = this.jobConfigService.save(i_JobConfig);
-                if ( v_SaveRet != null )
+                // 防止自己调用自己造成递归
+                if ( i_JobConfig.getCode().equals(i_JobConfig.getXid()) )
                 {
-                    $Logger.info("用户（" + v_SaveRet.getCreateUserID() + "）创建" + v_SaveRet.toString() + "，成功");
-                    return v_RetResp.setData(v_SaveRet);
+                    return v_RetResp.setCode("-301").setMessage("禁止自已调用自己的递归调用");
                 }
-                else
+                // 防止调用其它Job造成混乱
+                Object v_Executer = XJava.getObject(i_JobConfig.getXid());
+                if ( v_Executer != null )
                 {
-                    $Logger.error("用户（" + Help.NVL(i_JobConfig.getCreateUserID() ,i_JobConfig.getUserID()) + "）创建" + i_JobConfig.toString() + "，异常");
-                    return v_RetResp.setCode("-998").setMessage("系统异常");
+                    if ( v_Executer instanceof Job )
+                    {
+                        return v_RetResp.setCode("-302").setMessage("禁止定时任务调用定时任务的混乱调用");
+                    }
+                }
+                if ( Help.isNull(i_JobConfig.getCloudServer()) && v_Executer == null )
+                {
+                    return v_RetResp.setCode("-303").setMessage("本地执行对象 " + i_JobConfig.getXid() + " 不存在");
+                }
+                
+                synchronized ( this )
+                {
+                    // 防止同名
+                    JobConfig v_SameXID = this.jobConfigService.queryByCode(i_JobConfig.getCode());
+                    if ( v_SameXID != null && !v_SameXID.getId().equals(i_JobConfig.getId()) )
+                    {
+                        $Logger.warn("修改任务编号[" + i_JobConfig.getCode() + "]时，出现相同的编号，禁止重复创建");
+                        return v_RetResp.setCode("-304").setMessage("任务编号" + i_JobConfig.getCode() + "已存在，禁止重复创建");
+                    }
+                    
+                    JobConfig v_SaveRet = this.jobConfigService.save(i_JobConfig);
+                    if ( v_SaveRet != null )
+                    {
+                        $Logger.info("用户（" + v_SaveRet.getCreateUserID() + "）创建" + v_SaveRet.toString() + "，成功");
+                        return v_RetResp.setData(v_SaveRet);
+                    }
+                    else
+                    {
+                        $Logger.error("用户（" + Help.NVL(i_JobConfig.getCreateUserID() ,i_JobConfig.getUserID()) + "）创建" + i_JobConfig.toString() + "，异常");
+                        return v_RetResp.setCode("-998").setMessage("系统异常");
+                    }
                 }
             }
         }

@@ -173,7 +173,9 @@ public class DBHttpService implements IDBHttpService ,Serializable
             v_Old = this.queryByID(io_DBHttp.getId());
             io_DBHttp.setXid(           Help.NVL(io_DBHttp.getXid()            ,v_Old.getXid()));
             io_DBHttp.setProtocol(      Help.NVL(io_DBHttp.getProtocol()       ,v_Old.getProtocol()));
+            io_DBHttp.setIp(            Help.NVL(io_DBHttp.getIp()             ,v_Old.getIp()));
             io_DBHttp.setPort(          Help.NVL(io_DBHttp.getPort()           ,v_Old.getPort()));
+            io_DBHttp.setUrl(           Help.NVL(io_DBHttp.getUrl()            ,v_Old.getUrl()));
             io_DBHttp.setRequestType(   Help.NVL(io_DBHttp.getRequestType()    ,v_Old.getRequestType()));
             io_DBHttp.setContentType(   Help.NVL(io_DBHttp.getContentType()    ,v_Old.getContentType()));
             io_DBHttp.setCharset(       Help.NVL(io_DBHttp.getCharset()        ,v_Old.getCharset()));

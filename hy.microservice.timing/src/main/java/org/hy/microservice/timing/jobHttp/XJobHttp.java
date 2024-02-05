@@ -162,14 +162,23 @@ public class XJobHttp implements XJavaID ,Serializable
             }
         }
         
-        Map<String ,Object> v_TemplateParams = new HashMap<String ,Object>();
-        v_TemplateParams.put(JobHttp.$Template_Token     ,v_TokenValue);
-        v_TemplateParams.put(JobHttp.$Template_Timestamp ,Date.getNowTime().getTime());
-        v_TemplateParams.put(JobHttp.$Template_Sign      ,"");
-        
-        String v_TaskHttpBodyData = StringHelp.replaceAll(this.jobHttp.getRequestTemplate() ,v_TemplateParams);
-        Return<Object> v_TaskHttpRet = (Return<Object>) this.taskHttp.request(v_TaskHttpUrlData ,v_TaskHttpBodyData);
-        v_TaskHttpRet.setParamObj(v_TaskHttpRet.getParamObj() + "\r\n\r\n" + v_TaskHttpBodyData);
+        Return<Object> v_TaskHttpRet = null;
+        if ( this.taskHttp.getRequestType() == 1 )
+        {
+            v_TaskHttpRet = (Return<Object>) this.taskHttp.request(v_TaskHttpUrlData);
+        }
+        else
+        {
+            Map<String ,Object> v_TemplateParams = new HashMap<String ,Object>();
+            v_TemplateParams.put(JobHttp.$Template_Token     ,v_TokenValue);
+            v_TemplateParams.put(JobHttp.$Template_Timestamp ,Date.getNowTime().getTime());
+            v_TemplateParams.put(JobHttp.$Template_Sign      ,"");
+            
+            String v_TaskHttpBodyData = StringHelp.replaceAll(this.jobHttp.getRequestTemplate() ,v_TemplateParams);
+            
+            v_TaskHttpRet = (Return<Object>) this.taskHttp.request(v_TaskHttpUrlData ,v_TaskHttpBodyData);
+            v_TaskHttpRet.setParamObj(v_TaskHttpRet.getParamObj() + "\r\n\r\n" + v_TaskHttpBodyData);
+        }
         
         if ( v_TaskHttpRet.booleanValue() )
         {

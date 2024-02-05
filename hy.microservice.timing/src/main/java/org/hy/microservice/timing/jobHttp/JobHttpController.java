@@ -109,30 +109,30 @@ public class JobHttpController extends BaseController
                 }
             }
             
-            JobHttp v_JobHttp = null;
+            XJobHttp v_XJobHttp = null;
             // 用定时任务请求的逻辑XID找主键ID
             if ( !Help.isNull(i_JobHttp.getXid()) && i_JobHttp.getId() == null )
             {
-                v_JobHttp = this.jobHttpService.queryByXID(i_JobHttp.getXid());
-                if ( v_JobHttp == null )
+                v_XJobHttp = (XJobHttp) XJava.getObject(i_JobHttp.getXid());
+                if ( v_XJobHttp == null )
                 {
                     return v_RetResp.setCode("-11").setMessage("定时任务请求XID无效");
                 }
             }
             else if ( !Help.isNull(i_JobHttp.getId()) )
             {
-                v_JobHttp = this.jobHttpService.queryByID(i_JobHttp.getId());
+                JobHttp v_JobHttp = this.jobHttpService.queryByID(i_JobHttp.getId());
                 if ( v_JobHttp == null )
                 {
                     return v_RetResp.setCode("-12").setMessage("定时任务请求ID无效");
                 }
+                v_XJobHttp = (XJobHttp) XJava.getObject(v_JobHttp.getXid());
             }
             else
             {
                 return v_RetResp.setCode("-13").setMessage("定时任务请求ID或XID为空");
             }
             
-            XJobHttp v_XJobHttp = (XJobHttp) XJava.getObject(v_JobHttp.getXid());
             if ( v_XJobHttp == null )
             {
                 return v_RetResp.setCode("-21").setMessage("定时任务请求构建异常");

@@ -107,30 +107,30 @@ public class DBHttpController extends BaseController
                 }
             }
             
-            DBHttp v_Http = null;
+            XHttp v_XHttp = null;
             // 用数据推送的逻辑XID找主键ID
             if ( !Help.isNull(i_DBHttp.getXid()) && i_DBHttp.getId() == null )
             {
-                v_Http = this.dbHttpService.queryByXID(i_DBHttp.getXid());
-                if ( v_Http == null )
+                v_XHttp = (XHttp) XJava.getObject(i_DBHttp.getXid());
+                if ( v_XHttp == null )
                 {
                     return v_RetResp.setCode("-11").setMessage("数据请求XID无效");
                 }
             }
             else if ( !Help.isNull(i_DBHttp.getId()) )
             {
-                v_Http = this.dbHttpService.queryByID(i_DBHttp.getId());
+                DBHttp v_Http = this.dbHttpService.queryByID(i_DBHttp.getId());
                 if ( v_Http == null )
                 {
                     return v_RetResp.setCode("-12").setMessage("数据请求ID无效");
                 }
+                v_XHttp = (XHttp) XJava.getObject(v_Http.getXid());
             }
             else
             {
                 return v_RetResp.setCode("-13").setMessage("数据请求ID或XID为空");
             }
             
-            XHttp v_XHttp = (XHttp) XJava.getObject(v_Http.getXid());
             if ( v_XHttp == null )
             {
                 return v_RetResp.setCode("-21").setMessage("数据请求构建异常");

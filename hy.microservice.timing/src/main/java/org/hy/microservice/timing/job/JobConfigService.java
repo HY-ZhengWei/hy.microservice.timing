@@ -386,43 +386,37 @@ public class JobConfigService implements IJobConfigService ,Serializable
             io_JobConfig.setId("JC" + StringHelp.getUUID());
             v_IsNew = true;
         }
+        else
+        {
+            JobConfig v_Old = this.queryByCode(io_JobConfig.getCode());
+            
+            v_Old.setStartTimes(v_Old.toStartTimes());
+            
+            io_JobConfig.setProjectID(      Help.NVL(io_JobConfig.getProjectID()       ,v_Old.getProjectID()));
+            io_JobConfig.setName(           Help.NVL(io_JobConfig.getName()            ,v_Old.getName()));
+            io_JobConfig.setIntervalType(   Help.NVL(io_JobConfig.getIntervalType()    ,v_Old.getIntervalType()));
+            io_JobConfig.setIntervalLen(    Help.NVL(io_JobConfig.getIntervalLen()     ,v_Old.getIntervalLen()));
+            io_JobConfig.setStartTimes(     Help.NVL(io_JobConfig.getStartTimes()      ,v_Old.getStartTimes()));
+            io_JobConfig.setXid(            Help.NVL(io_JobConfig.getXid()             ,v_Old.getXid()));
+            io_JobConfig.setMethodName(     Help.NVL(io_JobConfig.getMethodName()      ,v_Old.getMethodName()));
+            io_JobConfig.setCloudServerHost(Help.NVL(io_JobConfig.getCloudServerHost() ,v_Old.getCloudServerHost()));
+            io_JobConfig.setCondition(      Help.NVL(io_JobConfig.getCondition()       ,v_Old.getCondition()));
+            io_JobConfig.setTryMaxCount(    Help.NVL(io_JobConfig.getTryMaxCount()     ,v_Old.getTryMaxCount()));
+            io_JobConfig.setTryIntervalLen( Help.NVL(io_JobConfig.getTryIntervalLen()  ,v_Old.getTryIntervalLen()));
+            io_JobConfig.setComment(        Help.NVL(io_JobConfig.getComment()         ,v_Old.getComment()));
+        }
         
         io_JobConfig.setCreateUserID(Help.NVL(io_JobConfig.getCreateUserID() ,io_JobConfig.getUserID()));
         io_JobConfig.setUpdateUserID(Help.NVL(io_JobConfig.getUpdateUserID() ,io_JobConfig.getUserID()));
-        io_JobConfig.setIsEnabled(Help.NVL(io_JobConfig.getIsEnabled() ,1));
-        io_JobConfig.setIsDel(Help.NVL(io_JobConfig.getIsDel() ,0));
-        io_JobConfig.setXJavaID(io_JobConfig.getCode());
+        io_JobConfig.setIsEnabled(   Help.NVL(io_JobConfig.getIsEnabled()    ,1));
+        io_JobConfig.setIsDel(       Help.NVL(io_JobConfig.getIsDel()        ,0));
+        io_JobConfig.setXJavaID(              io_JobConfig.getCode());
         
         boolean v_Ret = this.jobConfigDAO.save(io_JobConfig ,io_JobConfig.makeStartTimes() ,io_JobConfig.getJobUsers());
         if ( v_Ret )
         {
-            JobConfig v_JobDB = null;
-            
-            if ( io_JobConfig.getIsDel().equals(0) )
-            {
-                do
-                {
-                    try
-                    {
-                        Thread.sleep(1000);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        // Nothing.
-                    }
-                    
-                    v_JobDB = this.queryByCode(io_JobConfig.getCode());
-                }
-                while ( v_JobDB == null );
-            }
-            
             Jobs v_Jobs = (Jobs) XJava.getObject("JOBS_MS_Common");
-            Job  v_Job  = null;
-            if ( v_JobDB != null )
-            {
-                v_JobDB.setStartTimes(v_JobDB.toStartTimes());
-                v_Job = v_JobDB.newJob();
-            }
+            Job  v_Job  = io_JobConfig.newJob();
             
             // 删除
             if ( !io_JobConfig.getIsDel().equals(0) || v_Job == null )

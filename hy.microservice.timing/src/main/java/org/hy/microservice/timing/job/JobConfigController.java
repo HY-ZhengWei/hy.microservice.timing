@@ -154,13 +154,6 @@ public class JobConfigController extends BaseController
                         return v_RetResp.setCode("-17").setMessage("间隔类型非法传参");
                     }
                     
-                    // 防止重复
-                    JobConfig v_CheckJobConfig = this.jobConfigService.queryByCode(i_JobConfig.getCode());
-                    if ( v_CheckJobConfig != null )
-                    {
-                        return v_RetResp.setCode("-18").setMessage("任务编码已存在");
-                    }
-                    
                     // 禁止创建时就删除
                     i_JobConfig.setIsDel(null);
                     i_JobConfig.setCreateUserID(i_JobConfig.getUserID());
@@ -168,6 +161,20 @@ public class JobConfigController extends BaseController
                     i_JobConfig.setCode(        i_JobConfig.getCode().trim());
                     i_JobConfig.setXid(         i_JobConfig.getXid().trim());
                     i_JobConfig.setMethodName(  i_JobConfig.getMethodName().trim());
+                    
+                    // 防止重复
+                    JobConfig v_CheckJobConfig = this.jobConfigService.queryByCode(i_JobConfig.getCode());
+                    if ( v_CheckJobConfig != null )
+                    {
+                        return v_RetResp.setCode("-18").setMessage("任务编码已存在");
+                    }
+                    
+                    // 防止重复，全局唯一
+                    Object v_XObject = XJava.getObject(i_JobConfig.getCode());
+                    if ( v_XObject != null )
+                    {
+                        return v_RetResp.setCode("-18").setMessage("任务编码已存在，并且必须是全局唯一的");
+                    }
                 }
                 // 更新的验证
                 else
@@ -245,6 +252,13 @@ public class JobConfigController extends BaseController
                             if ( v_CheckJobConfig != null )
                             {
                                 return v_RetResp.setCode("-18").setMessage("任务编码已存在");
+                            }
+                            
+                            // 防止重复，全局唯一
+                            Object v_XObject = XJava.getObject(i_JobConfig.getCode());
+                            if ( v_XObject != null )
+                            {
+                                return v_RetResp.setCode("-18").setMessage("任务编码已存在，并且必须是全局唯一的");
                             }
                             
                             // 修改定时任务编码时，向后传递原始编码

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 2024-03-05升级版本的自动化脚本的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Upgrade_20240305_Step001">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                INSERT INTO TUpgrade20240305 (id ,createTime) VALUES ('扩容XID字段长度' ,NOW());/
+                
+                ALTER TABLE TDBHttp  MODIFY xid VARCHAR(200) NOT NULL COMMENT '逻辑ID';/
+                ALTER TABLE TJobHttp MODIFY xid VARCHAR(200) NOT NULL COMMENT '逻辑ID';/
+                
+                UPDATE TUpgrade20240305 SET updateTime = NOW() WHERE id = '扩容XID字段长度';/
+                ]]>
+            </content>
+            
+            <comment>操作日志添加：扩容XID字段长度</comment>
+            
+        </sql>
+        
+        
+    
+        <sql id="XSQL_Create_Upgrade_20240305">
+        
+            <dataSourceGroup ref="DSG_MS_Timing" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE TUpgrade20240305
+                (
+                 id                         VARCHAR(64)   NOT NULL COMMENT '主键'
+                ,createTime                 DATETIME      NOT NULL COMMENT '创建时间'
+                ,updateTime                 DATETIME               COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+                
+                ALTER TABLE TUpgrade20240305 ADD CONSTRAINT PK_TUpgrade20240305 PRIMARY KEY (id);/
+                
+                Alter TABLE TUpgrade20240305 COMMENT = '2024-03-05升级版本';/
+                ]]>
+            </content>
+            
+            <trigger>
+                <create ref="XSQL_Upgrade_20240305_Step001" />
+            </trigger>
+            
+            <comment>2024-03-05升级版本</comment>
+            <create if="启用 == IsCreateDB_MS_Common.getValue">TUpgrade20240305</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

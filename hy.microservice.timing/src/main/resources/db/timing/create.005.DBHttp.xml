@@ -19,7 +19,7 @@
                 CREATE TABLE TDBHttp
                 (
                  id                         VARCHAR(64)   NOT NULL  COMMENT '主键'
-                ,xid                        VARCHAR(64)   NOT NULL  COMMENT '逻辑ID'
+                ,xid                        VARCHAR(200)  NOT NULL  COMMENT '逻辑ID'
                 ,protocol                   VARCHAR(10)   NOT NULL  COMMENT '协议类型'
                 ,ip                         VARCHAR(200)  NOT NULL  COMMENT '域名'
                 ,port                       INT           NOT NULL  COMMENT '端口'
@@ -46,6 +46,13 @@
                 ALTER TABLE TDBHttp COMMENT                           = '数据Http请求';/
                 
                 CREATE INDEX IDX_DBHttp_xid ON TDBHttp (xid);/
+                
+                CREATE TABLE TUpgrade20240305
+                (
+                 id                         VARCHAR(64)   NOT NULL COMMENT '主键'
+                ,createTime                 DATETIME      NOT NULL COMMENT '创建时间'
+                ,updateTime                 DATETIME               COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
                 ]]>
             </content>
             

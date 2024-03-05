@@ -1,6 +1,6 @@
-Manifest-Version: 1.1.9
+Manifest-Version: 1.2.0
 Created-By: HY.ZhengWei@qq.com  2023
-Specification-Version: 1.1.9  2024-02-05
+Specification-Version: 1.2.0  2024-03-05
 SourceCode: https://github.com/HY-ZhengWei/hy.microservice.timing
 SourceCodeChina: https://gitee.com/HY-ZhengWei/hy.microservice.timing
-Build-JDK: 11
+Build-JDK: 17

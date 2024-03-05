@@ -19,7 +19,7 @@
                 CREATE TABLE TJobHttp
                 (
                  id                         VARCHAR(64)   NOT NULL  COMMENT '主键'
-                ,xid                        VARCHAR(64)   NOT NULL  COMMENT '逻辑ID'
+                ,xid                        VARCHAR(200)  NOT NULL  COMMENT '逻辑ID'
                 ,taskHttpID                 VARCHAR(64)   NOT NULL  COMMENT '数据请求ID'
                 ,tokenHttpID                VARCHAR(64)             COMMENT '获取Token的数据请求ID'
                 ,requestTemplate            VARCHAR(4000) NOT NULL  COMMENT '数据请求模板'

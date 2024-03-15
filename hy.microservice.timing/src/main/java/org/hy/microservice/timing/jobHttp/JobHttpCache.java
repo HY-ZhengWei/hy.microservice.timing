@@ -130,13 +130,14 @@ public class JobHttpCache implements IJobHttpCache
             {
                 if ( i_Old.getXJavaID().equals(v_XJob.getXid()) )
                 {
-                    v_XJob.setXid(i_New.getXJavaID());
+                    
+                    v_XJob.setXid(i_New == null ? "" : i_New.getXJavaID());
                 }
             }
             
             JobConfig v_UpdateJob = new JobConfig();
             v_UpdateJob.setXidOld(i_Old.getXJavaID());
-            v_UpdateJob.setXid   (i_New.getXJavaID());
+            v_UpdateJob.setXid   (i_New == null ? "" : i_New.getXJavaID());
             this.jobConfigDAO.updateXIDByLocal(v_UpdateJob);
         }
         

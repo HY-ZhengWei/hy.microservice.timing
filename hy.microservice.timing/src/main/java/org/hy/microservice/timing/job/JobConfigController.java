@@ -208,7 +208,7 @@ public class JobConfigController extends BaseController
                     {
                         i_JobConfig.setCloudServer(v_OldJobConfig.getCloudServer());
                     }
-                    else if ( "".equals(i_JobConfig.getCloudServer()) ||  "-".equals(i_JobConfig.getCloudServer()) )
+                    else if ( Help.isNull(i_JobConfig.getCloudServer()) ||  "-".equals(i_JobConfig.getCloudServer()) )
                     {
                         i_JobConfig.setCloudServer("");
                     }

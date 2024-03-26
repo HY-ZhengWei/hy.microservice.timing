@@ -399,11 +399,12 @@ public class JobConfigService implements IJobConfigService ,Serializable
             io_JobConfig.setStartTimes(     Help.NVL(io_JobConfig.getStartTimes()      ,v_Old.getStartTimes()));
             io_JobConfig.setXid(            Help.NVL(io_JobConfig.getXid()             ,v_Old.getXid()));
             io_JobConfig.setMethodName(     Help.NVL(io_JobConfig.getMethodName()      ,v_Old.getMethodName()));
-            io_JobConfig.setCloudServerHost(Help.NVL(io_JobConfig.getCloudServerHost() ,v_Old.getCloudServerHost()));
             io_JobConfig.setCondition(      Help.NVL(io_JobConfig.getCondition()       ,v_Old.getCondition()));
             io_JobConfig.setTryMaxCount(    Help.NVL(io_JobConfig.getTryMaxCount()     ,v_Old.getTryMaxCount()));
             io_JobConfig.setTryIntervalLen( Help.NVL(io_JobConfig.getTryIntervalLen()  ,v_Old.getTryIntervalLen()));
             io_JobConfig.setComment(        Help.NVL(io_JobConfig.getComment()         ,v_Old.getComment()));
+            // ""空字符串时，表示解除绑定
+            // io_JobConfig.setCloudServerHost(Help.NVL(io_JobConfig.getCloudServerHost() ,v_Old.getCloudServerHost()));
         }
         
         io_JobConfig.setCreateUserID(Help.NVL(io_JobConfig.getCreateUserID() ,io_JobConfig.getUserID()));

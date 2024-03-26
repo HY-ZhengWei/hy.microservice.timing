@@ -204,9 +204,13 @@ public class JobConfigController extends BaseController
                         i_JobConfig.setXid(v_OldJobConfig.getXid());
                     }
                     
-                    if ( Help.isNull(i_JobConfig.getCloudServer()) )
+                    if ( i_JobConfig.getCloudServer() == null )
                     {
                         i_JobConfig.setCloudServer(v_OldJobConfig.getCloudServer());
+                    }
+                    else if ( "".equals(i_JobConfig.getCloudServer()) ||  "-".equals(i_JobConfig.getCloudServer()) )
+                    {
+                        i_JobConfig.setCloudServer("");
                     }
                     
                     if ( !Help.isNull(i_JobConfig.getMethodName()) )
